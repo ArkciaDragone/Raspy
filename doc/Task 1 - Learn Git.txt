@@ -5,7 +5,7 @@ Git教程：https://www.liaoxuefeng.com/wiki/896043488029600
 
 试着用你学到的知识，在下面签上你的名字后试着将文件推到Github上吧！请小心不要误删了别人的名字233
 提示：edit -> add -> commit -> push
-想要push首先要得到权限，请将你们注册Github的邮件地址告诉我，这样我就可以把各位都添加为Collaborator，获得push的权限。
+想要push首先要得到权限，请将你们注册Github的用户名告诉我，这样我就可以把各位都添加为Collaborator，获得push的权限。
 
 --- 华丽的签名处 ---
 1. Arkcia
