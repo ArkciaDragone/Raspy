@@ -1,4 +1,4 @@
-组内的第一项任务是学习Git。
+﻿组内的第一项任务是学习Git。
 
 Git教程：https://www.liaoxuefeng.com/wiki/896043488029600
 其中“安装Git”一节中对姓名和邮件地址的设置，以及“远程仓库”中Github上SSH Key的添加我们已经完成，请不要重复相关的指令/操作。但仍建议看一看w可以知道自己是为了什么目的，又做了些什么操作。
@@ -11,8 +11,8 @@ Git教程：https://www.liaoxuefeng.com/wiki/896043488029600
 1. Arkcia
 2. Howard-C
 3. Harry Terpee
-4. 
-5. 
+4. xca00
+5. Fannie
 6. 
 7. 
 8. 
