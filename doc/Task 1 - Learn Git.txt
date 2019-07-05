@@ -15,7 +15,7 @@ Git教程：https://www.liaoxuefeng.com/wiki/896043488029600
 5. Fannie
 6. JerryLv007
 7. Sally
-8. 
+8. Kurryyzp
 -------------------
 
 P.S. 如果你在签名时别人已经恰好在你pull之后在相同位置签过又push了，你可能还需要“解决冲突”，遇到这种情况不妨根据教程试试w
