@@ -19,3 +19,6 @@ else:
 print('Minecraft connection "mc" established!')
 import mcpi.block as block
 import mcpi.entity as entity
+import mcpi.vec3 as vec3
+
+V3 = vec3.Vec3

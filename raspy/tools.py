@@ -5,7 +5,6 @@ import mcpi.entity as entity
 
 V3 = vec3.Vec3
 
-
 def makeCubeCenter(mc, center, length, blockid,
                    s=True, n=True, e=True, w=True, t=True, b=True):
     """Generate a room. s, n, ..., b for corresponding walls"""
