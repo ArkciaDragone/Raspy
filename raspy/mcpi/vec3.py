@@ -19,7 +19,7 @@ class Vec3:
         return self.lengthSqr() ** .5
 
     def lengthSqr(self):
-        return self.x * self.x + self.y * self.y  + self.z * self.z
+        return self.x * self.x + self.y * self.y + self.z * self.z
 
     def __mul__(self, k):
         c = self.clone()
@@ -45,7 +45,7 @@ class Vec3:
         return self.__iadd__(-rhs)
 
     def __repr__(self):
-        return "Vec3(%s,%s,%s)"%(self.x,self.y,self.z)
+        return "Vec3(%s,%s,%s)" % (self.x, self.y, self.z)
 
     def __iter__(self):
         return iter((self.x, self.y, self.z))
@@ -65,16 +65,58 @@ class Vec3:
         return 0
 
     def __eq__(self, rhs):
-        if self.x == rhs.x and self.y == rhs.y and self.z == rhs.z:
-            return True
+        return self.x == rhs.x and self.y == rhs.y and self.z == rhs.z
 
-        return False
+    def iround(self):
+        self._map(lambda v: int(v + 0.5))
+        return self
 
-    def iround(self): self._map(lambda v:int(v+0.5))
-    def ifloor(self): self._map(int)
+    def ifloor(self):
+        self._map(int)
+        return self
 
-    def rotateLeft(self):  self.x, self.z = self.z, -self.x
-    def rotateRight(self): self.x, self.z = -self.z, self.x
+    def rotateLeft(self):
+        self.x, self.z = self.z, -self.x
+        return self
+
+    def rotateRight(self):
+        self.x, self.z = -self.z, self.x
+        return self
+
+    def cubeCenter(self, len):
+        """Get a tuple of two points (vec1, vec2) to create a cube whose center is self"""
+        p = Vec3(len // 2, len // 2, len // 2)
+        return (self.__add__(p), self.__sub__(p))
+
+    def cubeAbove(self, len):
+        """Get a tuple of two points (vec1, vec2) to create a cube whose floor center is self"""
+        center = self.clone()
+        center.y += len // 2
+        return center.cubeCenter(len)
+
+    def cubeVertex(self, len):
+        """Get a tuple of two points (vec1, vec2) to create a cube whose NW vertex is self"""
+        center = self.clone() + Vec3(len // 2, len // 2, len // 2)
+        return center.cubeCenter(len)
+
+    # Deviations: top (go up), bottom (go down), east, west, south, north
+    def t(self, l: int = 1):
+        return Vec3(self.x, self.y + l, self.z)
+
+    def b(self, l: int = 1):
+        return self.t(-l)
+
+    def e(self, l: int = 1):
+        return Vec3(self.x + l, self.y, self.z)
+
+    def w(self, l: int = 1):
+        return self.e(-l)
+
+    def s(self, l: int = 1):
+        return Vec3(self.x, self.y, self.z + l)
+
+    def n(self, l: int = 1):
+        return self.s(-l)
 
 def testVec3():
     # Note: It's not testing everything
@@ -103,12 +145,13 @@ def testVec3():
     assert c - b == a
     assert a + a == a * 2
 
-    assert a - a == Vec3(0,0,0)
-    assert a + (-a) == Vec3(0,0,0)
+    assert a - a == Vec3(0, 0, 0)
+    assert a + (-a) == Vec3(0, 0, 0)
 
     # Test repr
     e = eval(repr(it))
     assert e == it
+
 
 if __name__ == "__main__":
     testVec3()

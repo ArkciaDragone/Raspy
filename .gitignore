@@ -63,3 +63,7 @@ tags
 /.vs/slnx.sqlite
 /.vs/Files-GitExtension/v16/.suo
 /.vs/VSWorkspaceState.json
+
+# Sublime
+*.sublime-workspace
+*.sublime-project

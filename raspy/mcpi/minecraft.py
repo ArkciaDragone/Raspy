@@ -28,11 +28,14 @@ from .util import flatten
 - setSign()
 - spawnEntity()"""
 
+
 def intFloor(*args):
     return [int(math.floor(x)) for x in flatten(args)]
 
+
 class CmdPositioner:
     """Methods for setting and getting positions"""
+
     def __init__(self, connection, packagePrefix):
         self.conn = connection
         self.pkg = packagePrefix
@@ -84,11 +87,13 @@ class CmdPositioner:
         """Set a player setting (setting, status). keys: autojump"""
         self.conn.send(self.pkg + b".setting", setting, 1 if bool(status) else 0)
 
+
 class CmdEntity(CmdPositioner):
     """Methods for entities"""
+
     def __init__(self, connection):
         CmdPositioner.__init__(self, connection, b"entity")
-    
+
     def getName(self, id):
         """Get the list name of the player with entity id => [name:str]
         
@@ -98,30 +103,41 @@ class CmdEntity(CmdPositioner):
 
 class CmdPlayer(CmdPositioner):
     """Methods for the host (Raspberry Pi) player"""
+
     def __init__(self, connection):
         CmdPositioner.__init__(self, connection, b"player")
         self.conn = connection
 
     def getPos(self):
         return CmdPositioner.getPos(self, [])
+
     def setPos(self, *args):
         return CmdPositioner.setPos(self, [], args)
+
     def getTilePos(self):
         return CmdPositioner.getTilePos(self, [])
+
     def setTilePos(self, *args):
         return CmdPositioner.setTilePos(self, [], args)
+
     def setDirection(self, *args):
         return CmdPositioner.setDirection(self, [], args)
+
     def getDirection(self):
         return CmdPositioner.getDirection(self, [])
+
     def setRotation(self, yaw):
         return CmdPositioner.setRotation(self, [], yaw)
+
     def getRotation(self):
         return CmdPositioner.getRotation(self, [])
+
     def setPitch(self, pitch):
         return CmdPositioner.setPitch(self, [], pitch)
+
     def getPitch(self):
         return CmdPositioner.getPitch(self, [])
+
 
 class CmdCamera:
     def __init__(self, connection):
@@ -146,6 +162,7 @@ class CmdCamera:
 
 class CmdEvents:
     """Events"""
+
     def __init__(self, connection):
         self.conn = connection
 
@@ -165,8 +182,10 @@ class CmdEvents:
         events = [e for e in s.split("|") if e]
         return [ChatEvent.Post(int(e[:e.find(",")]), e[e.find(",") + 1:]) for e in events]
 
+
 class Minecraft:
     """The main class to interact with a running instance of Minecraft Pi."""
+
     def __init__(self, connection):
         self.conn = connection
 
@@ -208,8 +227,8 @@ class Minecraft:
         for arg in flatten(args):
             flatargs.append(arg)
         for flatarg in flatargs[5:]:
-            lines.append(flatarg.replace(",",";").replace(")","]").replace("(","["))
-        self.conn.send(b"world.setSign",intFloor(flatargs[0:5]) + lines)
+            lines.append(flatarg.replace(",", ";").replace(")", "]").replace("(", "["))
+        self.conn.send(b"world.setSign", intFloor(flatargs[0:5]) + lines)
 
     def spawnEntity(self, *args):
         """Spawn entity (x,y,z,id,[data])"""
@@ -245,14 +264,17 @@ class Minecraft:
         self.conn.send(b"world.setting", setting, 1 if bool(status) else 0)
 
     def getEntityTypes(self):
-        """Return a list of Entity objects representing all the entity types in Minecraft"""  
+        """Return a list of Entity objects representing all the entity types in Minecraft"""
         s = self.conn.sendReceive(b"world.getEntityTypes")
         types = [t for t in s.split("|") if t]
         return [Entity(int(e[:e.find(",")]), e[e.find(",") + 1:]) for e in types]
 
+    # def execute(self, cmd):
+    #     """Execute vanilla command (msg)"""
+    #     self.conn.send(b"", cmd)
 
     @staticmethod
-    def create(address = "localhost", port = 4711):
+    def create(address="localhost", port=4711):
         return Minecraft(Connection(address, port))
 
 
