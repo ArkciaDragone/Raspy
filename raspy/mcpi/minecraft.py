@@ -216,6 +216,14 @@ class Minecraft:
         """Set a cuboid of blocks (x0,y0,z0,x1,y1,z1,id,[data])"""
         self.conn.send(b"world.setBlocks", intFloor(args))
 
+    def setNoteBlock(self, *args, data=''):
+        """Set note box (x,y,z,pitch,[data]), 0 <= pitch <= 24"""
+        self.conn.send(b"world.setNoteBlock", intFloor(args), data)
+
+    def setPitch(self, *args):
+        """(x,y,z,pitch) Set note to target pitch if the target location is a noteblock"""
+        self.conn.send(b"world.setNote", intFloor(args))
+
     def setSign(self, *args):
         """Set a sign (x,y,z,id,data,[line1,line2,line3,line4])
         
