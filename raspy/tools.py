@@ -1,9 +1,42 @@
+from typing import Type
+
 import mcpi.minecraft as mmc
 import mcpi.vec3 as vec3
 import mcpi.block as block
 import mcpi.entity as entity
+from mcpi.vec3 import Vec3
 
-V3 = vec3.Vec3
+V3: Type[Vec3] = vec3.Vec3
+
+
+def start(port=-1) -> mmc.Minecraft:
+    """Return Minecraft connection \"mc\""""
+    print('''######################################
+#                                    #
+#    Raspy Control Initialization    #
+#                                    #
+######################################
+''')
+    if port == -1:
+        while True:
+            try:
+                port = int(input("Please specify the natapp port if given; input 0 to connect to local host: "))
+            except ValueError:
+                print("That wasn't a valid integer.")
+            else:
+                break
+    if port:
+        mc = mmc.Minecraft.create("server.natappfree.cc", port)
+    else:
+        mc = mmc.Minecraft.create()
+    print('Minecraft connection "mc" established!')
+    return mc
+
+
+def getpid(mc: mmc.Minecraft) -> int:
+    """Return the first player's id"""
+    return mc.getPlayerEntityIds()[0]
+
 
 def makeCubeCenter(mc, center, length, blockid,
                    s=True, n=True, e=True, w=True, t=True, b=True):
@@ -29,7 +62,7 @@ def makeCubeAbove(mc, bottom, length, blockid,
 
 
 def makeCubeVertex(mc, vertex, length, blockid,
-                  s=True, n=True, e=True, w=True, t=True, b=True):
+                   s=True, n=True, e=True, w=True, t=True, b=True):
     """Generate a room with vertex at NW bottom. s, n, ..., b for corresponding walls"""
     makeCubeCenter(mc, vertex + V3(length // 2, length // 2, length // 2),
                    length, blockid, s, n, e, w, t, b)

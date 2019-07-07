@@ -3,6 +3,8 @@ class Vec3:
         self.x = x
         self.y = y
         self.z = z
+        self.up = self.t
+        self.down = self.b
 
     def __add__(self, rhs):
         c = self.clone()
