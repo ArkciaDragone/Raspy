@@ -5,6 +5,7 @@ from enum import Enum
 import tools
 
 V3 = vec3.Vec3
+REVERSED = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e', 'b': 't', 't': 'b'}
 
 
 class Gate(Enum):
@@ -13,10 +14,8 @@ class Gate(Enum):
     WOOD = 2  # Wooden door
 
 
-REVERSED = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e', 'b': 't', 't': 'b'}
-
-
 class Room:
+    """Represents a room in Minecraft world."""
 
     def __init__(self, bottom: V3, length: int, height: int,
                  blockid=block.STONE_BRICK.id, **adjacent_rooms: dict):
@@ -30,8 +29,11 @@ class Room:
         self.walls = {'s': True, 'n': True, 'e': True, 'w': True, 'b': True, 't': True}
 
     def __repr__(self):
+        """Here dx, dy, dz means regularized \"absolute\" position"""
         return "<Room dx={}, dy={}, dz={}>".format(
-            self.bottom.x // self.length, self.bottom.y // self.height, self.bottom.z // self.length)
+            self.bottom.x // self.length,
+            self.bottom.y // self.height,
+            self.bottom.z // self.length)
 
     def is_viable(self, rhs) -> bool:
         """Are the two rooms connected or not?"""

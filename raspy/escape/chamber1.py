@@ -1,3 +1,5 @@
+import sys
+sys.path.append("..")
 import mcpi.minecraft as mmc
 import tools, time
 import mcpi.block as block
@@ -86,7 +88,7 @@ if __name__ == '__main__':
     import escape.tnt
 
     print("Initializing TNT follow.")
-    p = Process(target=tntfollow, args=(0, 0))
+    p = Process(target=tntfollow, args=(0, 20))
     if direction == 'e':
         east(x, y, z)
         p.start()

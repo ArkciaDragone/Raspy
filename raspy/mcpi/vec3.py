@@ -120,6 +120,7 @@ class Vec3:
     def n(self, l: int = 1):
         return self.s(-l)
 
+
 def testVec3():
     # Note: It's not testing everything
 
