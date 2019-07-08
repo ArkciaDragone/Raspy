@@ -1,30 +1,32 @@
 # Universal initialization
+from typing import List
+
 import tools
-import mcpi.minecraft as mmc
 import mcpi.vec3 as vec3
 import mcpi.block as block
-import mcpi.entity as entity
 from mcpi.util import flatten
 import time
+from room import Room, Gate
+import random
 
 V3 = vec3.Vec3
 print("Loading simple maze...")
 mc = tools.start(0)
+mc.postToChat("The Maze is afoot...")
 
 # Game init
-from room import Room, Gate
-import random
-
 H, L = 7, 7  # const room Height & Length (should be odd)
-SIZE = 7  # Maze grid size
+SIZE = random.randint(5, 10)  # Maze grid size
+print("  Maze size:", SIZE)
 DIR = ['n', 's', 'e', 'w']
 vertex = V3(3000, 64, 3000)
 spawn = vertex + V3(L + L // 2, 0, L + L // 2)  # As bottom
 mc.setBlocks(vertex.cubeVertex((SIZE + 2) * L), block.AIR.id)  # Clean up the field
-tools.makeCubeVertex(mc, vertex, (SIZE + 2) * L, block.GLASS.id, b=False, t=False)
-rooms = []
+# tools.makeCubeVertex(mc, vertex, (SIZE + 2) * L, block.GLASS.id, b=False, t=False)
+rooms: List[List[Room]] = []
 
 # Room generation
+print("Generating maze...")
 for r in range(SIZE):
     rooms.insert(r, [])
     for c in range(SIZE):
@@ -35,14 +37,19 @@ for r in range(SIZE):
             rooms[r][c].link(rooms[r][c - 1], 'n', Gate.SEP)
 
 # Path search
-RMSPAWN, RMEXIT = rooms[0][0], rooms[SIZE - 1][SIZE - 1]
+print("Searching path...")
+RMSPAWN: Room = rooms[random.randint(0, SIZE - 1)][random.randint(0, SIZE - 1)]
+RMEXIT: Room = rooms[random.randint(0, SIZE - 1)][random.randint(0, SIZE - 1)]
+RMSPAWN.blockid = block.WOOD_PLANKS
+RMEXIT.blockid = block.BRICK_BLOCK
+RMEXIT.walls['b'] = False
 path = [None, RMSPAWN]
 go: Room = RMSPAWN
 random.seed()
 deadends = [None]
 pathdir = ''
 while go is not RMEXIT:
-    dirs = DIR[:]
+    dirs = DIR.copy()
     random.shuffle(dirs)
     for dir in dirs:
         to = go.adjacent.get(dir)
@@ -56,27 +63,38 @@ while go is not RMEXIT:
         deadends.append(path[-1])
         pathdir = pathdir[:-1]
         del path[-1]
-print(pathdir, len(path))
+print("  Standard Path:", pathdir)
+print("  Standard Path length:", len(path))
 
 # Room connection
+print("Connecting path...")
 for i in range(1, len(path) - 1):  # First element is "None"
-    print(path[i], path[i + 1])
     go, to = path[i], path[i + 1]
-    go.gates[to] = to.gates[go] = Gate.AIR
-    go.walls['t'] = False
+    go.gates[to] = to.gates[go] = Gate.randConn()
+    # go.walls['t'] = False
 
 # Obfuscations
-GATES = [1, 1, 2, 2, 2, 2, 3, 3, 4]
-pass  # TODO
+print("Obfuscating...")
+i = 0
+for row in rooms:
+    for room in row:
+        # room.walls['t'] = False
+        for to, _ in room.gates.items():
+            if random.random() < 0.2:
+                room.gates[to] = to.gates[room] = Gate.randConn()
+                i += 1
+print("  Opened {} extra door(s)".format(i))
 
 # Block construction
+print("Constructing blocks...")
 for r in flatten(rooms):
     r.construct(mc)
+    time.sleep(0.05)
 
 # Game begins!
-time.sleep(3)
+print("Maze ready. Teleporting players...")
 for p in mc.getPlayerEntityIds():
     mc.entity.setTilePos(p, RMSPAWN.bottom.up(2))
 mc.postToChat("Maze begins! Try to find the exit.")
 time.sleep(6)
-mc.postToChat("Well")
+mc.postToChat("Good luck!")
