@@ -1,5 +1,6 @@
-import sys,tools,random
+import sys,random
 sys.path.append("..")
+import tools
 def setblock(x,y,z,blockid):
     '''create a block with ladders,input position and id of the block in the middle'''
     mc.setBlock(x,y,z,blockid)
@@ -16,8 +17,8 @@ start=mc.entity.getTilePos(pId)
 x=start.x
 y=start.y
 z=start.z
-hlength=int(input('halflength='))'''输入关卡宽度的一半'''
-height=int(input('height='))'''输入关卡高度'''
+length=int(input('halflength='))#输入关卡宽度的一半
+height=int(input('height='))#输入关卡高度
 mc.setBlocks(x-length,y,z-length,x+length,0,z+length,0)
 for i in range(x-length,x+length,3):
     for j in range(y-3,y+height,3):
