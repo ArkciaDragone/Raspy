@@ -1,3 +1,5 @@
+import sys
+sys.path.append("..")
 from typing import Type
 
 import mcpi.minecraft as mmc
