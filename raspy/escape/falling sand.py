@@ -1,3 +1,5 @@
+import sys
+sys.path.append("..")
 import time
 import tools
 mc=tools.start(0)
