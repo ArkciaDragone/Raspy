@@ -1,7 +1,7 @@
 import sys,random
+sys.path.append("..")
 import tools, time
 mc=tools.start(0)
-sys.path.append("..")
 setbs=mc.setBlocks
 setb=mc.setBlock
 
