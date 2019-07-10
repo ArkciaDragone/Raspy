@@ -65,10 +65,7 @@ class Level(ABC):
         self.__construct()
         self.players = []  # Player id, read from here
         while True:
-            try:
-                if not conn.poll():
-                    sleep(0.2)  # No msg
-                    continue
+            while conn.poll():
                 rec: Tuple[Cmd, List] = conn.recv()  # New msg
                 if rec[0] == Cmd.TERM:
                     self.__cleanup()
@@ -82,9 +79,7 @@ class Level(ABC):
                         except ValueError:
                             sys.stderr.write("Player(id) {} not found in {}!".format(
                                 i, self.__repr__()
-                            ))
-            except EOFError:
-                return
+            self.__loop()
 
     @abstractmethod
     def __construct(self):
