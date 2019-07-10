@@ -2,7 +2,7 @@
    Theme: Angry Anvil!!!"""
 from interface import *
 from typing import Dict
-
+import random
 
 class AngryAnvil(Level):
     LENGTH=100
