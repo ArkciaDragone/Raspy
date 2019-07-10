@@ -34,7 +34,7 @@ loc = mc.entity.getPos(id);
 # new_loc = [loc.x, loc.y, loc.z+1]
 
 mc.setNoteBlock(loc.x, loc.y, loc.z+1, 1)      # G pitch
-mc.setBlock(loc.x+1, loc.y, loc.z+1, block.REDSTONE)
+mc.setBlock(loc.x+1, loc.y, loc.z+1, block.REDSTONE_WIRE)
 mc.setBlock(loc.x+2, loc.y, loc.z+1, block.LEVER, 6)
 
 mc.postToChat("Congratulations! A note block with G pitch has been placed beside " + str(name) + ", together with a redstone circuit. Toggle the lever to activate the note block!")
