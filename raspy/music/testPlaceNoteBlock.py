@@ -1,11 +1,3 @@
-"""
-
-Known errors:
-1. pollChatPosts() doesn't seems to work normally (polling one post at a time), it seems to be polling continuously and endlessly.
-2. No matter what block data I put in the function mc.setBlock(x,y,z,id,[data]), the execution always treats it as 0, which makes the lever down-sided.
-
-"""
-
 import sys
 sys.path.append("..")
 
@@ -16,20 +8,21 @@ from random import choice
 
 mc = tools.start(0)
 
-mc.postToChat("Please input (in the command line) the name of the player beside whom the note block system is placed:")
+mc.postToChat("Please input (in-game) the name of the player beside whom the note block system is placed:")
 # name = str(mc.events.pollChatPosts())
-name = input()
+# name = input()
 
 while True:
-    try:
-        id = mc.getPlayerEntityId(name)
-    except BaseException:
-        mc.postToChat("Wrong name, please input again:")
-        # name = mc.events.pollChatPosts()
-        name = input()
-        continue
-    else:
-        break
+    posts = mc.events.pollChatPosts()
+    if len(posts)>0:
+        try:
+            name = posts[0].message
+            id = mc.getPlayerEntityId(name)
+        except BaseException:
+            mc.postToChat("Wrong name, please input again:")
+            continue
+        else:
+            break
 
 loc = mc.entity.getPos(id);
 # new_loc = [loc.x, loc.y, loc.z+1]
