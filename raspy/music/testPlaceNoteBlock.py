@@ -2,7 +2,7 @@
 
 Known errors:
 1. pollChatPosts() doesn't seems to work normally (polling one post at a time), it seems to be polling continuously and endlessly.
-2. No matter what block data I put in the function mc.setBlock(x,y,z,id,[data]), the execution always treat it as 0.
+2. No matter what block data I put in the function mc.setBlock(x,y,z,id,[data]), the execution always treats it as 0, which makes the lever down-sided.
 
 """
 
