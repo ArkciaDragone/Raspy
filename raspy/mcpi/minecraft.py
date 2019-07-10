@@ -260,6 +260,7 @@ class Minecraft:
         self.conn.send(b"chat.post", msg)
 
     def execute(self, cmd: str):
+        """Execute vanilla command (cmd)"""
         self.conn.send(b"server.executeCommand", cmd)
 
     def setting(self, setting, status):
@@ -272,9 +273,29 @@ class Minecraft:
         types = [t for t in s.split("|") if t]
         return [Entity(int(e[:e.find(",")]), e[e.find(",") + 1:]) for e in types]
 
-    # def execute(self, cmd):
-    #     """Execute vanilla command (msg)"""
-    #     self.conn.send(b"", cmd)
+    # Pseudo-commands
+    def setGamemode(self, id: int, gamemode: str):
+        """gamemode can only be 'survival', 'creative', 'adventure' or 'spectator'"""
+        self.execute(' '.join(["gamemode", gamemode, self.entity.getName(id)]))
+
+    def clearDrop(self):
+        """Clear all dropped items"""
+        self.execute("kill @e[type=item]")
+
+    def tpAllPlayers(self, pos: Vec3):
+        """Spectators excluded"""
+        self.execute("tp @a {} {} {}".format(*pos))
+
+    def clearInventory(self, id: int):
+        self.execute("clear " + self.entity.getName(id))
+
+    def tell(self, id: int, message: str):
+        """Send message to a player"""
+        self.execute(' '.join(["tell", self.entity.getName(id), message]))
+
+    def setWeather(self, weather: str, time=0):
+        """weather can only be "clear", "rain" or "thunder\""""
+        self.execute(' '.join(["weather", weather, str(time) if time > 0 else '']))
 
     @staticmethod
     def create(address="localhost", port=4711):

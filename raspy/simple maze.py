@@ -1,6 +1,5 @@
 # Universal initialization
 from typing import List
-
 import tools
 import mcpi.vec3 as vec3
 import mcpi.block as block
@@ -15,13 +14,20 @@ mc = tools.start(0)
 mc.postToChat("The Maze is afoot...")
 
 # Game init
+# mc.tpAllPlayers(V3(0, mc.getHeight(0)))
+for p in mc.getPlayerEntityIds():
+    mc.setGamemode(p, "creative")
+time.sleep(0.5)
+print("Cleaning field...")
 H, L = 7, 7  # const room Height & Length (should be odd)
-SIZE = random.randint(5, 10)  # Maze grid size
+SIZE = 3 # Maze grid size
+# SIZE = random.randint(7, 18)  # Maze grid size
 print("  Maze size:", SIZE)
 DIR = ['n', 's', 'e', 'w']
 vertex = V3(3000, 64, 3000)
 spawn = vertex + V3(L + L // 2, 0, L + L // 2)  # As bottom
-mc.setBlocks(vertex.cubeVertex((SIZE + 2) * L), block.AIR.id)  # Clean up the field
+mc.setBlocks(vertex.down().flatVertex((SIZE + 2) * L + 1, H + 2), block.AIR.id)  # Clean up the field
+time.sleep(0.03 * SIZE * SIZE)  # Wait for the server to clean the space
 # tools.makeCubeVertex(mc, vertex, (SIZE + 2) * L, block.GLASS.id, b=False, t=False)
 rooms: List[List[Room]] = []
 
@@ -39,7 +45,10 @@ for r in range(SIZE):
 # Path search
 print("Searching path...")
 RMSPAWN: Room = rooms[random.randint(0, SIZE - 1)][random.randint(0, SIZE - 1)]
-RMEXIT: Room = rooms[random.randint(0, SIZE - 1)][random.randint(0, SIZE - 1)]
+# mc.execute("setworldspawn {} {} {}".format(*RMSPAWN.bottom.up(2)))
+RMEXIT: Room = RMSPAWN
+while RMEXIT is RMSPAWN:
+    RMEXIT = rooms[random.randint(0, SIZE - 1)][random.randint(0, SIZE - 1)]
 RMSPAWN.blockid = block.WOOD_PLANKS
 RMEXIT.blockid = block.BRICK_BLOCK
 RMEXIT.walls['b'] = False
@@ -78,7 +87,9 @@ print("Obfuscating...")
 i = 0
 for row in rooms:
     for room in row:
-        # room.walls['t'] = False
+        if room is RMEXIT or room is RMSPAWN:
+            continue
+        if random.random() < 0.1: room.walls['t'] = False
         for to, _ in room.gates.items():
             if random.random() < 0.2:
                 room.gates[to] = to.gates[room] = Gate.randConn()
@@ -89,12 +100,33 @@ print("  Opened {} extra door(s)".format(i))
 print("Constructing blocks...")
 for r in flatten(rooms):
     r.construct(mc)
-    time.sleep(0.05)
+    time.sleep(6e-4 * L * L * H)
+mc.clearDrop()
 
 # Game begins!
-print("Maze ready. Teleporting players...")
+print("Maze begins. Teleporting players...")
 for p in mc.getPlayerEntityIds():
-    mc.entity.setTilePos(p, RMSPAWN.bottom.up(2))
+    mc.clearInventory(p)
+    mc.entity.setTilePos(p, RMSPAWN.bottom.up().randFlatCenter(L - 4))
+    mc.setGamemode(p, "adventure")
+
 mc.postToChat("Maze begins! Try to find the exit.")
-time.sleep(6)
+time.sleep(10)
 mc.postToChat("Good luck!")
+escaped = []
+beginTime = time.time()
+timeCount = 0
+TIMING = 20
+while len(escaped) < len(mc.getPlayerEntityIds()):
+    if int(time.time() - beginTime) % TIMING == 0 \
+            and int(time.time() - beginTime) != timeCount * TIMING:
+        timeCount += 1
+        mc.postToChat("{} seconds past...".format(timeCount * TIMING))
+    for p in mc.getPlayerEntityIds():
+        if p not in escaped and RMEXIT.posIn(mc.entity.getPos(p)):
+            escaped.append(p)
+            mc.postToChat(mc.entity.getName(p) + " found the exit! Congratulations!")
+            mc.postToChat("rank: {}, time: {:.0f}s".format(len(escaped), time.time() - beginTime))
+            mc.setGamemode(p, "creative")
+mc.postToChat("Maze concluded. Again?")
+print("Maze concluded. Again?")
