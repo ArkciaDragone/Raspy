@@ -12,6 +12,7 @@ sys.path.append("..")
 import mcpi.minecraft as mmc
 import mcpi.block as block
 import tools
+from random import choice
 
 mc = tools.start(0)
 
@@ -35,6 +36,9 @@ loc = mc.entity.getPos(id);
 
 mc.setNoteBlock(loc.x, loc.y, loc.z+1, 1)      # G pitch
 mc.setBlock(loc.x+1, loc.y, loc.z+1, block.REDSTONE_WIRE)
-mc.setBlock(loc.x+2, loc.y, loc.z+1, block.LEVER, 6)
 
-mc.postToChat("Congratulations! A note block with G pitch has been placed beside " + str(name) + ", together with a redstone circuit. Toggle the lever to activate the note block!")
+buttonNameList = [block.STONE_BUTTON, block.WOODEN_BUTTON] # 1.12.2 doesn't have buttons of other tree variants
+randomButton = choice(buttonNameList)
+mc.setBlock(loc.x+2, loc.y, loc.z+1, randomButton, 5)
+
+mc.postToChat("Congratulations! A note block with G pitch has been placed beside " + str(name) + ", together with a redstone circuit. Toggle the button to activate the note block!")
