@@ -1,5 +1,5 @@
-import tools,time
-#输入TNT数量，0表示无限
+import tools, time
+# 输入TNT数量，0表示无限
 def tntfollow(number):
     mc=tools.start(0)
     spawn=mc.spawnEntity

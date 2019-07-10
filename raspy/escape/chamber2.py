@@ -1,4 +1,4 @@
-import sys,random
+import sys, random
 sys.path.append("..")
 import tools
 def setblock(x,y,z):
@@ -25,4 +25,3 @@ for i in range(x-length,x+length,3):
         for k in range(z-length,z+length,3):
             m=random.randint(0,3)
             setblock(i+m,j+m,k+m)
-

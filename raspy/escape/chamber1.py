@@ -12,6 +12,7 @@ if __name__ == '__main__':
     mc = tools.start(0)
     import random, math
 
+
     setb = mc.setBlock
     setbs = mc.setBlocks
     halfwidth=5
