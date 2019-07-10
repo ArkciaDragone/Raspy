@@ -24,7 +24,6 @@ import mcpi.vec3 as vec3
 
 V3 = vec3.Vec3
 
-
 def getpid():
     global mc
     return mc.getPlayerEntityIds()[0]
