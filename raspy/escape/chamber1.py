@@ -12,6 +12,7 @@ if __name__ == '__main__':
     mc = tools.start(0)
     import random, math
 
+
     setb = mc.setBlock
     setbs = mc.setBlocks
     wall = block.DIAMOND_BLOCK
@@ -22,7 +23,7 @@ if __name__ == '__main__':
         setbs(x, y - 2, z - 5, x + 20, y - 1, z + 5, wall)  # floor
         setbs(x, y - 1, z - 5, x + 20, y + 5, z - 5, wall)  # leftwall
         setbs(x, y - 1, z + 5, x + 20, y + 5, z + 5, wall)  # rightwall
-        # setbs(x,y+5,z-5,x+20,y+5,z+5,wall) #ceiling
+        # setbs(x,y+5,z-5,x+20,y+5,z+5,wall) # ceiling
         setbs(x, y + 2, z - 5, x + 20, y + 2, z - 5, deco)  # leftBeacon
         setbs(x, y + 2, z + 5, x + 20, y + 2, z + 5, deco)  # rightBeacon
         setbs(x + 3, y - 1, z - 4, x + 17, y - 1, z + 4, 10)  # lava

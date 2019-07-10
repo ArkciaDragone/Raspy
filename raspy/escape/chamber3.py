@@ -1,4 +1,4 @@
-import sys,random
+import sys, random
 sys.path.append("..")
 import tools, time
 mc=tools.start(0)
@@ -50,22 +50,20 @@ def flash(x,y,z,direction,lenth,halfwide,num):
     i=0
     while i<FLASH_TIMES:
         for m in range(0,num):
-            setb(pos[m][0],pos[m][1]-1,pos[m][2],159,4)#yellow clay
+            setb(pos[m][0],pos[m][1]-1,pos[m][2],159,4) # yellow clay
         time.sleep(FLASH_PERIOD)
         for m in range(0,num):
-            setb(pos[m][0],pos[m][1]-1,pos[m][2],159,14)#red clay
+            setb(pos[m][0],pos[m][1]-1,pos[m][2],159,14) # red clay
         time.sleep(FLASH_PERIOD)
         for m in range(0,num):
-            if i==1:setb(pos[m][0],pos[m][1]+7,pos[m][2],145)#anvil
+            if i==1:setb(pos[m][0],pos[m][1]+4,pos[m][2],145) # anvil
         i+=1
     
 pId=mc.getPlayerEntityIds()[0]
 dire=input('direction:')
-wide=1
-length=100
+wide=int(input('halfwide:'))
+length=int(input('length:'))
 start=mc.entity.getTilePos(pId)
 num=length//4
 while True:
     flash(start.x,start.y,start.z,dire,length,wide,num)
-    
-
