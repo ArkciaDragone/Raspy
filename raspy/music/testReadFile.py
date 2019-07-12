@@ -15,7 +15,7 @@ while True:
         path = pathWithHyphen.lstrip("-")
 
         try:
-            mid = open(path, 'r')
+            mid = open(path, 'rb')
             # some analysis of the file (under development)
         except IOError:
             mc.postToChat("Wrong path, please input again:")
