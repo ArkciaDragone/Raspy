@@ -28,5 +28,3 @@ for msg in track:
 ##              tick2second(msg.time, mid.ticks_per_beat, tempo))
 ##    else:
 ##        print("Type:", msg.type, "Note:", msg.note - 60, "\tTime:", msg.time)
-
-        
