@@ -8,14 +8,14 @@ from random import choice
 
 mc = tools.start(0)
 
-def PlaceNoteBlock():
+def testPlaceNoteBlock():
     mc.postToChat("Please input (in-game) the name of the player beside whom the note block system is placed:")
     # name = str(mc.events.pollChatPosts())
     # name = input()
     
     while True:
         posts = mc.events.pollChatPosts()
-        if len(posts)>0:
+        if len(posts) > 0:
             try:
                 name = posts[0].message
                 id = mc.getPlayerEntityId(name)
