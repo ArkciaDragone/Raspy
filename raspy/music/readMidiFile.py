@@ -1,8 +1,12 @@
 # --------------------
+# readMidiFile.py
+# Process the requested midi file
+# 
 # Important Note:
-# Packages "mido" and "python-rtmidi" should be pre-installed to run this application.
+# Packages "mido" and "pprint" should be pre-installed to run this application.
 # Use "pip install <package-name>" in cmd to install.
 # --------------------
+
 from mido import MidiFile, Message, MetaMessage
 from mido.midifiles.midifiles import DEFAULT_TEMPO
 from mido.midifiles.tracks import merge_tracks, _to_abstime
@@ -27,6 +31,7 @@ Message:
  - msg.time: Inside a track, it is delta time in ticks. (int)
              In messages yielded from play(), it is delta time in seconds
              (time elapsed since the last yielded message)
+
 File f:
  - The default tempo: 500000 ms/beat = BPM 120.
    The meta message ‘set_tempo’ can be used to change tempo
@@ -38,13 +43,19 @@ File f:
  - for i, track in enumerate(f.tracks)
 """
 
+# --------------------
+# second2duration
+# --------------------
 
 def second2duration(second: float, tempo: int):
     """Convert from real time (in seconds) to note duration (e.g. 1 / 8)"""
     return second * 1000 / tempo
 
+# --------------------
+# readAndProcessMidi
+# --------------------
 
-def readAndProcessMidi(path: str, resolution=1 / 16):
+def readAndProcessMidi(path: str, resolution = 1 / 16):
     """Path is supposed to lead to a valid midi file"""
     f = MidiFile(path)
     assert f.type != 2, "asynchronous midi files are not supported yet"
@@ -78,6 +89,9 @@ def readAndProcessMidi(path: str, resolution=1 / 16):
     if dt % resolution == 0:
         yield int(dt / resolution), output
 
+# --------------------
+# _test
+# --------------------
 
 def _test(path):
     f = MidiFile(path)
@@ -99,6 +113,9 @@ def _test(path):
     pprint.pprint(freqs)
     print("Min dt:", min_dt)
 
+# --------------------
+# tempo_consistency_test
+# --------------------
 
 def tempo_consistency_test(path):
     dt = 0
@@ -113,6 +130,9 @@ def tempo_consistency_test(path):
                 dt = 0
     pprint.pprint(tempo_dict)
 
+# --------------------
+# print_time
+# --------------------
 
 def print_time(path):
     f = MidiFile(path)
@@ -126,6 +146,9 @@ def print_time(path):
                 print(f"{duration} beat = {float(duration)}")
             dt = 0
 
+# --------------------
+# print_tick
+# --------------------
 
 def print_tick(path):
     f = MidiFile(path)
@@ -139,6 +162,9 @@ def print_tick(path):
                 print(f"{duration} beat = {float(duration)}")
             dtick = 0
 
+# --------------------
+# save_processed_file
+# --------------------
 
 def save_processed_file(path: str, out: str = None, resolution=1 / 16):
     if out is None: out = path
@@ -167,14 +193,17 @@ def save_processed_file(path: str, out: str = None, resolution=1 / 16):
     f.save(out)
     print(i)
 
+# --------------------
+# main
+# --------------------
 
-if __name__ == '__main__':
-    files = [r'C:\Users\lenovo\Desktop\BWV 934 - cut.mid',
-             r'E:\Downloads\最终鬼畜妹フランドール.S（慢拍） -Ab调.mid',
-             r'E:\Downloads\最终鬼畜妹变态版.mid']
-    # for f in files:
-    #     print(f"\n*** {f} ***\n")
-    #     pprint.pprint([i for i in readAndProcessMidi(f)])
-    for i in range(len(files)):
-        save_processed_file(files[i], f'D:/out{i}.mid', 1 / 4)
-        # pprint.pprint([i for i in readAndProcessMidi(files[i])])
+# if __name__ == '__main__':
+#     files = [r'C:\Users\lenovo\Desktop\BWV 934 - cut.mid',
+#              r'E:\Downloads\最终鬼畜妹フランドール.S（慢拍） -Ab调.mid',
+#              r'E:\Downloads\最终鬼畜妹变态版.mid']
+#     # for f in files:
+#     #     print(f"\n*** {f} ***\n")
+#     #     pprint.pprint([i for i in readAndProcessMidi(f)])
+#     for i in range(len(files)):
+#         save_processed_file(files[i], f'D:/out{i}.mid', 1 / 4)
+#         # pprint.pprint([i for i in readAndProcessMidi(files[i])])

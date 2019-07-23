@@ -1,15 +1,14 @@
 # --------------------
-# startMidi.py
-# Process midi file and realize in Minecraft
+# (main) startMidi.py
+# Double-click this to launch the program!
 # --------------------
 
 import sys
-
 sys.path.append("..")
 
 import mcpi.minecraft as mmc
 import tools
-from . import readMidiFile as rmf
+from . import construct as cs
 
 mc = tools.start(0)
 
@@ -45,34 +44,37 @@ def retry():
 # main
 # --------------------
 
-while True:
+if __name__ == "__main__":
 
-    posts = mc.events.pollChatPosts()
+    while True:
+        
+        posts = mc.events.pollChatPosts()
 
-    if len(posts) > 0:
-        pathWithHyphen = posts[0].message
-        path = pathWithHyphen.lstrip("-")
+        if len(posts) > 0:
+            pathWithHyphen = posts[0].message
+            path = pathWithHyphen.lstrip("-")
 
-        try:
-            rmf.readandProcessMidi(path)
+            try:
+                cs.constructRedstoneSystem(path)
             
-        except FileNotFoundError:
-            mc.postToChat("Cannot find a file at your path, maybe used a false grammar?")
-            mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
-            retry()
-            continue
+            except FileNotFoundError:
+                mc.postToChat("Cannot find a file at your path, maybe used a false grammar?")
+                mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
+                retry()
+                continue
 
-        except IndexError:
-            mc.postToChat("The file you requested isn't Midi file.")
-            mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
-            retry()
-            continue
+            except IndexError:
+                mc.postToChat("The file you requested isn't Midi file.")
+                mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
+                retry()
+                continue
 
-        else:
-            mc.postToChat("Midi file successfully processed!")
-            break
+            else:
+                mc.postToChat("Midi file successfully processed and attached in-game!")
+                mc.postToChat("If you wish to process another, reload the program.")
+                break
 
-mc.events.clearAll()
+    mc.events.clearAll()
 
 # import music.defPlaceNoteBlock as dpnb
 # dpnb.testPlaceNoteBlock()
