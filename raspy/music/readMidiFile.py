@@ -71,7 +71,6 @@ def readAndProcessMidi(path: str, resolution=1 / 16):
             else:  # New tick
                 output.append(msg.note)
                 tick = msg.time
-            dt = 0.0
         elif msg.type == 'set_tempo':
             tempo = msg.tempo
     # Last note
@@ -141,16 +140,41 @@ def print_tick(path):
             dtick = 0
 
 
-# def save_processed_file(path: str, out: str = None, resolution=1 / 16):
-#     if out is None: out = path
-#     f = MidiFile(ticks_per_beat=1)
-#     # tempo = 100000
+def save_processed_file(path: str, out: str = None, resolution=1 / 16):
+    if out is None: out = path
+    f = MidiFile(ticks_per_beat=1)
+    ap = f.add_track('Main').append
+    ap(MetaMessage("set_tempo", tempo=100000))
+
+    def on(note: int, time: int):
+        ap(Message(type='note_on', note=note, time=time))
+
+    def off(note: int, time: int):
+        ap(Message(type='note_off', note=note, time=time))
+
+    def note(time: int, *notes):
+        if notes:
+            for n in notes:
+                on(n, 0)
+            off(notes[0], time)
+            for n in notes[1:]:
+                off(n, 0)
+
+    i = 0
+    for fwd, notes in readAndProcessMidi(path, resolution):
+        note(fwd, *notes)
+        i += 1
+    f.save(out)
+    print(i)
 
 
 if __name__ == '__main__':
     files = [r'C:\Users\lenovo\Desktop\BWV 934 - cut.mid',
              r'E:\Downloads\最终鬼畜妹フランドール.S（慢拍） -Ab调.mid',
              r'E:\Downloads\最终鬼畜妹变态版.mid']
-    for f in files:
-        print(f"\n*** {f} ***\n")
-        pprint.pprint([i for i in readAndProcessMidi(f)])
+    # for f in files:
+    #     print(f"\n*** {f} ***\n")
+    #     pprint.pprint([i for i in readAndProcessMidi(f)])
+    for i in range(len(files)):
+        save_processed_file(files[i], f'D:/out{i}.mid', 1 / 4)
+        # pprint.pprint([i for i in readAndProcessMidi(files[i])])
