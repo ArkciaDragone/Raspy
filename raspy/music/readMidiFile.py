@@ -11,3 +11,5 @@ from mido import MidiFile
 
 def readandProcessMidi(path):
     # the place where read-and-process function is inserted
+    f = open(path)
+    return

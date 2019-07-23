@@ -14,7 +14,33 @@ mc = tools.start(0)
 
 mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
 
-# Following codes haven't been tested in-game
+# --------------------
+# retry
+# --------------------
+
+def retry():
+    mc.events.clearAll()
+
+    while True:
+        
+        userChoicePost = mc.events.pollChatPosts()
+        
+        if len(userChoicePost) > 0:
+            userChoice = userChoicePost[0].message
+            
+            if int(userChoice) == 1:
+                mc.postToChat("Process restarted.")
+                mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
+                mc.events.clearAll()
+                break
+            
+            else:
+                mc.postToChat("Process aborted.")
+                sys.exit(0)
+
+# --------------------
+# main
+# --------------------
 
 while True:
 
@@ -25,26 +51,18 @@ while True:
         path = pathWithHyphen.lstrip("-")
 
         try:
-            rmf.readandProcessMidi(path) # need to be revised
-
-        except BaseException:
-            mc.postToChat("Wrong path, or the file you requested cannot be processed.")
+            rmf.readandProcessMidi(path)
+            
+        except FileNotFoundError:
+            mc.postToChat("Cannot find a file at your path, maybe used a false grammar?")
             mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
+            retry()
+            continue
 
-            mc.events.clearAll()
-
-            while True:
-                userChoicePost = mc.events.pollChatPosts()
-                if len(userChoicePost) > 0:
-                    userChoice = posts[0].message
-                    if int(userChoice) == 1:
-                        mc.postToChat("Process restarted.")
-                        mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
-                        mc.events.clearAll()
-                        break
-                    else:
-                        sys.exit(o)
-
+        except IndexError:
+            mc.postToChat("The file you requested isn't Midi file.")
+            mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
+            retry()
             continue
 
         else:
