@@ -4,15 +4,18 @@
 # --------------------
 
 import sys
+
 sys.path.append("..")
 
 import mcpi.minecraft as mmc
 import tools
-import music.readMidiFile as rmf
+from . import readMidiFile as rmf
 
 mc = tools.start(0)
 
-mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
+mc.postToChat("Please input (in-game) the path of the midi file you want to realize, \
+beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>\
+/Documents/test.mid)")
 
 # --------------------
 # retry
