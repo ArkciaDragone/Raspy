@@ -7,6 +7,7 @@ import sys
 sys.path.append("..")
 
 import mcpi.block as block
+import mcpi.connection
 import setSystem as ss
 
 # --------------------
@@ -88,7 +89,7 @@ def constructRedstoneSystem(configurationList, gameName):
             try:
                 name = posts[0].message
                 id = gameName.getPlayerEntityId(name)
-            except BaseException:      # need revise
+            except mcpi.connection.RequestError:
                 gameName.postToChat("Wrong name, please input again:")
                 continue
             else:

@@ -1,6 +1,6 @@
 # --------------------
 # (main) startMidi.py
-# v0.1.0 - 2019/7/24
+# v0.1.1 - 2019/7/24
 # Double-click this to launch the program!
 # --------------------
 
@@ -65,11 +65,11 @@ if __name__ == "__main__":
                 retry()
                 continue
 
-            #except IndexError:
-                #mc.postToChat("The file you requested isn't Midi file.")
-                #mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
-                #retry()
-                #continue
+            except IndexError:
+                mc.postToChat("The file you requested isn't Midi file, or your Midi file cannot be processed at the moment. Sorry!")
+                mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
+                retry()
+                continue
 
             else:
                 break
