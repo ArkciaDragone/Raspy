@@ -1,5 +1,6 @@
 # --------------------
 # (main) startMidi.py
+# v0.1.0 - 2019/7/24
 # Double-click this to launch the program!
 # --------------------
 
@@ -8,7 +9,8 @@ sys.path.append("..")
 
 import mcpi.minecraft as mmc
 import tools
-from . import construct as cs
+import setSystem as ss
+import constructSystem as cs
 
 mc = tools.start(0)
 
@@ -55,7 +57,7 @@ if __name__ == "__main__":
             path = pathWithHyphen.lstrip("-")
 
             try:
-                cs.constructRedstoneSystem(path)
+                configurationList = ss.setRedstoneSystem(path, mc)
             
             except FileNotFoundError:
                 mc.postToChat("Cannot find a file at your path, maybe used a false grammar?")
@@ -63,18 +65,15 @@ if __name__ == "__main__":
                 retry()
                 continue
 
-            except IndexError:
-                mc.postToChat("The file you requested isn't Midi file.")
-                mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
-                retry()
-                continue
+            #except IndexError:
+                #mc.postToChat("The file you requested isn't Midi file.")
+                #mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
+                #retry()
+                #continue
 
             else:
-                mc.postToChat("Midi file successfully processed and attached in-game!")
-                mc.postToChat("If you wish to process another, reload the program.")
                 break
 
     mc.events.clearAll()
 
-# import music.defPlaceNoteBlock as dpnb
-# dpnb.testPlaceNoteBlock()
+    cs.constructRedstoneSystem(configurationList, mc)

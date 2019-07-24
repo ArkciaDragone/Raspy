@@ -16,7 +16,7 @@ from operator import attrgetter
 
 """
 Mido Memo
-note 60 = middle C
+note 60 = C4 (note 66 = F#4)
 
 Message:
  - Important message types:
@@ -63,7 +63,7 @@ def readAndProcessMidi(path: str, resolution = 1 / 16):
     for track in f.tracks:
         messages.extend(_to_abstime(track))
     assert messages, "failed to find messages. Erroneous file?"
-    messages.sort(key=attrgetter('time'))
+    messages.sort(key = attrgetter('time'))
     tempo = DEFAULT_TEMPO
     tick, last = messages[0].time, 0
     output = []

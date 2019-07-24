@@ -3,7 +3,7 @@ sys.path.append("..")
 
 import mcpi.minecraft as mmc
 import tools
-from . import readMidiFile as rmf
+import readMidiFile as rmf
 
 mc = tools.start(0)
 
