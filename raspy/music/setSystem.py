@@ -10,7 +10,7 @@
 import sys
 sys.path.append("..")
 
-from math import floor
+from math import floor, ceil
 from statistics import mean
 import readMidiFile as rmf
 
@@ -54,7 +54,6 @@ def averagePitch(voiceMax, hitList):
         averagePitchList[l] /= noteNumList[l]
 
     return averagePitchList
-        
 
 # --------------------
 # preProcess
@@ -64,14 +63,13 @@ def preProcess(hitList):
     hitNum = len(hitList)
     voiceMax = max([len(hit[1]) for hit in hitList])
     minDelay = gcd([hit[0] for hit in hitList])
-    if minDelay > 8:
-        minDelay = 8      # simplify the case
+    repeaterNum = ceil(minDelay / 4)
     averagePitchList = averagePitch(voiceMax, hitList)
     minus12NumList = [floor((averagePitch - 66) / 12) for averagePitch in averagePitchList]      # 66 is the medium pitch (F#4) for harp sound
     for i in range(0, len(minus12NumList)):
         if minus12NumList[i] < 0:
             minus12NumList[i] += 1
-    return [hitNum, voiceMax, minDelay, averagePitchList, minus12NumList]
+    return [hitNum, voiceMax, minDelay, repeaterNum, averagePitchList, minus12NumList]
 
 # --------------------
 # columnRelativePlacing
@@ -131,7 +129,7 @@ def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
     """Output to-be-used vital figures and lists"""
     columnRelativePlacingList = columnRelativePlacing(preProcessResult[1])      # using voiceMax
     """Set the relative Z coordinate for each column"""
-    processedList = processNoteAndDelay(preProcessResult[4], hitList)      # using minus12NumList
+    processedList = processNoteAndDelay(preProcessResult[5], hitList)      # using minus12NumList
     """Let the notes fit in note block's playing range, and sum-up the total previous delay for each hit"""
 
     print(preProcessResult)
@@ -139,4 +137,7 @@ def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
     print(columnRelativePlacingList)
     print("\n")
     print(processedList)
+
+    gameName.postToChat("Configuration completed!")
+    
     return [preProcessResult, columnRelativePlacingList, processedList]

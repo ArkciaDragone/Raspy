@@ -1,4 +1,4 @@
-# Music Lab - alpha v0.1.1
+# Music Lab - alpha v0.1.2
 
 欢迎测试Alpha版Music Lab！
 
