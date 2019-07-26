@@ -13,11 +13,7 @@ from multiprocessing import Process, Pipe
 from escape.angryanvil import AngryAnvil
 from escape.funnyglass import FunnyGlass
 from escape.terrifylava import TerrifyLava
-<<<<<<< HEAD
 from escape.calmladder import CalmLadder
-=======
-from escape.funnyglass import FunnyGlass
->>>>>>> 3af2d1d8901c610d6a30ab596554c8a55250eed8
 from escape.interface import *
 from mcpi import minecraft as mmc
 from mcpi import block as block
