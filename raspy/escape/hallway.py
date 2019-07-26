@@ -7,4 +7,15 @@ from ..mcpi import block
 
 
 class Hallway(Level):
-    pass
+    @staticmethod
+    def exitWin(entrance: Window):
+        pass
+
+    def _construct(self):
+        pass
+
+    def _loop(self):
+        pass
+
+    def _cleanup(self):
+        pass

@@ -98,7 +98,7 @@ class Level(ABC):
                         try:
                             self.players.remove(i)
                         except ValueError:
-                            sys.stderr.write(f"Player(id) {i} not found in {self.__name__}!")
+                            sys.stderr.write(f"Player(id) {i} not found in {self}!")
             self._loop()
 
     @abstractmethod
