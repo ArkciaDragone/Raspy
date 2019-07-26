@@ -4,6 +4,8 @@ The Chase - Escape Control Program
 Works with interface Level. Connects to Minecraft server and perform
 game initilization. Maintains level and player status.
 """
+import sys
+sys.path.append("..")
 from typing import Dict, Type, Any, List
 from random import choice, randint
 from multiprocessing import Process, Pipe
@@ -11,9 +13,9 @@ from escape.angryanvil import AngryAnvil
 from escape.calmladder import CalmLadder
 from escape.terrifylava import TerrifyLava
 from escape.interface import *
-from raspy.mcpi import minecraft as mmc
-from raspy.mcpi import block as block
-from raspy import tools
+from mcpi import minecraft as mmc
+from mcpi import block as block
+import tools
 
 
 class Chase:
@@ -22,7 +24,7 @@ class Chase:
     windows: List[Window]
     positions: Dict[int, int]
     SPAWN_LEN = 9
-    SPAWN_HEI = 5
+    SPAWN_HEI = 9
     SPAWN_BLK = block.QUARTZ_BLOCK.id
     # LEVEL_LIST: List[Type[Level]] = [AngryAnvil]
     LEVEL_LIST: List[Type[Level]] = [AngryAnvil, CalmLadder, TerrifyLava]

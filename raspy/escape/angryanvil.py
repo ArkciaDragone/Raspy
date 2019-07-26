@@ -28,29 +28,37 @@ class AngryAnvil(Level):
             entrance.middle.x += LENGTH
         elif dir == Dir.W:
             entrance.middle.x -= LENGTH
-        entrance.width = 3
         entrance.height = 10
         return entrance
 
     def _construct(self):
         setbs = self.mc.setBlocks
         x, y, z = self.entWin.middle
+        width = self.entWin.width
         if self.entWin.direction == Dir.N:
             setbs(x - 1, y - 1, z, x + 1, y - 1, z - LENGTH, SHC, 4)
             setbs(x - 2, y - 1, z, x - 2, y + 10, z - LENGTH, SND, 1)
             setbs(x + 2, y - 1, z, x + 2, y + 10, z - LENGTH, SND, 1)
+            setbs(x - width//2, y - 1, z, x - 2, y + 10, z, SND, 1)
+            setbs(x + width//2, y - 1, z, x + 2, y + 10, z, SND, 1)
         elif self.entWin.direction == Dir.S:
             setbs(x - 1, y - 1, z, x + 1, y - 1, z + LENGTH, SHC, 4)
             setbs(x - 2, y - 1, z, x - 2, y + 10, z + LENGTH, SND, 1)
             setbs(x + 2, y - 1, z, x + 2, y + 10, z + LENGTH, SND, 1)
+            setbs(x - width//2, y - 1, z, x - 2, y + 10, z, SND, 1)
+            setbs(x + width//2, y - 1, z, x + 2, y + 10, z, SND, 1)
         elif self.entWin.direction == Dir.E:
             setbs(x, y - 1, z - 1, x + LENGTH, y - 1, z + 1, SHC, 4)
             setbs(x, y - 1, z - 2, x + LENGTH, y + 10, z - 2, SND, 1)
             setbs(x, y - 1, z + 2, x + LENGTH, y + 10, z + 2, SND, 1)
+            setbs(x, y - 1, z - width//2, x, y + 10, z - 2, SND, 1)
+            setbs(x, y - 1, z + width//2, x, y + 10, z + 2, SND, 1)
         elif self.entWin.direction == Dir.W:
             setbs(x, y - 1, z - 1, x - LENGTH, y - 1, z + 1, SHC, 4)
             setbs(x, y - 1, z - 2, x - LENGTH, y + 10, z - 2, SND, 1)
             setbs(x, y - 1, z + 2, x - LENGTH, y + 10, z + 2, SND, 1)
+            setbs(x, y - 1, z - width//2, x, y + 10, z - 2, SND, 1)
+            setbs(x, y - 1, z + width//2, x, y + 10, z + 2, SND, 1)
 
     def area(self) -> List[Tuple[int, int, int]]:
         """选定并返回闪烁地点"""

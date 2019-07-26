@@ -10,32 +10,32 @@ def area(x,y,z,direction,lenth,halfwide,num):
     pos={}
     if direction=='s':
         setbs(x-halfwide,y-1,z,x+halfwide,y-1,z+lenth,159,4)
-        setbs(x-halfwide-1,y-1,z,x-halfwide-1,y+10,z+lenth,24,1)
-        setbs(x+halfwide+1,y-1,z,x+halfwide+1,y+10,z+lenth,24,1)
+        setbs(x-halfwide-1,y-1,z,x-halfwide-1,y+10,z+lenth,235)
+        setbs(x+halfwide+1,y-1,z,x+halfwide+1,y+10,z+lenth,235)
         for m in range(0,num):
             i=random.randint(x-halfwide,x+halfwide)
             j=random.randint(z,z+lenth)
             pos[m]=[i,y,j]
     elif direction=='n':
         setbs(x-halfwide,y-1,z,x+halfwide,y-1,z-lenth,159,4)
-        setbs(x-halfwide-1,y-1,z,x-halfwide-1,y+10,z-lenth,24,1)
-        setbs(x+halfwide+1,y-1,z,x+halfwide+1,y+10,z-lenth,24,1)
+        setbs(x-halfwide-1,y-1,z,x-halfwide-1,y+10,z-lenth,235)
+        setbs(x+halfwide+1,y-1,z,x+halfwide+1,y+10,z-lenth,235)
         for m in range(0,num):
             i=random.randint(x-halfwide,x+halfwide)
             j=random.randint(z-lenth,z)
             pos[m]=[i,y,j]
     elif direction=='w':
         setbs(x,y-1,z-halfwide,x-lenth,y-1,z+halfwide,159,4)
-        setbs(x,y-1,z-halfwide-1,x-lenth,y+10,z-halfwide-1,24,1)
-        setbs(x,y-1,z+halfwide+1,x-lenth,y+10,z+halfwide+1,24,1)
+        setbs(x,y-1,z-halfwide-1,x-lenth,y+10,z-halfwide-1,235)
+        setbs(x,y-1,z+halfwide+1,x-lenth,y+10,z+halfwide+1,235)
         for m in range(0,num):
             i=random.randint(z-halfwide,z+halfwide)
             j=random.randint(x-lenth,x)
             pos[m]=[j,y,i]
     elif direction=='e':
         setbs(x,y-1,z-halfwide,x+lenth,y-1,z+halfwide,159,4)
-        setbs(x,y-1,z-halfwide-1,x+lenth,y+10,z-halfwide-1,24,1)
-        setbs(x,y-1,z+halfwide+1,x+lenth,y+10,z+halfwide+1,24,1)
+        setbs(x,y-1,z-halfwide-1,x+lenth,y+10,z-halfwide-1,235)
+        setbs(x,y-1,z+halfwide+1,x+lenth,y+10,z+halfwide+1,235)
         for m in range(0,num):
             i=random.randint(z-halfwide,z+halfwide)
             j=random.randint(x,x+lenth)
