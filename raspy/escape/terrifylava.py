@@ -6,11 +6,10 @@ from .interface import *
 from time import sleep
 import random
 
-LENGTH = 20
-HEIGHT = 7
-
 
 class TerrifyLava(Level):
+    LENGTH = 20
+    HEIGHT = 7
 
     @staticmethod
     def exitWin(entrance: Window):

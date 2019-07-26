@@ -1,23 +1,23 @@
-"""Author: HarryTerpee
-   Theme: Angry Anvil!!!"""
+"""
+Author: HarryTerpee
+Theme: Angry Anvil
+"""
 from escape.interface import *
 from mcpi import block
 from typing import Dict
 import random
 from time import sleep
 
-LENGTH = 20
-NUMBER = LENGTH // 4
-FLASH_PERIOD = 0.5
-FLASH_TIMES = 3
-ANV = block.ANVIL.id
-SHC = block.STAINED_HARDENED_CLAY.id
-SND = block.SANDSTONE.id
-
 
 class AngryAnvil(Level):
-
-    @staticmethod
+    LENGTH = 20
+    NUMBER = LENGTH // 4
+    FLASH_PERIOD = 0.5
+    FLASH_TIMES = 3
+    ANV = block.ANVIL.id
+    SHC = block.STAINED_HARDENED_CLAY.id
+    SND = block.SANDSTONE.id
+    
     def exitWin(entrance: Window):
         dir = entrance.direction
         if dir == Dir.N:

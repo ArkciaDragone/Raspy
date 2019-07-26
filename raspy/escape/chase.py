@@ -10,8 +10,9 @@ from typing import Dict, Type, Any, List
 from random import choice, randint
 from multiprocessing import Process, Pipe
 from escape.angryanvil import AngryAnvil
-from escape.calmladder import CalmLadder
+from escape.funnyglass import FunnyGlass
 from escape.terrifylava import TerrifyLava
+from escape.calmladder import CalmLadder
 from escape.interface import *
 from mcpi import minecraft as mmc
 from mcpi import block as block
@@ -27,7 +28,7 @@ class Chase:
     SPAWN_HEI = 9
     SPAWN_BLK = block.QUARTZ_BLOCK.id
     # LEVEL_LIST: List[Type[Level]] = [AngryAnvil]
-    LEVEL_LIST: List[Type[Level]] = [AngryAnvil, CalmLadder, TerrifyLava]
+    LEVEL_LIST: List[Type[Level]] = [FunnyGlass, AngryAnvil, TerrifyLava, CalmLadder]
 
     def __init__(self, address='localhost', port=4711):
         self.address, self.port = address, port
@@ -47,7 +48,7 @@ class Chase:
         for p in players:
             self.mc.clearInventory(p)
             self.mc.entity.setTilePos(p, self.spawn_point.up().randFlatCenter(min(self.SPAWN_LEN - 2, 3)))
-            self.mc.setGamemode(p, "adventure")
+            #self.mc.setGamemode(p, "adventure")
         self.forward()
         while True:
             self.update_pos()

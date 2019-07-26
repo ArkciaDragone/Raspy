@@ -5,11 +5,10 @@ Theme: Calm ladder
 from .interface import *
 import random
 
-HEIGHT = 12
-
 
 class CalmLadder(Level):
-    @staticmethod
+    HEIGHT = 12
+    
     def exitWin(entrance: Window):
         entrance.height = HEIGHT
         if entrance.direction == Dir.N:
