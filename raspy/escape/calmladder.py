@@ -8,31 +8,30 @@ import random
 
 class CalmLadder(Level):
     HEIGHT = 12
-    
     def exitWin(entrance: Window):
-        entrance.height = HEIGHT
+        entrance.height = CalmLadder.HEIGHT
         if entrance.direction == Dir.N:
             entrance.direction = Dir.E
             entrance.middle.x += entrance.width // 2
-            entrance.middle.y += HEIGHT
+            entrance.middle.y += CalmLadder.HEIGHT
             entrance.middle.z -= entrance.width // 2
         elif entrance.direction == Dir.E:
             entrance.direction = Dir.N
             entrance.middle.x += entrance.width // 2
-            entrance.middle.y += HEIGHT
+            entrance.middle.y += CalmLadder.HEIGHT
             entrance.middle.z -= entrance.width // 2
         elif entrance.direction == Dir.S:
             entrance.direction = Dir.W
             entrance.middle.x -= entrance.width // 2
-            entrance.middle.y += HEIGHT
+            entrance.middle.y += CalmLadder.HEIGHT
             entrance.middle.z += entrance.width // 2
         elif entrance.direction == Dir.W:
             entrance.direction = Dir.S
             entrance.middle.x -= entrance.width // 2
-            entrance.middle.y += HEIGHT
+            entrance.middle.y += CalmLadder.HEIGHT
             entrance.middle.z += entrance.width // 2
         return entrance
-        
+
     def setblock(self, x, y, z):
         self.mc.setBlock(x, y, z, 45)
         self.mc.setBlock(x + 1, y, z, 65, 5)
@@ -50,7 +49,7 @@ class CalmLadder(Level):
             self.mc.setBlocks(start.x - halfwidth, start.y - 1, start.z, start.x + halfwidth, 0,
                               start.z - self.entWin.width, 0)
             for i in range(x - halfwidth, x + halfwidth, 3):
-                for j in range(y - 3, y + HEIGHT, 3):
+                for j in range(y - 3, y + self.HEIGHT, 3):
                     for k in range(z - width, z, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)
@@ -58,7 +57,7 @@ class CalmLadder(Level):
             self.mc.setBlocks(start.x - halfwidth, start.y - 1, start.z, start.x + halfwidth, 0,
                               start.z + self.entWin.width, 0)
             for i in range(x - halfwidth, x + halfwidth, 3):
-                for j in range(y - 3, y + HEIGHT, 3):
+                for j in range(y - 3, y + self.HEIGHT, 3):
                     for k in range(z, z + width, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)
@@ -66,7 +65,7 @@ class CalmLadder(Level):
             self.mc.setBlocks(start.x, start.y - 1, start.z - halfwidth, start.x + self.entWin.width, 0,
                               start.z + halfwidth, 0)
             for i in range(x, x + width, 3):
-                for j in range(y - 3, y + HEIGHT, 3):
+                for j in range(y - 3, y + self.HEIGHT, 3):
                     for k in range(z - halfwidth, z + halfwidth, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)
@@ -74,7 +73,7 @@ class CalmLadder(Level):
             self.mc.setBlocks(start.x, start.y - 1, start.z - halfwidth, start.x - self.entWin.width, 0,
                               start.z + halfwidth, 0)
             for i in range(x - width, x, 3):
-                for j in range(y - 3, y + HEIGHT, 3):
+                for j in range(y - 3, y + self.HEIGHT, 3):
                     for k in range(z - halfwidth, z + halfwidth, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)
