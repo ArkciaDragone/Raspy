@@ -12,19 +12,19 @@ V3 = vec3.Vec3
 print("Loading simple maze...")
 mc = tools.start(0)
 mc.postToChat("The Maze is afoot...")
+mc.tpAllPlayers(V3(0, 8, 0))
 
 # Game init
-# mc.tpAllPlayers(V3(0, mc.getHeight(0)))
 for p in mc.getPlayerEntityIds():
     mc.setGamemode(p, "creative")
 time.sleep(0.5)
 print("Cleaning field...")
 H, L = 7, 7  # const room Height & Length (should be odd)
-SIZE = 3 # Maze grid size
-# SIZE = random.randint(7, 18)  # Maze grid size
+# SIZE = 3 # Maze grid size
+SIZE = random.randint(7, 18)  # Maze grid size
 print("  Maze size:", SIZE)
 DIR = ['n', 's', 'e', 'w']
-vertex = V3(3000, 64, 3000)
+vertex = V3(1000, 64, 1000)
 spawn = vertex + V3(L + L // 2, 0, L + L // 2)  # As bottom
 mc.setBlocks(vertex.down().flatVertex((SIZE + 2) * L + 1, H + 2), block.AIR.id)  # Clean up the field
 time.sleep(0.03 * SIZE * SIZE)  # Wait for the server to clean the space
@@ -99,6 +99,7 @@ print("  Opened {} extra door(s)".format(i))
 # Block construction
 print("Constructing blocks...")
 for r in flatten(rooms):
+    # r.walls['t'] = False
     r.construct(mc)
     time.sleep(6e-4 * L * L * H)
 mc.clearDrop()
@@ -107,7 +108,7 @@ mc.clearDrop()
 print("Maze begins. Teleporting players...")
 for p in mc.getPlayerEntityIds():
     mc.clearInventory(p)
-    mc.entity.setTilePos(p, RMSPAWN.bottom.up().randFlatCenter(L - 4))
+    mc.entity.setTilePos(p, RMSPAWN.bottom.up().randFlatCenter(2))
     mc.setGamemode(p, "adventure")
 
 mc.postToChat("Maze begins! Try to find the exit.")

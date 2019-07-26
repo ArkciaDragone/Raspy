@@ -17,7 +17,7 @@ class BlockEvent:
         }.get(self.type, "???")
 
         return "BlockEvent(%s, %d, %d, %d, %d, %d)" % (
-            sType, self.pos.x, self.pos.y, self.pos.z, self.face, self.entityId);
+            sType, self.pos.x, self.pos.y, self.pos.z, self.face, self.entityId)
 
     @staticmethod
     def Hit(x, y, z, face, entityId):
@@ -38,9 +38,21 @@ class ChatEvent:
             ChatEvent.POST: "ChatEvent.POST"
         }.get(self.type, "???")
 
-        return "ChatEvent(%s, %d, %s)" % (
-            sType, self.entityId, self.message);
+        return "ChatEvent(%s, %d, %s)" % (sType, self.entityId, self.message)
 
     @staticmethod
     def Post(entityId, message):
         return ChatEvent(ChatEvent.POST, entityId, message)
+
+
+class PlayerDeathEvent:
+    """Player death event with name, id and position"""
+
+    def __init__(self, name, id, *pos):
+        """Params: Player name, player id, x, y, z"""
+        self.name = name
+        self.id = id
+        self.x, self.y, self.z = pos
+
+    def __repr__(self):
+        return f"<PlayerDeathEvent {self.name}({self.id}) at ({self.x},{self.y},{self.z})"

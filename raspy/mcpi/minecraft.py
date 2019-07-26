@@ -1,6 +1,8 @@
+from typing import List
+
 from .connection import Connection
 from .vec3 import Vec3
-from .event import BlockEvent, ChatEvent
+from .event import *
 from .entity import Entity
 from .block import Block
 import math
@@ -181,6 +183,12 @@ class CmdEvents:
         s = self.conn.sendReceive(b"events.chat.posts")
         events = [e for e in s.split("|") if e]
         return [ChatEvent.Post(int(e[:e.find(",")]), e[e.find(",") + 1:]) for e in events]
+
+    def pollDeaths(self) -> List[PlayerDeathEvent]:
+        """Triggered by player death"""
+        s = self.conn.sendReceive(b"events.player.death")
+        events = [e for e in s.split("|") if e]
+        return [PlayerDeathEvent(*e.split(',')) for e in events]
 
 
 class Minecraft:

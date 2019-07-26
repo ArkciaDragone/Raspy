@@ -1,46 +1,92 @@
 import sys
 sys.path.append("..")
-import tools, random, time
-mc=tools.start(0)
-setbs=mc.setBlocks
-pId = mc.getPlayerEntityId(map(mc.entity.getName, mc.getPlayerEntityIds()))
-start = mc.entity.getTilePos(pId)
-WIDTH=10
-LENGTH=20
-BLOCK_ID=57
-HEIGHT=5
+import mcpi.minecraft as mmc
+import tools, time
+import mcpi.block as block
+import mcpi.entity as entity
+import mcpi.vec3 as vec3
+from escape.tnt import tntfollow
 
-def track(direction,x,z):
-    if direction=='s':
-        setbs(x-WIDTH//2,HEIGHT-2,z+1,x+WIDTH//2,HEIGHT-2,z+LENGTH+1,29,1)
-        setbs(x-WIDTH//2,HEIGHT-1,z+1,x+WIDTH//2,HEIGHT-1,z+LENGTH+1,BLOCK_ID)
-        setbs(x-(WIDTH//2+1),HEIGHT,z,x+(WIDTH//2+1),HEIGHT,z+LENGTH+2,BLOCK_ID)
-        setbs(x-WIDTH//2,HEIGHT,z+1,x+WIDTH//2,HEIGHT,z+LENGTH+1,11)#lava
-        setbs(x-WIDTH//2,HEIGHT-4,z+1,x+WIDTH//2,HEIGHT-4,z+LENGTH+1,3)#dirt
-        setbs(x-WIDTH//2,HEIGHT-3,z+1,x+WIDTH//2,HEIGHT-3,z+LENGTH+1,0)#air
-    elif direction=='n':
-        setbs(x-WIDTH//2,HEIGHT-2,z-1,x+WIDTH//2,HEIGHT-2,z-LENGTH-1,29,1)
-        setbs(x-WIDTH//2,HEIGHT-1,z-1,x+WIDTH//2,HEIGHT-1,z-LENGTH-1,BLOCK_ID)
-        setbs(x-(WIDTH//2+1),HEIGHT,z,x+(WIDTH//2+1),HEIGHT,z-LENGTH-2,BLOCK_ID)
-        setbs(x-WIDTH//2,HEIGHT,z-1,x+WIDTH//2,HEIGHT,z-LENGTH-1,11)
-        setbs(x-WIDTH//2,HEIGHT-4,z-1,x+WIDTH//2,HEIGHT-4,z-LENGTH-1,3)
-        setbs(x-WIDTH//2,HEIGHT-3,z-1,x+WIDTH//2,HEIGHT-3,z-LENGTH-1,0)
-    elif direction=='e':
-        setbs(x+1,HEIGHT-2,z-WIDTH//2,x+LENGTH+1,HEIGHT-2,z+WIDTH//2,29,1)
-        setbs(x+1,HEIGHT-1,z-WIDTH//2,x+LENGTH+1,HEIGHT-1,z+WIDTH//2,BLOCK_ID)
-        setbs(x,HEIGHT,z-(WIDTH//2+1),x+LENGTH+2,HEIGHT,z+(WIDTH//2+1),BLOCK_ID)
-        setbs(x+1,HEIGHT,z-WIDTH//2,x+LENGTH+1,HEIGHT,z+WIDTH//2,11)
-        setbs(x+1,HEIGHT-4,z-WIDTH//2,x+LENGTH+1,HEIGHT-4,z+WIDTH//2,3)
-        setbs(x+1,HEIGHT-3,z-WIDTH//2,x+LENGTH+1,HEIGHT-3,z+WIDTH//2,0)
-    elif direction=='w':
-        setbs(x-1,HEIGHT-2,z-WIDTH//2,x-LENGTH-1,HEIGHT-2,z+WIDTH//2,29,1)
-        setbs(x-1,HEIGHT-1,z-WIDTH//2,x-LENGTH-1,HEIGHT-1,z+WIDTH//2,BLOCK_ID)
-        setbs(x,HEIGHT,z-(WIDTH//2+1),x-LENGTH-2,HEIGHT,z+(WIDTH//2+1),BLOCK_ID)
-        setbs(x-1,HEIGHT,z-WIDTH//2,x-LENGTH-1,HEIGHT,z+WIDTH//2,11)
-        setbs(x-1,HEIGHT-4,z-WIDTH//2,x-LENGTH-1,HEIGHT-4,z+WIDTH//2,3)
-        setbs(x-1,HEIGHT-3,z-WIDTH//2,x-LENGTH-1,HEIGHT-3,z+WIDTH//2,0)
-
-direction=input('the direction is:')
-track(direction,start.x,start.z)
+if __name__ == '__main__':
+    V3 = vec3.Vec3
+    mc = tools.start(0)
 
 
+    setb = mc.setBlock
+    setbs = mc.setBlocks
+
+
+
+    def heart(x, y, z):
+        setb(x, y, z, 42)
+        setb(x + 1, y, z, 42)
+        setb(x - 1, y, z, 42)
+        setb(x, y, z + 1, 42)
+        setb(x, y, z - 1, 42)
+        setb(x + 2, y, z, 41)
+        setb(x - 2, y, z, 41)
+        setb(x + 1, y, z + 1, 41)
+        setb(x - 1, y, z + 1, 41)
+        setb(x + 1, y, z - 1, 41)
+        setb(x - 1, y, z - 1, 41)
+        setb(x, y, z - 2, 41)
+        setb(x, y, z + 2, 41)
+        setb(x + 1, y, z + 2, 41)
+        setb(x, y, z + 3, 42)
+        setb(x + 1, y, z + 2, 42)
+        setb(x - 1, y, z + 2, 42)
+        # floor
+        setb(x, y + 1, z + 4, 41)
+        setb(x + 1, y + 2, z + 6, 42)
+        setb(x + 3, y + 3, z + 6, 41)
+        setb(x + 5, y + 4, z + 5, 42)
+        setb(x + 7, y + 4, z + 3, 41)
+        setb(x + 7, y + 5, z, 42)
+        #block.WATER.id=8
+        setb(x + 7, y + 6, z, 8)
+        setb(x + 7, y + 6, z - 2, 41)
+        setb(x + 5, y + 6, z - 4, 42)
+        setb(x + 3, y + 7, z - 6, 41)
+        setb(x + 1, y + 7, z - 7, 42)
+        setb(x, y + 8, z - 8, 41)
+        setb(x, y + 7, z - 6, 42)
+        #block.LAVA.id=10
+        setb(x, y + 8, z - 6, 10)
+        setb(x - 1, y + 8, z - 7, 42)
+        setb(x - 3, y + 8, z - 5, 41)
+        setb(x - 5, y + 8, z - 3, 42)
+        setb(x - 7, y + 9, z, 41)
+        setb(x - 7, y + 10, z, 8)
+        setb(x - 7, y + 10, z + 2, 42)
+        setb(x - 5, y + 10, z + 4, 41)
+        setb(x - 3, y + 11, z + 5, 42)
+
+
+        # step???
+
+    start = map(int, input('the starting position:').split())
+    pId = mc.getPlayerEntityId(map(mc.entity.getName, mc.getPlayerEntityIds()))
+    mc.entity.setTilePos(pId, start)
+    start = mc.entity.getTilePos(pId)
+    x = start.x
+    y = start.y
+    z = start.z
+    setchance = int(input('this task will be set for how many times:'))
+
+    print("...")
+    heart(x, y, z)
+    i = 0
+    while i < setchance:
+        while True:
+            if mc.entity.getTilePos(pId).y > y + 10:
+                y += 11
+                heart(x, y, z)
+                break
+            time.sleep(0.1)
+        i += 1
+    k=0
+
+    """while k>=0:
+        setbs(x+8,y,z+8,x-8,y+k,z-8,0)
+        time.sleep(3)
+    k+=1"""
