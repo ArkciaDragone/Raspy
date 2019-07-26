@@ -6,25 +6,26 @@ from escape.interface import *
 import random
 from time import sleep
 
-LENGTH = 20
 
 
 class FunnyGlass(Level):
 
+    LENGTH = 20
     def exitWin(entrance: Window):
         dir = entrance.direction
         if dir == Dir.N:
-            entrance.middle.z -= LENGTH
+            entrance.middle.z -= FunnyGlass.LENGTH
         elif dir == Dir.S:
-            entrance.middle.z += LENGTH
+            entrance.middle.z += FunnyGlass.LENGTH
         elif dir == Dir.E:
-            entrance.middle.x += LENGTH
+            entrance.middle.x += FunnyGlass.LENGTH
         elif dir == Dir.W:
-            entrance.middle.x -= LENGTH
+            entrance.middle.x -= FunnyGlass.LENGTH
         entrance.height = 7
         return entrance
-        
+
     def _construct(self):
+        LENGTH = self.LENGTH
         setbs = self.mc.setBlocks
         x, y, z = self.entWin.middle
         WIDTH = self.entWin.width
