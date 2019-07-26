@@ -18,19 +18,24 @@ import readMidiFile as rmf
 # gcd
 # --------------------
 
-def gcd(L: list):
-    
-    while len(L) > 1:
-        a = L[len(L) - 2]
-        b = L[len(L) - 1]
-        L = L[:len(L) - 2]
-        
-        while a:
-            a, b = b % a, a
+def gcd(numList):
 
-        L.append(b)
+    if len(numList) == 1:      # there's only one chord in the midi file
+        return 1
+
+    else:
+    
+        while len(numList) > 1:
+            a = numList[len(numList) - 2]
+            b = numList[len(numList) - 1]
+            numList = numList[:len(numList) - 2]
+            
+            while a:
+                a, b = b % a, a
+                
+            numList.append(b)
         
-    return b
+            return b
 
 # --------------------
 # averagePitch
@@ -60,15 +65,26 @@ def averagePitch(voiceMax, hitList):
 # --------------------
 
 def preProcess(hitList):
+
     hitNum = len(hitList)
+    if hitNum == 0:
+        raise ValueError("Nothing")
+
     voiceMax = max([len(hit[1]) for hit in hitList])
+    if voiceMax > 15:
+        raise ValueError("Too many voices")      # the initial redstone signal cannot reach columns which are too far
+
     minDelay = gcd([hit[0] for hit in hitList])
+
     repeaterNum = ceil(minDelay / 4)
+
     averagePitchList = averagePitch(voiceMax, hitList)
+
     minus12NumList = [floor((averagePitch - 66) / 12) for averagePitch in averagePitchList]      # 66 is the medium pitch (F#4) for harp sound
     for i in range(0, len(minus12NumList)):
         if minus12NumList[i] < 0:
             minus12NumList[i] += 1
+
     return [hitNum, voiceMax, minDelay, repeaterNum, averagePitchList, minus12NumList]
 
 # --------------------
@@ -121,10 +137,13 @@ def processNoteAndDelay(minus12NumList, hitList):      # actually create a new l
 
 def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
 
-    gameName.postToChat("Configuring redstone system...")
-
     hitList = list(rmf.readAndProcessMidi(path))      # hitList looks like [(delay, [pitch, pitch]), ...]
     """Read the result of readAndProcessMidi"""
+
+    # if the path is correct, then post the following
+    gameName.postToChat("")
+    gameName.postToChat("Configuring redstone system...")
+    
     preProcessResult = preProcess(hitList)
     """Output to-be-used vital figures and lists"""
     columnRelativePlacingList = columnRelativePlacing(preProcessResult[1])      # using voiceMax
@@ -138,6 +157,7 @@ def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
     print("\n")
     print(processedList)
 
+    gameName.postToChat("")
     gameName.postToChat("Configuration completed!")
     
     return [preProcessResult, columnRelativePlacingList, processedList]

@@ -1,6 +1,6 @@
 # --------------------
 # (main) startMidi.py
-# v0.1.2 - 2019/7/26
+# v0.1.3 - 2019/7/27
 # Double-click this to launch the program!
 # --------------------
 
@@ -14,9 +14,8 @@ import constructSystem as cs
 
 mc = tools.start(0)
 
-mc.postToChat("Please input (in-game) the path of the midi file you want to realize, \
-beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>\
-/Documents/test.mid)")
+mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
+mc.postToChat("")
 
 # --------------------
 # retry
@@ -37,18 +36,21 @@ def retry():
 
             except ValueError:      # userChoice is not an integer
                 mc.postToChat("Process aborted.")
+                mc.postToChat("")
                 sys.exit(0)
 
             else:
                 if int(userChoice) == 1:
+                    mc.postToChat("")
                     mc.postToChat("Process restarted.")
-                    mc.postToChat("Please input (in-game) the path of the midi file you want to realize, \
-                    beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>\
-                    /Documents/test.mid)")
+                    mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
+                    mc.postToChat("")
                     mc.events.clearAll()
                     break
                 else:
+                    mc.postToChat("")
                     mc.postToChat("Process aborted.")
+                    mc.postToChat("")
                     sys.exit(0)
 
 # --------------------
@@ -69,20 +71,37 @@ if __name__ == "__main__":
                 configurationList = ss.setRedstoneSystem(path, mc)
             
             except FileNotFoundError:
+                mc.postToChat("")
                 mc.postToChat("Cannot find a file at your path, maybe used a false grammar?")
                 mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
+                mc.postToChat("")
                 retry()
                 continue
 
             except PermissionError:
+                mc.postToChat("")
                 mc.postToChat("Uh-oh, seems like the program doesn't have the permission to visit that path. Try putting the file in a different folder.")
                 mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
+                mc.postToChat("")
                 retry()
                 continue
 
             except IndexError:
-                mc.postToChat("The file you requested isn't Midi file, or your Midi file cannot be processed at the moment. Sorry!")
+                mc.postToChat("")
+                mc.postToChat("The file you requested isn't midi file, or your midi file cannot be processed at the moment. Sorry!")
                 mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
+                mc.postToChat("")
+                retry()
+                continue
+
+            except ValueError as ve:
+                mc.postToChat("")
+                if ve == "Nothing":
+                    mc.postToChat("There's literally nothing in your midi file. Therefore we cannot proceed.")
+                if ve == "Too many voices":
+                    mc.postToChat("Sorry, but we currently do not process midi files with moments of more than 15 notes playing. Try another file, or simplify the current file?")
+                mc.postToChat("Input 1 to try again, or input anything besides 1 to abort the process.")
+                mc.postToChat("")
                 retry()
                 continue
 

@@ -60,8 +60,7 @@ def placeRedstoneWire(loc, hitNum, voiceMax, minDelay, repeaterNum, columnRelati
 # --------------------
 
 def placeBaseLine(loc, columnRelativePlacingList, gameName):
-    # needs revise because if voices are too many the initial redstone signal may not reach certain columns
-    # if intended to revise, another configurationList member should be added, because the z coordinate of all other blocks may change
+    # the base line can only spread redstone signal to 15 columns at most
     for i in range(columnRelativePlacingList[0], columnRelativePlacingList[-1]+1):
         gameName.setBlock(loc.x + i, loc.y, loc.z + 2, block.REDSTONE_WIRE.id)
     for j in range(0, len(columnRelativePlacingList)):
@@ -74,7 +73,9 @@ def placeBaseLine(loc, columnRelativePlacingList, gameName):
 
 def constructRedstoneSystem(configurationList, gameName):
 
+    gameName.postToChat("")
     gameName.postToChat("Please input (in-game) the name of the player beside whom the note block system is placed:")
+    gameName.postToChat("")
     
     while True:
         posts = gameName.events.pollChatPosts()
@@ -83,13 +84,16 @@ def constructRedstoneSystem(configurationList, gameName):
                 name = posts[0].message
                 id = gameName.getPlayerEntityId(name)
             except mcpi.connection.RequestError:
+                gameName.postToChat("")
                 gameName.postToChat("Wrong name, please input again:")
+                gameName.postToChat("")
                 continue
             else:
                 break
     
     loc = gameName.entity.getPos(id);
 
+    gameName.postToChat("")
     gameName.postToChat("Attaching...")
 
     # configurationList[0] is preProcessResult, [1] is columnRelativePlacingList, [2] is processedList
@@ -98,6 +102,8 @@ def constructRedstoneSystem(configurationList, gameName):
     placeRepeater(loc, configurationList[0][0], configurationList[0][2], configurationList[0][3], configurationList[1], configurationList[2], gameName)
     placeRedstoneWire(loc, configurationList[0][0], configurationList[0][1], configurationList[0][2], configurationList[0][3], configurationList[1], configurationList[2], gameName)
     placeBaseLine(loc, configurationList[1], gameName)
-    
+
+    gameName.postToChat("")
     gameName.postToChat("Midi file successfully processed and attached in-game!")
     gameName.postToChat("If you wish to process another, reload the program.")
+    gameName.postToChat("")
