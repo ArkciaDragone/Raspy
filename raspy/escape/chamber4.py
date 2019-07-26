@@ -4,7 +4,7 @@ import tools
 mc=tools.start(0)
 WIDTH=11
 HALFWIDTH=3
-LENGTH=40
+LENGTH=100
 direction=input('the direction is: ')
 setbs=mc.setBlocks
 setb=mc.setBlock
