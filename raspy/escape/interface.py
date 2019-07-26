@@ -5,10 +5,7 @@ The controlling program is called "Chase"
 Level generators, defined below, are called "Level"
 """
 import sys
-from typing import List, Tuple
-from time import sleep
-
-sys.path.append("..")
+from typing import List, Tuple, Iterable
 import mcpi.minecraft as mmc
 from abc import ABC, abstractmethod
 from mcpi.vec3 import Vec3 as V3
@@ -27,7 +24,17 @@ class Cmd(IntEnum):
 
 
 class Window:
-    """The beginning and the end window frame of a Level"""
+    """The beginning and the end window frame of a Level
+
+    The area within an exit Window of a Level belongs to that Level.
+    A Level MUST guarantee that players can only leave through
+    its exit Window. A player may enter the next Level from
+    anywhere within the previous exit Window.
+    The exit Window is up to the previous Level, however the
+    next one has to do something such as narrowing or widening
+    the path to make sure the entrance eventually suits itself
+    """
+
     def __init__(self, middle: V3, width: int, height: int, direction: Dir):
         """Middle for window bottom center (Vec3, int, int, Direction)"""
         self.middle = middle
@@ -35,15 +42,29 @@ class Window:
         self.height = height
         self.direction = direction
 
+    def __dir__(self) -> Iterable[str]:
+        return ["middle", "width", "height", "direction", "is_in"]
+
     def __repr__(self):
         return "<Window w={}, h={}, mid={}, d={}".format(
             self.width, self.height, self.middle, self.direction
         )
 
+    def has_pos(self, pos: V3) -> bool:
+        """Judge whether a position is on the window"""
+        if self.direction == Dir.N or self.direction == Dir.S:
+            return (-self.width // 2 <= pos.x - self.middle.x <= self.width // 2
+                    and 0 <= pos.y - self.middle.y <= self.height
+                    and int(pos.z) == self.middle.z)
+        elif self.direction == Dir.E or self.direction == Dir.W:
+            return (-self.width // 2 <= pos.z - self.middle.z <= self.width // 2
+                    and 0 <= pos.y - self.middle.y <= self.height
+                    and int(pos.x) == self.middle.x)
+
 
 class Level(ABC):
     """Implement all the abstract methods to become a Level!"""
-    players: List[int]
+    players: List[int]  # Player id, read from here
 
     @staticmethod  # The exit window is universally calculated for all instances
     @abstractmethod
@@ -62,13 +83,13 @@ class Level(ABC):
         self.conn = conn
         self.mc = mmc.Minecraft.create(address, port)
         self.entWin = entWin
-        self.__construct()
-        self.players = []  # Player id, read from here
+        self._construct()
+        self.players = []
         while True:
             while conn.poll():
                 rec: Tuple[Cmd, List] = conn.recv()  # New msg
                 if rec[0] == Cmd.TERM:
-                    self.__cleanup()
+                    self._cleanup()
                     return
                 elif rec[0] == Cmd.ENT:
                     self.players.extend(rec[1])
@@ -77,21 +98,20 @@ class Level(ABC):
                         try:
                             self.players.remove(i)
                         except ValueError:
-                            sys.stderr.write("Player(id) {} not found in {}!".format(
-                                i, self.__repr__()
-            self.__loop()
+                            sys.stderr.write(f"Player(id) {i} not found in {self.__name__}!")
+            self._loop()
 
     @abstractmethod
-    def __construct(self):
+    def _construct(self):
         """This will only be called once at the beginning. Window in "self.entWin\""""
         pass
 
     @abstractmethod
-    def __loop(self):
+    def _loop(self):
         """Main loop to maintain your level. Player ids in "self.players\""""
         pass
 
     @abstractmethod
-    def __cleanup(self):
+    def _cleanup(self):
         """Called when exit to do some clean up job if necessary"""
         pass
