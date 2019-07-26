@@ -13,17 +13,18 @@ class FunnyGlass(Level):
     def exitWin(entrance: Window):
         dir = entrance.direction
         if dir == Dir.N:
-            entrance.middle.z -= LENGTH
+            entrance.middle.z -= FunnyGlass.LENGTH
         elif dir == Dir.S:
-            entrance.middle.z += LENGTH
+            entrance.middle.z += FunnyGlass.LENGTH
         elif dir == Dir.E:
-            entrance.middle.x += LENGTH
+            entrance.middle.x += FunnyGlass.LENGTH
         elif dir == Dir.W:
-            entrance.middle.x -= LENGTH
+            entrance.middle.x -= FunnyGlass.LENGTH
         entrance.height = 7
         return entrance
         
     def _construct(self):
+        LENGTH = self.LENGTH
         setbs = self.mc.setBlocks
         x, y, z = self.entWin.middle
         WIDTH = self.entWin.width
@@ -35,7 +36,6 @@ class FunnyGlass(Level):
             setbs(x, y - 1, z - WIDTH // 2 - 1, x + LENGTH, y + 7, z - WIDTH // 2 - 1, 95, color)
             setbs(x, y - 1, z + WIDTH // 2 + 1, x + LENGTH, y + 7, z + WIDTH // 2 + 1, 95, color)
             setbs(x, y + 7, z + WIDTH // 2 + 1, x + LENGTH, y + 7, z - WIDTH // 2 - 1, 95, color)
-            setbs(x, y - 2, z - HALFWIDTH, x + LENGTH, 0, z + HALFWIDTH, 0)
             setbs(x, y - 1, z - HALFWIDTH, x + LENGTH, 0, z - WIDTH // 2, 0)
             setbs(x, y - 1, z + HALFWIDTH, x + LENGTH, 0, z + WIDTH // 2, 0)
             for i in range(x + 1, x + LENGTH - 2, 2):
@@ -47,7 +47,6 @@ class FunnyGlass(Level):
             setbs(x, y - 1, z - WIDTH // 2 - 1, x - LENGTH, y + 7, z - WIDTH // 2 - 1, 95, color)
             setbs(x, y - 1, z + WIDTH // 2 + 1, x - LENGTH, y + 7, z + WIDTH // 2 + 1, 95, color)
             setbs(x, y + 7, z + WIDTH // 2 + 1, x - LENGTH, y + 7, z - WIDTH // 2 - 1, 95, color)
-            setbs(x, y - 2, z - HALFWIDTH, x - LENGTH, 0, z + HALFWIDTH, 0)
             setbs(x, y - 1, z - HALFWIDTH, x - LENGTH, 0, z - WIDTH // 2, 0)
             setbs(x, y - 1, z + HALFWIDTH, x - LENGTH, 0, z + WIDTH // 2, 0)
             for i in range(x - LENGTH, x - 3, 2):
@@ -59,7 +58,6 @@ class FunnyGlass(Level):
             setbs(x - WIDTH // 2 - 1, y - 1, z, x - WIDTH // 2 - 1, y + 7, z - LENGTH, 95, color)
             setbs(x + WIDTH // 2 + 1, y - 1, z, x + WIDTH // 2 + 1, y + 7, z - LENGTH, 95, color)
             setbs(x + WIDTH // 2 + 1, y + 7, z, x - WIDTH // 2 - 1, y + 7, z - LENGTH, 95, color)
-            setbs(x - HALFWIDTH, y - 2, z, x + HALFWIDTH, 0, z - LENGTH, 0)
             setbs(x - HALFWIDTH, y - 1, z, x - WIDTH // 2, 0, z - LENGTH, 0)
             setbs(x + HALFWIDTH, y - 1, z, x + WIDTH // 2, 0, z - LENGTH, 0)
             for i in range(z - LENGTH, z - 3, 2):
@@ -71,7 +69,6 @@ class FunnyGlass(Level):
             setbs(x - WIDTH // 2 - 1, y - 1, z, x - WIDTH // 2 - 1, y + 7, z + LENGTH, 95, color)
             setbs(x + WIDTH // 2 + 1, y - 1, z, x + WIDTH // 2 + 1, y + 7, z + LENGTH, 95, color)
             setbs(x + WIDTH // 2 + 1, y + 7, z, x - WIDTH // 2 - 1, y + 7, z + LENGTH, 95, color)
-            setbs(x - HALFWIDTH, y - 2, z, x + HALFWIDTH, 0, z + LENGTH, 0)
             setbs(x - HALFWIDTH, y - 1, z, x - WIDTH // 2, 0, z + LENGTH, 0)
             setbs(x + HALFWIDTH, y - 1, z, x + WIDTH // 2, 0, z + LENGTH, 0)
             for i in range(z + 1, z + LENGTH - 2, 2):
