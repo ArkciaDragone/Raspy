@@ -6,7 +6,7 @@ from escape.interface import *
 import random
 from time import sleep
 
-LENGTH = 50
+LENGTH = 20
 
 
 class FunnyGlass(Level):
@@ -28,10 +28,10 @@ class FunnyGlass(Level):
         setbs = self.mc.setBlocks
         x, y, z = self.entWin.middle
         WIDTH = self.entWin.width
-        HALFWIDTH = WIDTH//2
+        HALFWIDTH = 3
         direction = self.entWin.direction
         color = random.randint(1, 16)
-        if direction == 'e':
+        if direction == Dir.E:
             setbs(x + 1, y - 1, z - HALFWIDTH, x + LENGTH, y - 1, z + HALFWIDTH, 160, color)
             setbs(x + 1, y - 1, z - WIDTH // 2 - 1, x + LENGTH, y + 7, z - WIDTH // 2 - 1, 95, color)
             setbs(x + 1, y - 1, z + WIDTH // 2 + 1, x + LENGTH, y + 7, z + WIDTH // 2 + 1, 95, color)
@@ -43,7 +43,7 @@ class FunnyGlass(Level):
                 for j in range(z - HALFWIDTH, z + HALFWIDTH, 2):
                     m = random.randint(0, 2)
                     setbs(i + m, y - 1, j + m, i + m + 1, y - 1, j + m, 0)
-        elif direction == 'w':
+        elif direction == Dir.W:
             setbs(x - 1, y - 1, z - HALFWIDTH, x - LENGTH, y - 1, z + HALFWIDTH, 160, color)
             setbs(x - 1, y - 1, z - WIDTH // 2 - 1, x - LENGTH, y + 7, z - WIDTH // 2 - 1, 95, color)
             setbs(x - 1, y - 1, z + WIDTH // 2 + 1, x - LENGTH, y + 7, z + WIDTH // 2 + 1, 95, color)
@@ -55,7 +55,7 @@ class FunnyGlass(Level):
                 for j in range(z - HALFWIDTH, z + HALFWIDTH, 2):
                     m = random.randint(0, 2)
                     setbs(i + m, y - 1, j + m, i + m + 1, y - 1, j + m, 0)
-        elif direction == 'n':
+        elif direction == Dir.N:
             setbs(x - HALFWIDTH, y - 1, z - 1, x + HALFWIDTH, y - 1, z - LENGTH, 160, color)
             setbs(x - WIDTH // 2 - 1, y - 1, z - 1, x - WIDTH // 2 - 1, y + 7, z - LENGTH, 95, color)
             setbs(x + WIDTH // 2 + 1, y - 1, z - 1, x + WIDTH // 2 + 1, y + 7, z - LENGTH, 95, color)
@@ -67,7 +67,7 @@ class FunnyGlass(Level):
                 for j in range(x - HALFWIDTH, x + HALFWIDTH, 2):
                     m = random.randint(0, 2)
                     setbs(j + m, y - 1, i + m, j + m, y - 1, i + m + 1, 0)
-        elif direction == 's':
+        elif direction == Dir.S:
             setbs(x - HALFWIDTH, y - 1, z + 1, x + HALFWIDTH, y - 1, z + LENGTH, 160, color)
             setbs(x - WIDTH // 2 - 1, y - 1, z + 1, x - WIDTH // 2 - 1, y + 7, z + LENGTH, 95, color)
             setbs(x + WIDTH // 2 + 1, y - 1, z + 1, x + WIDTH // 2 + 1, y + 7, z + LENGTH, 95, color)
@@ -79,6 +79,7 @@ class FunnyGlass(Level):
                 for j in range(x - HALFWIDTH, x + HALFWIDTH, 2):
                     m = random.randint(0, 2)
                     setbs(j + m, y - 1, i + m, j + m, y - 1, i + m + 1, 0)
+
     def _loop(self):
         """静态关卡"""
         pass

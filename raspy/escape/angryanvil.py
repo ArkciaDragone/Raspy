@@ -6,7 +6,7 @@ from typing import Dict
 import random
 from time import sleep
 
-LENGTH = 100
+LENGTH = 20
 NUMBER = LENGTH // 4
 FLASH_PERIOD = 0.5
 FLASH_TIMES = 3
