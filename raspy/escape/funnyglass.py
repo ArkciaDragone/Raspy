@@ -10,6 +10,7 @@ from time import sleep
 class FunnyGlass(Level):
     LENGTH = 20
 
+    LENGTH = 20
     def exitWin(entrance: Window):
         dir = entrance.direction
         if dir == Dir.N:
@@ -22,7 +23,7 @@ class FunnyGlass(Level):
             entrance.middle.x -= FunnyGlass.LENGTH
         entrance.height = 7
         return entrance
-        
+
     def _construct(self):
         LENGTH = self.LENGTH
         setbs = self.mc.setBlocks

@@ -4,6 +4,7 @@ Theme: Terrify lava
 """
 from .interface import *
 from time import sleep
+import mcpi.entity as entity
 import random
 
 
@@ -104,7 +105,7 @@ class TerrifyLava(Level):
     def _loop(self):
         for p in self.players:
             ppos = self.mc.entity.getTilePos(p)  # player position
-            self.mc.spawnEntity(ppos.x, self.entWin.middle.y + self.HEIGHT, ppos.z, 20)
+            self.mc.spawnEntity(ppos.x, self.entWin.middle.y + self.HEIGHT, ppos.z, entity.PRIMED_TNT.id)
         sleep(1)
 
     def _cleanup(self):
