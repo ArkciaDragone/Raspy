@@ -1,5 +1,5 @@
 class Entity:
-    '''Minecraft PI entity description. Can be sent to Minecraft.spawnEntity'''
+    """Minecraft PI entity description. Can be sent to Minecraft.spawnEntity"""
 
     def __init__(self, id, name=None):
         self.id = id

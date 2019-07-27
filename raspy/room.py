@@ -92,3 +92,8 @@ class Room:
         for dir, room in self.adjacent.items():
             self.__door(mc, dir, self.gates[room])
         return self
+
+    def posIn(self, pos: V3) -> bool:
+        return (self.bottom.x - self.length // 2 <= pos.x <= self.bottom.x + self.length // 2
+                and self.bottom.z - self.length // 2 <= pos.z <= self.bottom.z + self.length // 2
+                and self.bottom.y <= pos.y <= self.bottom.y + self.height)
