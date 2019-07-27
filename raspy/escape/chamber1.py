@@ -92,11 +92,11 @@ if __name__ == '__main__':
                 setbs(j + m, y - 1, i - m, j + m, y - 1, i - m - 1, 57)
 
 
-    start = map(int, input('the starting position:').split())
+    #start = map(int, input('the starting position:').split())
     direction = input('''the starting direction(east='e',north='n',south='s',west='w'):''')
     pId = mc.getPlayerEntityId(map(mc.entity.getName, mc.getPlayerEntityIds()))
-    mc.entity.setTilePos(pId, start)
     start = mc.entity.getTilePos(pId)
+    #mc.entity.setTilePos(pId, start)
     x = start.x
     y = start.y
     z = start.z

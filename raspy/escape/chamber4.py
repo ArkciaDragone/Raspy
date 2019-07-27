@@ -2,7 +2,6 @@ import sys, random
 
 sys.path.append("..")
 import tools
-
 mc = tools.start(0)
 WIDTH = 11
 HALFWIDTH = 3
