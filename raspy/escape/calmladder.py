@@ -51,7 +51,7 @@ class CalmLadder(Level):
             self.mc.setBlocks(start.x - halfwidth, start.y - 1, start.z, start.x + halfwidth, 0,
                               start.z - self.entWin.width, 0)
             for i in range(x - halfwidth, x + halfwidth, 3):
-                for j in range(y - 3, y + self.HEIGHT, 3):
+                for j in range(y - 3, y + CalmLadder.HEIGHT, 3):
                     for k in range(z - width, z, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)
@@ -59,7 +59,7 @@ class CalmLadder(Level):
             self.mc.setBlocks(start.x - halfwidth, start.y - 1, start.z, start.x + halfwidth, 0,
                               start.z + self.entWin.width, 0)
             for i in range(x - halfwidth, x + halfwidth, 3):
-                for j in range(y - 3, y + self.HEIGHT, 3):
+                for j in range(y - 3, y + CalmLadder.HEIGHT, 3):
                     for k in range(z, z + width, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)
@@ -67,7 +67,7 @@ class CalmLadder(Level):
             self.mc.setBlocks(start.x, start.y - 1, start.z - halfwidth, start.x + self.entWin.width, 0,
                               start.z + halfwidth, 0)
             for i in range(x, x + width, 3):
-                for j in range(y - 3, y + self.HEIGHT, 3):
+                for j in range(y - 3, y + CalmLadder.HEIGHT, 3):
                     for k in range(z - halfwidth, z + halfwidth, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)
@@ -75,7 +75,7 @@ class CalmLadder(Level):
             self.mc.setBlocks(start.x, start.y - 1, start.z - halfwidth, start.x - self.entWin.width, 0,
                               start.z + halfwidth, 0)
             for i in range(x - width, x, 3):
-                for j in range(y - 3, y + self.HEIGHT, 3):
+                for j in range(y - 3, y + CalmLadder.HEIGHT, 3):
                     for k in range(z - halfwidth, z + halfwidth, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)

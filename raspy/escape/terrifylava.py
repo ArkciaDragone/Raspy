@@ -26,18 +26,16 @@ class TerrifyLava(Level):
         return entrance
 
     def _construct(self):
-        HEIGHT, LENGTH = self.HEIGHT, self.LENGTH
-        x = self.entWin.middle.x
-        y = self.entWin.middle.y
-        z = self.entWin.middle.z
+        HEIGHT, LENGTH = TerrifyLava.HEIGHT, TerrifyLava.LENGTH
+        x, y, z = self.entWin.middle
         direction = self.entWin.direction
         setbs = self.mc.setBlocks
         setb = self.mc.setBlock
         halfwidth = self.entWin.width // 2
         if direction == Dir.E:
             setbs(x, y - 2, z - halfwidth - 1, x + LENGTH, y - 1, z + halfwidth + 1, 57)  # floor
-            setbs(x, y - 1, z - halfwidth - 1, x + LENGTH, y + HEIGHT, z - halfwidth - 1, 57)  # leftwall
-            setbs(x, y - 1, z + halfwidth + 1, x + LENGTH, y + HEIGHT, z + halfwidth + 1, 57)  # rightwall
+            setbs(x, y - 1, z - halfwidth - 1, x + LENGTH, y + HEIGHT, z - halfwidth - 1, 57)  # left wall
+            setbs(x, y - 1, z + halfwidth + 1, x + LENGTH, y + HEIGHT, z + halfwidth + 1, 57)  # right wall
             setbs(x, y + HEIGHT, z - halfwidth - 1, x + LENGTH, y + HEIGHT, z + halfwidth + 1, 57)  # ceiling
             setbs(x, y + HEIGHT // 2, z - halfwidth - 1, x + LENGTH, y + HEIGHT // 2, z - halfwidth - 1,
                   138)  # leftBeacon
@@ -49,8 +47,8 @@ class TerrifyLava(Level):
                     m = random.randint(0, 3)
                     setbs(i + m, y - 1, j + m, i + m + 1, y - 1, j + m, 57)
             setbs(x, y - 3, z - halfwidth - 2, x + LENGTH, y - 3, z + halfwidth + 2, 49)  # floor obsidian
-            setbs(x, y - 3, z - halfwidth - 2, x + LENGTH, y + HEIGHT + 1, z - halfwidth - 2, 49)  # leftwall obsidian
-            setbs(x, y - 3, z + halfwidth + 2, x + LENGTH, y + HEIGHT + 1, z + halfwidth + 2, 49)  # rightwall obsidian
+            setbs(x, y - 3, z - halfwidth - 2, x + LENGTH, y + HEIGHT + 1, z - halfwidth - 2, 49)  # left wall obsidian
+            setbs(x, y - 3, z + halfwidth + 2, x + LENGTH, y + HEIGHT + 1, z + halfwidth + 2, 49)  # right wall obsidian
             setbs(x, y + HEIGHT + 1, z - halfwidth - 2, x + LENGTH, y + HEIGHT + 1, z + halfwidth + 2,
                   49)  # ceiling obsidian
         elif direction == Dir.W:

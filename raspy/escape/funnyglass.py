@@ -4,13 +4,13 @@ Theme: Funny Glass
 """
 from escape.interface import *
 import random
-from time import sleep
-
 
 
 class FunnyGlass(Level):
-
     LENGTH = 20
+    HALFWIDTH = 3
+
+    @staticmethod
     def exitWin(entrance: Window):
         dir = entrance.direction
         if dir == Dir.N:
@@ -25,11 +25,11 @@ class FunnyGlass(Level):
         return entrance
 
     def _construct(self):
-        LENGTH = self.LENGTH
+        LENGTH = FunnyGlass.LENGTH
         setbs = self.mc.setBlocks
         x, y, z = self.entWin.middle
-        WIDTH = self.entWin.width
-        HALFWIDTH = 3
+        WIDTH = FunnyGlass.entWin.width
+        HALFWIDTH = FunnyGlass.HALFWIDTH
         direction = self.entWin.direction
         color = random.randint(1, 16)
         if direction == Dir.E:
