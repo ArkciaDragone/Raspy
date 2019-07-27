@@ -17,6 +17,7 @@ from escape.funnyglass import FunnyGlass
 from escape.interface import *
 from mcpi import minecraft as mmc
 from mcpi import block as block
+from copy import deepcopy
 import tools
 
 
@@ -44,7 +45,7 @@ class Chase:
         players = self.mc.getPlayerEntityIds()
         # Window 0 -> Level 0 -> W1 -> L1 -> W2 -> ...
         self.levels, self.windows = [], [self._spawn()]
-        self.mc.setBlock(self.windows[0].middle, 45)
+        self.mc.setBlock(self.windows[0].middle.down(), block.GLOWSTONE_BLOCK.id)
         # Positive for Level, negative for Window; 0 treated as Level 0
         self.positions = dict((p, 0) for p in players)
         self.connections = []
@@ -76,7 +77,7 @@ class Chase:
             proc = Process(target=level,
                            args=(level_conn, self.address, self.port, self.windows[self.frontier]))
             self.levels.append(proc)
-            self.windows.append(level.exitWin(self.windows[self.frontier]))
+            self.windows.append(level.exitWin(deepcopy(self.windows[self.frontier])))
             proc.start()
             self.frontier += 1
             print(f"Forward with {level}, total: {self.frontier}")

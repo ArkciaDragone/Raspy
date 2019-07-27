@@ -7,7 +7,7 @@ import random
 
 
 class FunnyGlass(Level):
-    LENGTH = 20
+    LENGTH = 25
     HALFWIDTH = 3
 
     @staticmethod
@@ -28,7 +28,7 @@ class FunnyGlass(Level):
         LENGTH = FunnyGlass.LENGTH
         setbs = self.mc.setBlocks
         x, y, z = self.entWin.middle
-        WIDTH = FunnyGlass.entWin.width
+        WIDTH = self.entWin.width
         HALFWIDTH = FunnyGlass.HALFWIDTH
         direction = self.entWin.direction
         color = random.randint(1, 16)

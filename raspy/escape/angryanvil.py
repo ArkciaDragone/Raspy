@@ -7,9 +7,9 @@ from time import sleep
 
 
 class AngryAnvil(Level):
-    LENGTH = 20
+    LENGTH = 30
     NUMBER = LENGTH // 4
-    FLASH_PERIOD = 0.5
+    FLASH_PERIOD = 0.2
     FLASH_TIMES = 3
     ANV = block.ANVIL.id
     SHC = block.STAINED_HARDENED_CLAY.id
@@ -85,6 +85,8 @@ class AngryAnvil(Level):
 
     def _loop(self):
         """闪烁，落铁砧"""
+        if not self.players:
+            return
         setb = self.mc.setBlock
         pos = self.area()
         i = 0
