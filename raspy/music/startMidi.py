@@ -1,6 +1,6 @@
 # --------------------
 # (main) startMidi.py
-# v0.1.3 - 2019/7/27
+# v0.1.4 - 2019/7/28
 # Double-click this to launch the program!
 # --------------------
 
@@ -14,6 +14,7 @@ import constructSystem as cs
 
 mc = tools.start(0)
 
+mc.postToChat("")
 mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
 mc.postToChat("")
 
