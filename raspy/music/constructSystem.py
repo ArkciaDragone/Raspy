@@ -37,9 +37,10 @@ def zBoundary(minDelay, rN, processedList):
 
 def placeStone(loc, xBoundary, zBoundary, gameName):
     # place stone in the bottom
-    for i in range(xBoundary[0], xBoundary[1] + 1):
-        for j in range(zBoundary[0], zBoundary[1] + 1):
-            gameName.setBlock(loc.x + i, loc.y - 1, loc.z + j, block.STONE.id)    
+    gameName.setBlocks(
+        loc.x + xBoundary[0], loc.y - 1, loc.z + zBoundary[0],
+        loc.x + xBoundary[1], loc.y - 1, loc.z + zBoundary[1],
+        block.STONE.id)
 
 # --------------------
 # placeGlass
@@ -47,19 +48,28 @@ def placeStone(loc, xBoundary, zBoundary, gameName):
 
 def placeGlass(loc, xBoundary, zBoundary, gameName):
     # place in the front and in the back
-    for i in range(xBoundary[0], xBoundary[1] + 1):
-        for a in range(0, 7):
-            gameName.setBlock(loc.x + i, loc.y + a, loc.z + zBoundary[0], block.GLASS.id)
-            gameName.setBlock(loc.x + i, loc.y + a, loc.z + zBoundary[1], block.GLASS.id)
+    gameName.setBlocks(
+        loc.x + xBoundary[0], loc.y, loc.z + zBoundary[0],
+        loc.x + xBoundary[1], loc.y + 6, loc.z + zBoundary[0],
+        block.GLASS.id)
+    gameName.setBlocks(
+        loc.x + xBoundary[0], loc.y, loc.z + zBoundary[1],
+        loc.x + xBoundary[1], loc.y + 6, loc.z + zBoundary[1],
+        block.GLASS.id)
     # place in the left and in the right
-    for j in range(zBoundary[0], zBoundary[1] + 1):
-        for b in range(0, 7):
-            gameName.setBlock(loc.x + xBoundary[0], loc.y + b, loc.z + j, block.GLASS.id)
-            gameName.setBlock(loc.x + xBoundary[1], loc.y + b, loc.z + j, block.GLASS.id)
+    gameName.setBlocks(
+        loc.x + xBoundary[0], loc.y, loc.z + zBoundary[0],
+        loc.x + xBoundary[0], loc.y + 6, loc.z + zBoundary[1],
+        block.GLASS.id)
+    gameName.setBlocks(
+        loc.x + xBoundary[1], loc.y, loc.z + zBoundary[0],
+        loc.x + xBoundary[1], loc.y + 6, loc.z + zBoundary[1],
+        block.GLASS.id)
     # place the top cover
-    for k in range(xBoundary[0], xBoundary[1] + 1):
-        for l in range(zBoundary[0], zBoundary[1] + 1):
-            gameName.setBlock(loc.x + k, loc.y + 7, loc.z + l, block.GLASS.id)
+    gameName.setBlocks(
+        loc.x + xBoundary[0], loc.y + 7, loc.z + zBoundary[0],
+        loc.x + xBoundary[1], loc.y + 7, loc.z + zBoundary[1],
+        block.GLASS.id)
 
 # --------------------
 # placeAir
@@ -67,10 +77,10 @@ def placeGlass(loc, xBoundary, zBoundary, gameName):
 
 def placeAir(loc, xBoundary, zBoundary, gameName):
     # place inside glass cover
-    for i in range(xBoundary[0] + 1, xBoundary[1]):
-        for j in range(zBoundary[0] + 1, zBoundary[1]):
-            for k in range(0, 7):
-                gameName.setBlock(loc.x + i, loc.y + k, loc.z + j, block.AIR.id)
+        gameName.setBlocks(
+        loc.x + xBoundary[0] + 1, loc.y + 0, loc.z + zBoundary[0] + 1,
+        loc.x + xBoundary[1] - 1, loc.y + 6, loc.z + zBoundary[1] - 1,
+        block.AIR.id)
 
 # --------------------
 # placeDoor
@@ -137,7 +147,7 @@ def placeNoteBlock(loc, configWay, hitNum, minDelay, rN, cRPL, processedList, ga
                     gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.GRASS.id)
                 if 48 <= processedList[j][1][k] <= 72:      # high range, use glockenspiel timbre
                     gameName.setNoteBlock(loc.x + cRPL[k], loc.y, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), processedList[j][1][k] - 48)
-                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.GOLD_BLOCK.id)
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.BONE_BLOCK.id)
 
 # --------------------
 # placeRepeater
@@ -215,7 +225,7 @@ def constructRedstoneSystem(cL, gameName):      # cL means configurationList
 
     gameName.postToChat("")
     gameName.postToChat("Attaching...")
-    gameName.postToChat("This can take several minutes for a medium-sized midi file. Get a cup of coffee while waiting for it to finish!")
+    gameName.postToChat("This can take several seconds for a medium-sized midi file. Be aware of the changes in your world -- it's pretty fun.")
     gameName.postToChat("")
 
     # cL[0] is configWay, [1] is preProcessResult, [2] is columnRelativePlacingList, [3] is processedList
