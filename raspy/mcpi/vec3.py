@@ -1,3 +1,6 @@
+from random import randint
+
+
 class Vec3:
     def __init__(self, x=0, y=0, z=0):
         self.x = x
@@ -88,7 +91,7 @@ class Vec3:
     def cubeCenter(self, len):
         """Get a tuple of two points (vec1, vec2) to create a cube whose center is self"""
         p = Vec3(len // 2, len // 2, len // 2)
-        return (self.__add__(p), self.__sub__(p))
+        return self.__add__(p), self.__sub__(p)
 
     def cubeAbove(self, len):
         """Get a tuple of two points (vec1, vec2) to create a cube whose floor center is self"""
@@ -100,6 +103,24 @@ class Vec3:
         """Get a tuple of two points (vec1, vec2) to create a cube whose NW vertex is self"""
         center = self.clone() + Vec3(len // 2, len // 2, len // 2)
         return center.cubeCenter(len)
+
+    def flatCenter(self, len, height):
+        """Get a tuple of two points (vec1, vec2) to create a flat cuboid"""
+        p = Vec3(len // 2, height // 2, len // 2)
+        return self.__add__(p), self.__sub__(p)
+
+    def flatVertex(self, len, height):
+        """Get a tuple of two points (vec1, vec2) to create a flat cuboid"""
+        return self, self.__add__(Vec3(len, height, len))
+
+    def flatAbove(self, len, height):
+        """Get a tuple of two points (vec1, vec2) to create a flat cuboid"""
+        return self.up(height // 2).flatCenter(len, height)
+
+    def randFlatCenter(self, len):
+        """Get a random position of the same height within len * len square"""
+        return self.clone() + Vec3(randint(-len // 2, len // 2),
+                                   0, randint(-len // 2, len // 2))
 
     # Deviations: top (go up), bottom (go down), east, west, south, north
     def t(self, l: int = 1):

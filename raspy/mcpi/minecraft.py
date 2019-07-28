@@ -1,6 +1,8 @@
+from typing import List
+
 from .connection import Connection
 from .vec3 import Vec3
-from .event import BlockEvent, ChatEvent
+from .event import *
 from .entity import Entity
 from .block import Block
 import math
@@ -182,6 +184,12 @@ class CmdEvents:
         events = [e for e in s.split("|") if e]
         return [ChatEvent.Post(int(e[:e.find(",")]), e[e.find(",") + 1:]) for e in events]
 
+    def pollDeaths(self) -> List[PlayerDeathEvent]:
+        """Triggered by player death"""
+        s = self.conn.sendReceive(b"events.player.death")
+        events = [e for e in s.split("|") if e]
+        return [PlayerDeathEvent(*e.split(',')) for e in events]
+
 
 class Minecraft:
     """The main class to interact with a running instance of Minecraft Pi."""
@@ -215,6 +223,14 @@ class Minecraft:
     def setBlocks(self, *args):
         """Set a cuboid of blocks (x0,y0,z0,x1,y1,z1,id,[data])"""
         self.conn.send(b"world.setBlocks", intFloor(args))
+
+    def setNoteBlock(self, *args, data=''):
+        """Set note box (x,y,z,pitch,[data]), 0 <= pitch <= 24"""
+        self.conn.send(b"world.setNoteBlock", intFloor(args), data)
+
+    def setPitch(self, *args):
+        """(x,y,z,pitch) Set note to target pitch if the target location is a noteblock"""
+        self.conn.send(b"world.setNote", intFloor(args))
 
     def setSign(self, *args):
         """Set a sign (x,y,z,id,data,[line1,line2,line3,line4])
@@ -260,6 +276,7 @@ class Minecraft:
         self.conn.send(b"chat.post", msg)
 
     def execute(self, cmd: str):
+        """Execute vanilla command (cmd)"""
         self.conn.send(b"server.executeCommand", cmd)
 
     def setting(self, setting, status):
@@ -272,9 +289,29 @@ class Minecraft:
         types = [t for t in s.split("|") if t]
         return [Entity(int(e[:e.find(",")]), e[e.find(",") + 1:]) for e in types]
 
-    # def execute(self, cmd):
-    #     """Execute vanilla command (msg)"""
-    #     self.conn.send(b"", cmd)
+    # Pseudo-commands
+    def setGamemode(self, id: int, gamemode: str):
+        """gamemode can only be 'survival', 'creative', 'adventure' or 'spectator'"""
+        self.execute(' '.join(["gamemode", gamemode, self.entity.getName(id)]))
+
+    def clearDrop(self):
+        """Clear all dropped items"""
+        self.execute("kill @e[type=item]")
+
+    def tpAllPlayers(self, pos: Vec3):
+        """Spectators excluded"""
+        self.execute("tp @a {} {} {}".format(*pos))
+
+    def clearInventory(self, id: int):
+        self.execute("clear " + self.entity.getName(id))
+
+    def tell(self, id: int, message: str):
+        """Send message to a player"""
+        self.execute(' '.join(["tell", self.entity.getName(id), message]))
+
+    def setWeather(self, weather: str, time=0):
+        """weather can only be "clear", "rain" or "thunder\""""
+        self.execute(' '.join(["weather", weather, str(time) if time > 0 else '']))
 
     @staticmethod
     def create(address="localhost", port=4711):
