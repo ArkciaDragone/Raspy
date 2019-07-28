@@ -9,7 +9,7 @@ from time import sleep
 
 
 class AngryAnvil(Level):
-    LENGTH = 20
+    LENGTH = 70
     NUMBER = LENGTH // 4
     FLASH_PERIOD = 0.5
     FLASH_TIMES = 3

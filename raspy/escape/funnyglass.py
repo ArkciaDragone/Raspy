@@ -8,9 +8,7 @@ from time import sleep
 
 
 class FunnyGlass(Level):
-    LENGTH = 20
-
-    LENGTH = 20
+    LENGTH = 40
     def exitWin(entrance: Window):
         dir = entrance.direction
         if dir == Dir.N:

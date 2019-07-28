@@ -9,7 +9,7 @@ import random
 
 
 class TerrifyLava(Level):
-    LENGTH = 20
+    LENGTH = 30
     HEIGHT = 7
 
     @staticmethod
