@@ -1,6 +1,6 @@
 # --------------------
 # (main) startMidi.py
-# v0.1.4 - 2019/7/28
+# v0.1.5 - 2019/7/28
 # Double-click this to launch the program!
 # --------------------
 
@@ -23,6 +23,7 @@ mc.postToChat("")
 # --------------------
 
 def retry():
+
     mc.events.clearAll()
 
     while True:
@@ -36,19 +37,21 @@ def retry():
                 a = int(userChoice)
 
             except ValueError:      # userChoice is not an integer
+                mc.postToChat("")
                 mc.postToChat("Process aborted.")
                 mc.postToChat("")
                 sys.exit(0)
-
+                
             else:
-                if int(userChoice) == 1:
+                if a == 1:
+                    mc.events.clearAll()
                     mc.postToChat("")
                     mc.postToChat("Process restarted.")
                     mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
                     mc.postToChat("")
-                    mc.events.clearAll()
                     break
                 else:
+                    mc.events.clearAll()
                     mc.postToChat("")
                     mc.postToChat("Process aborted.")
                     mc.postToChat("")

@@ -89,11 +89,55 @@ def placeDoor(loc, zBoundary, gameName):
 # placeNoteBlock
 # --------------------
 
-def placeNoteBlock(loc, hitNum, minDelay, rN, cRPL, processedList, gameName):
-    for j in range(0, hitNum):
-        for k in range(0, len(processedList[j][1])):      # the number of notes in noteProcessedList[j]
-            gameName.setNoteBlock(loc.x + cRPL[k], loc.y, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), processedList[j][1][k])
-            gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.GRASS.id)      # the timbre of harp/piano
+def placeNoteBlock(loc, configWay, hitNum, minDelay, rN, cRPL, processedList, gameName):
+
+    if configWay[0] == 1:
+        for j in range(0, hitNum):
+            for k in range(0, len(processedList[j][1])):      # the number of notes in noteProcessedList[j]
+                gameName.setNoteBlock(loc.x + cRPL[k], loc.y, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), processedList[j][1][k])
+
+        if configWay[1] == 1:      # harp/piano timbre
+            for j in range(0, hitNum):
+                for k in range(0, len(processedList[j][1])):
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.GRASS.id)
+        elif configWay[1] == 2:      # double bass timbre
+            for j in range(0, hitNum):
+                for k in range(0, len(processedList[j][1])):
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.WOOD.id)
+        elif configWay[1] == 3:      # glockenspiel timbre
+            for j in range(0, hitNum):
+                for k in range(0, len(processedList[j][1])):
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.GOLD_BLOCK.id)
+        elif configWay[1] == 4:      # flute timbre
+            for j in range(0, hitNum):
+                for k in range(0, len(processedList[j][1])):
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.CLAY.id)
+        elif configWay[1] == 5:      # chime timbre
+            for j in range(0, hitNum):
+                for k in range(0, len(processedList[j][1])):
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.PACKED_ICE.id)
+        elif configWay[1] == 6:      # guitar timbre
+            for j in range(0, hitNum):
+                for k in range(0, len(processedList[j][1])):
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.WOOL.id)
+        elif configWay[1] == 7:      # xylophone timbre
+            for j in range(0, hitNum):
+                for k in range(0, len(processedList[j][1])):
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.BONE_BLOCK.id)
+
+    if configWay[0] == 2:
+
+        for j in range(0, hitNum):
+            for k in range(0, len(processedList[j][1])):
+                if 0 <= processedList[j][1][k] < 24:      # low range, use double bass timbre
+                    gameName.setNoteBlock(loc.x + cRPL[k], loc.y, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), processedList[j][1][k])
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.WOOD.id)
+                if 24 <= processedList[j][1][k] < 48:      # medium range, use harp/piano timbre
+                    gameName.setNoteBlock(loc.x + cRPL[k], loc.y, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), processedList[j][1][k] - 24)
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.GRASS.id)
+                if 48 <= processedList[j][1][k] <= 72:      # high range, use glockenspiel timbre
+                    gameName.setNoteBlock(loc.x + cRPL[k], loc.y, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), processedList[j][1][k] - 48)
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.GOLD_BLOCK.id)
 
 # --------------------
 # placeRepeater
@@ -173,20 +217,20 @@ def constructRedstoneSystem(cL, gameName):      # cL means configurationList
     gameName.postToChat("Attaching...")
     gameName.postToChat("")
 
-    # cL[0] is preProcessResult, [1] is columnRelativePlacingList, [2] is processedList
-    # cL[0][0] is hitNum, [0][1] is voiceMax, [0][2] is minDelay, [0][3] is repeaterNum
-    theXBoundary = xBoundary(cL[1])
-    theZBoundary = zBoundary(cL[0][2], cL[0][3], cL[2])
+    # cL[0] is configWay, [1] is preProcessResult, [2] is columnRelativePlacingList, [3] is processedList
+    # cL[1][0] is hitNum, [1][1] is voiceMax, [1][2] is minDelay, [1][3] is repeaterNum
+    theXBoundary = xBoundary(cL[2])
+    theZBoundary = zBoundary(cL[1][2], cL[1][3], cL[3])
 
     placeStone(loc, theXBoundary, theZBoundary, gameName)
     placeGlass(loc, theXBoundary, theZBoundary, gameName)
     placeAir(loc, theXBoundary, theZBoundary, gameName)
     placeDoor(loc, theZBoundary, gameName)
 
-    placeNoteBlock(loc, cL[0][0], cL[0][2], cL[0][3], cL[1], cL[2], gameName)
-    placeRepeater(loc, cL[0][0], cL[0][2], cL[0][3], cL[1], cL[2], gameName)
-    placeRedstoneWire(loc, cL[0][0], cL[0][1], cL[0][2], cL[0][3], cL[1], cL[2], gameName)
-    placeBaseLine(loc, cL[1], gameName)
+    placeNoteBlock(loc, cL[0], cL[1][0], cL[1][2], cL[1][3], cL[2], cL[3], gameName)
+    placeRepeater(loc, cL[1][0], cL[1][2], cL[1][3], cL[2], cL[3], gameName)
+    placeRedstoneWire(loc, cL[1][0], cL[1][1], cL[1][2], cL[1][3], cL[2], cL[3], gameName)
+    placeBaseLine(loc, cL[2], gameName)
 
     gameName.postToChat("Midi file successfully processed and attached in-game!")
     gameName.postToChat("If you wish to process another, reload the program.")
