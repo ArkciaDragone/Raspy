@@ -14,10 +14,6 @@ import constructSystem as cs
 
 mc = tools.start(0)
 
-mc.postToChat("")
-mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
-mc.postToChat("")
-
 # --------------------
 # retry
 # --------------------
@@ -62,6 +58,12 @@ def retry():
 # --------------------
 
 if __name__ == "__main__":
+    
+    mc.postToChat("")
+    mc.postToChat("Music Lab v0.1.5 initiated!")
+    mc.postToChat("")
+    mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
+    mc.postToChat("")
 
     while True:
         

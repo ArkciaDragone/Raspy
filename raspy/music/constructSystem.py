@@ -215,6 +215,7 @@ def constructRedstoneSystem(cL, gameName):      # cL means configurationList
 
     gameName.postToChat("")
     gameName.postToChat("Attaching...")
+    gameName.postToChat("This can take several minutes for a medium-sized midi file. Get a cup of coffee while waiting for it to finish!")
     gameName.postToChat("")
 
     # cL[0] is configWay, [1] is preProcessResult, [2] is columnRelativePlacingList, [3] is processedList
