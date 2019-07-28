@@ -45,27 +45,35 @@ class CalmLadder(Level):
         halfwidth = width // 2
         x, y, z = self.entWin.middle
         if direc == Dir.N:
-            for i in range(x - halfwidth, x + halfwidth, 2):
-                for j in range(y - 1, y + self.HEIGHT, 3):
-                    for k in range(z - width - 2, z - 1, 2):
+            self.mc.setBlocks(start.x - halfwidth, start.y - 1, start.z, start.x + halfwidth, 0,
+                              start.z - self.entWin.width, 0)
+            for i in range(x - halfwidth, x + halfwidth, 3):
+                for j in range(y - 3, y + CalmLadder.HEIGHT, 3):
+                    for k in range(z - width, z, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)
         elif direc == Dir.S:
-            for i in range(x - halfwidth, x + halfwidth, 2):
-                for j in range(y - 1, y + self.HEIGHT, 3):
-                    for k in range(z + 1, z + width + 2, 2):
+            self.mc.setBlocks(start.x - halfwidth, start.y - 1, start.z, start.x + halfwidth, 0,
+                              start.z + self.entWin.width, 0)
+            for i in range(x - halfwidth, x + halfwidth, 3):
+                for j in range(y - 3, y + CalmLadder.HEIGHT, 3):
+                    for k in range(z, z + width, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)
         elif direc == Dir.E:
-            for i in range(x + 1, x + width + 2, 2):
-                for j in range(y - 1, y + self.HEIGHT, 3):
-                    for k in range(z - halfwidth, z + halfwidth, 2):
+            self.mc.setBlocks(start.x, start.y - 1, start.z - halfwidth, start.x + self.entWin.width, 0,
+                              start.z + halfwidth, 0)
+            for i in range(x, x + width, 3):
+                for j in range(y - 3, y + CalmLadder.HEIGHT, 3):
+                    for k in range(z - halfwidth, z + halfwidth, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)
         elif direc == Dir.W:
-            for i in range(x - width - 2, x - 1, 2):
-                for j in range(y - 1, y + self.HEIGHT, 3):
-                    for k in range(z - halfwidth, z + halfwidth, 2):
+            self.mc.setBlocks(start.x, start.y - 1, start.z - halfwidth, start.x - self.entWin.width, 0,
+                              start.z + halfwidth, 0)
+            for i in range(x - width, x, 3):
+                for j in range(y - 3, y + CalmLadder.HEIGHT, 3):
+                    for k in range(z - halfwidth, z + halfwidth, 3):
                         m = random.randint(0, 3)
                         self.setblock(i + m, j + m, k + m)
 
