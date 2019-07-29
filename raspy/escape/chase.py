@@ -7,7 +7,7 @@ game initilization. Maintains level and player status.
 import sys
 
 sys.path.append("..")
-from typing import Dict, Type, Any, List
+from typing import Dict, Type
 from random import choice, randint
 from multiprocessing import Process, Pipe
 from escape.angryanvil import AngryAnvil
@@ -29,7 +29,6 @@ class Chase:
     SPAWN_LEN = 9
     SPAWN_HEI = 9
     SPAWN_BLK = block.QUARTZ_BLOCK.id
-    # LEVEL_LIST: List[Type[Level]] = [AngryAnvil]
     LEVEL_LIST: List[Type[Level]] = [FunnyGlass, AngryAnvil, TerrifyLava]
 
     def __init__(self, address='localhost', port=4711, spawn_point=V3(-1234, 64, -1234), direction=Dir.S):
@@ -52,7 +51,7 @@ class Chase:
         for p in players:
             self.mc.clearInventory(p)
             self.mc.entity.setTilePos(p, self.spawn_point.up().randFlatCenter(min(self.SPAWN_LEN - 2, 3)))
-            #self.mc.setGamemode(p, "adventure")
+            # self.mc.setGamemode(p, "adventure")
         self.forward()
         while True:
             self.update_pos()

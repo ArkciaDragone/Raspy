@@ -16,7 +16,8 @@ class AngryAnvil(Level):
     ANV = block.ANVIL.id
     SHC = block.STAINED_HARDENED_CLAY.id
     SND = block.SANDSTONE.id
-    
+
+    @staticmethod
     def exitWin(entrance: Window):
         dir = entrance.direction
         if dir == Dir.N:
