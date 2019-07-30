@@ -185,6 +185,20 @@ def placeRedstoneWire(loc, hitNum, voiceMax, minDelay, rN, cRPL, processedList, 
                 gameName.setBlock(loc.x + cRPL[n], loc.y, loc.z + 4 + m * (2 + rN), block.REDSTONE_WIRE.id)
 
 # --------------------
+# placeTorch
+# --------------------
+
+def placeTorch(loc, zBoundary, rN, cRPL, gameName):
+    # place torch every three rows of repeaters
+    for i in range(cRPL[0] - 1, cRPL[-1] + 2, 2):
+        m = -3
+        while True:
+            m += 3
+            if 6 + m * (2 + rN) > zBoundary[1]:
+                break
+            gameName.setBlock(loc.x + i, loc.y, loc.z + 6 + m * (2 + rN), block.TORCH.id)
+
+# --------------------
 # placeBaseLine
 # --------------------
 
@@ -224,7 +238,7 @@ def constructRedstoneSystem(cL, gameName):      # cL means configurationList
 
     gameName.postToChat("")
     gameName.postToChat("Attaching...")
-    gameName.postToChat("This can take several seconds for a medium-sized midi file. Be aware of the changes in your world -- it's pretty fun.")
+    gameName.postToChat("This takes less than a minute for a medium-sized midi file.")
     gameName.postToChat("")
 
     # cL[0] is configWay, [1] is preProcessResult, [2] is columnRelativePlacingList, [3] is processedList
@@ -241,6 +255,8 @@ def constructRedstoneSystem(cL, gameName):      # cL means configurationList
     placeRepeater(loc, cL[1][0], cL[1][2], cL[1][3], cL[2], cL[3], gameName)
     placeRedstoneWire(loc, cL[1][0], cL[1][1], cL[1][2], cL[1][3], cL[2], cL[3], gameName)
     placeBaseLine(loc, cL[2], gameName)
+
+    placeTorch(loc, theZBoundary, cL[1][3], cL[2], gameName)
 
     gameName.postToChat("Midi file successfully processed and attached in-game!")
     gameName.postToChat("If you wish to process another, reload the program.")
