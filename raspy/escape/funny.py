@@ -11,7 +11,7 @@ from mcpi import block,entity
 class Funny(Level):
     LENGTH = 30
     HALFWIDTH = 4
-
+    WIDTH = 2 * HALFWIDTH +1
     @staticmethod
     def exitWin(entrance: Window):
         dir = entrance.direction
@@ -31,7 +31,9 @@ class Funny(Level):
         setbs = self.mc.setBlocks
         x, y, z = self.entWin.middle
         WIDTH = self.entWin.width
+        HEIGHT = self.entWin.height
         HALFWIDTH = Funny.HALFWIDTH
+        WIDTHmy = Funny.WIDTH
         direction = self.entWin.direction
         
         wall = block.STONE_BRICK.id
@@ -41,12 +43,22 @@ class Funny(Level):
         deco1 = block.DIAMOND_BLOCK.id
         deco2 = block.PUMPKIN.id
         sand = block.SAND.id
+        air = block.AIR.id
         entity1 = entity.HORSE.id
         entity2 = entity.ENDERMAN.id
         
         
         if direction == Dir.E:
             ##主墙
+            
+            if WIDTH > WIDTHmy :
+                setbs(x,y,z-WIDTH//2,x,y+HEIGHT,z+WIDTH//2,deco2)
+                setbs(x,y,z-HALFWIDTH,x,y+7,z+HALFWIDTH,air)
+            elif WIDTH < WIDTHmy :
+                setbs(x,y,z-HALFWIDTH,x,y+7,z+HALFWIDTH,deco2)
+                setbs(x,y,z-WIDTH//2,x,y+HEIGHT,z+WIDTH//2,air)
+            
+            
             setbs(x,y-1,z-HALFWIDTH-1,x+LENGTH,y-1,z+HALFWIDTH+1,wall)
             setbs(x,y-1,z-HALFWIDTH-1,x+LENGTH,y+7,z-HALFWIDTH-1,wall)
             setbs(x,y-1,z+HALFWIDTH+1,x+LENGTH,y+7,z+HALFWIDTH+1,wall)
@@ -81,6 +93,14 @@ class Funny(Level):
                    
         elif direction == Dir.W:
             ##
+            if WIDTH > WIDTHmy :
+                setbs(x,y,z-WIDTH//2,x,y+HEIGHT,z+WIDTH//2,deco2)
+                setbs(x,y,z-HALFWIDTH,x,y+7,z+HALFWIDTH,air)
+            elif WIDTH < WIDTHmy :
+                setbs(x,y,z-HALFWIDTH,x,y+7,z+HALFWIDTH,deco2)
+                setbs(x,y,z-WIDTH//2,x,y+HEIGHT,z+WIDTH//2,air)
+            
+            
             setbs(x,y-1,z-HALFWIDTH-1,x-LENGTH,y-1,z+HALFWIDTH+1,wall)
             setbs(x,y-1,z-HALFWIDTH-1,x-LENGTH,y+7,z-HALFWIDTH-1,wall)
             setbs(x,y-1,z+HALFWIDTH+1,x-LENGTH,y+7,z+HALFWIDTH+1,wall)
@@ -117,6 +137,15 @@ class Funny(Level):
                     
         elif direction == Dir.N:
             ##主墙
+          
+            if WIDTH > WIDTHmy :
+                setbs(x-WIDTH//2,y,z,x+WIDTH//2,y+HEIGHT,z,deco2)
+                setbs(x-HALFWIDTH,y,z,x+HALFWIDTH,y+7,z,air)
+            elif WIDTH < WIDTHmy :
+                setbs(x-HALFWIDTH,y,z,x+HALFWIDTH,y+7,z,deco2)
+                setbs(x-WIDTH//2,y,z,x+WIDTH//2,y+HEIGHT,z,air)
+            
+            
             setbs(x-HALFWIDTH-1,y-1,z,x+HALFWIDTH+1,y-1,z-LENGTH,wall)
             setbs(x-HALFWIDTH-1,y-1,z,x-HALFWIDTH-1,y+7,z-LENGTH,wall)
             setbs(x+HALFWIDTH+1,y-1,z,x+HALFWIDTH+1,y+7,z-LENGTH,wall)
@@ -150,6 +179,15 @@ class Funny(Level):
                     
         elif direction == Dir.S:
            ##主墙
+            if WIDTH > WIDTHmy :
+                setbs(x-WIDTH//2,y,z,x+WIDTH//2,y+HEIGHT,z,deco2)
+                setbs(x-HALFWIDTH,y,z,x+HALFWIDTH,y+7,z,air)
+            elif WIDTH < WIDTHmy :
+                setbs(x-HALFWIDTH,y,z,x+HALFWIDTH,y+7,z,deco2)
+                setbs(x-WIDTH//2,y,z,x+WIDTH//2,y+HEIGHT,z,air)
+           
+           
+           
             setbs(x-HALFWIDTH-1,y-1,z,x+HALFWIDTH+1,y-1,z+LENGTH,wall)
             setbs(x-HALFWIDTH-1,y-1,z,x-HALFWIDTH-1,y+7,z+LENGTH,wall)
             setbs(x+HALFWIDTH+1,y-1,z,x+HALFWIDTH+1,y+7,z+LENGTH,wall)
