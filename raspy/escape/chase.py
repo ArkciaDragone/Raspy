@@ -32,7 +32,6 @@ class Chase:
     SPAWN_BLK = block.QUARTZ_BLOCK.id
     # LEVEL_LIST: List[Type[Level]] = [AngryAnvil]
     LEVEL_LIST: List[Type[Level]] = [AngryAnvil, TerrifyLava, FunnyGlass,Funny]
-
     def __init__(self, address='localhost', port=4711, spawn_point=V3(-1234, 64, -1234), direction=Dir.S):
         self.frontier = 0  # The index of the next level to construct
         self.spawn_point = spawn_point
