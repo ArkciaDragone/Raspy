@@ -14,6 +14,7 @@ from escape.angryanvil import AngryAnvil
 from escape.calmladder import CalmLadder
 from escape.terrifylava import TerrifyLava
 from escape.funnyglass import FunnyGlass
+from escape.funny import Funny
 from escape.interface import *
 from mcpi import minecraft as mmc
 from mcpi import block as block
@@ -30,7 +31,7 @@ class Chase:
     SPAWN_HEI = 9
     SPAWN_BLK = block.QUARTZ_BLOCK.id
     # LEVEL_LIST: List[Type[Level]] = [AngryAnvil]
-    LEVEL_LIST: List[Type[Level]] = [AngryAnvil, TerrifyLava, FunnyGlass]
+    LEVEL_LIST: List[Type[Level]] = [AngryAnvil, TerrifyLava, FunnyGlass,Funny]
 
     def __init__(self, address='localhost', port=4711, spawn_point=V3(-1234, 64, -1234), direction=Dir.S):
         self.frontier = 0  # The index of the next level to construct
