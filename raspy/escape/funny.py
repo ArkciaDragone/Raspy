@@ -4,6 +4,7 @@ Theme: Funny
 """
 from escape.interface import *
 import random
+from mcpi import block
 
 
 class Funny(Level):
