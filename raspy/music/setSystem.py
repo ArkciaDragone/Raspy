@@ -3,7 +3,7 @@
 # Use the results from readMidiFile to configure the redstone system
 # 
 # Important Note:
-# Package "statistics" should be pre-installed to run this application.
+# Packages "statistics" and "numpy" should be pre-installed to run this application.
 # Use "pip install <package-name>" in cmd to install.
 # --------------------
 
@@ -12,6 +12,7 @@ sys.path.append("..")
 
 from math import floor, ceil
 from statistics import mean
+from numpy import gcd
 import readMidiFile as rmf
 import askConfigWay as acw
 
@@ -33,29 +34,6 @@ def setMiddlePitch(configWay):
             return [1, 54]      # 54 = F#3
     elif configWay[0] == 2:
         return [2, 66]
-
-# --------------------
-# gcd
-# --------------------
-
-def gcd(numList):
-
-    if len(numList) == 1:      # there's only one chord in the midi file
-        return 1
-
-    else:
-    
-        while len(numList) > 1:
-            a = numList[len(numList) - 2]
-            b = numList[len(numList) - 1]
-            numList = numList[:len(numList) - 2]
-            
-            while a:
-                a, b = b % a, a
-                
-            numList.append(b)
-        
-            return b
 
 # --------------------
 # averagePitch
@@ -94,7 +72,7 @@ def preProcess(hitList, middlePitch):
     if voiceMax > 15:
         raise ValueError("Too many voices")      # the initial redstone signal cannot reach columns which are too far
 
-    minDelay = gcd([hit[0] for hit in hitList])
+    minDelay = gcd.reduce([hit[0] for hit in hitList])
 
     repeaterNum = ceil(minDelay / 4)
     

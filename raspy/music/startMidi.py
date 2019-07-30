@@ -1,6 +1,6 @@
 # --------------------
 # (main) startMidi.py
-# v0.1.6 - 2019/7/28
+# v0.1.7 - 2019/7/30
 # Double-click this to launch the program!
 # --------------------
 

@@ -147,7 +147,7 @@ def placeNoteBlock(loc, configWay, hitNum, minDelay, rN, cRPL, processedList, ga
                     gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.GRASS.id)
                 if 48 <= processedList[j][1][k] <= 72:      # high range, use glockenspiel timbre
                     gameName.setNoteBlock(loc.x + cRPL[k], loc.y, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), processedList[j][1][k] - 48)
-                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.BONE_BLOCK.id)
+                    gameName.setBlock(loc.x + cRPL[k], loc.y - 1, loc.z + 4 + processedList[j][0] / minDelay * (2 + rN), block.GOLD_BLOCK.id)
 
 # --------------------
 # placeRepeater
@@ -176,9 +176,8 @@ def placeRedstoneWire(loc, hitNum, voiceMax, minDelay, rN, cRPL, processedList, 
     
     # also place a redstone wire if "3 + processedList[j][0] / minDelay * (2 + rN)" has no note block because of note lacking on this specific voice
     for k in range(0, hitNum):
-        if len(processedList[k][1]) != voiceMax:      # means there's note block lacking
-            for l in range(len(processedList[k][1]), voiceMax):
-                gameName.setBlock(loc.x + cRPL[l], loc.y, loc.z + 4 + processedList[k][0] / minDelay * (2 + rN), block.REDSTONE_WIRE.id)
+        for l in range(len(processedList[k][1]), voiceMax):
+            gameName.setBlock(loc.x + cRPL[l], loc.y, loc.z + 4 + processedList[k][0] / minDelay * (2 + rN), block.REDSTONE_WIRE.id)
 
     for m in range(0, int(processedList[-1][0] / minDelay)):
         if m * minDelay not in [processedListMember[0] for processedListMember in processedList]:

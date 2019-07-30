@@ -1,8 +1,8 @@
-# Music Lab - alpha v0.1.6
+# Music Lab - alpha v0.1.7
 
 欢迎测试Alpha版Music Lab！
 
-开始的方式很简单：点击运行startMidi.py即可，不过您需要事先安装statistics、mido、pprint三个package。
+开始的方式很简单：点击运行startMidi.py即可，不过您需要事先安装statistics、numpy、mido、pprint四个package。
 
 程序会首先要求您输入midi文件的路径，详细输入方法请参考程序指示。建议您把需要添加的midi文件直接放在桌面，这样您只需输入“-/Users/*your-name*/Desktop/*your-file*.mid”即可。请注意，需要在路径前面添加“-”，不然Minecraft会因为路径最前面是“/”而认定其为游戏内部指令，从而影响程序进程。
 
