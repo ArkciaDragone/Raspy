@@ -12,6 +12,7 @@ from random import choice, randint
 from multiprocessing import Process, Pipe
 from escape.angryanvil import AngryAnvil
 from escape.funnyglass import FunnyGlass
+from escape.funny import Funny
 from escape.terrifylava import TerrifyLava
 from escape.calmladder import CalmLadder
 from escape.funny import Funny
@@ -31,8 +32,7 @@ class Chase:
     SPAWN_HEI = 9
     SPAWN_BLK = block.QUARTZ_BLOCK.id
     # LEVEL_LIST: List[Type[Level]] = [AngryAnvil]
-    LEVEL_LIST: List[Type[Level]] = [AngryAnvil, FunnyGlass, TerrifyLava, CalmLadder]
-
+    LEVEL_LIST: List[Type[Level]] = [AngryAnvil, FunnyGlass, TerrifyLava, CalmLadder, Funny]
     def __init__(self, address='localhost', port=4711, spawn_point=V3(-1234, 64, -1234), direction=Dir.S):
         self.frontier = 0  # The index of the next level to construct
         self.spawn_point = spawn_point

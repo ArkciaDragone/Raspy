@@ -9,7 +9,7 @@ from time import sleep
 
 
 class AngryAnvil(Level):
-    LENGTH = 30
+    LENGTH = 50
     NUMBER = LENGTH // 4
     FLASH_PERIOD = 0.2
     FLASH_TIMES = 3
@@ -29,6 +29,7 @@ class AngryAnvil(Level):
         elif dir == Dir.W:
             entrance.middle.x -= AngryAnvil.LENGTH
         entrance.height = 7
+        entrance.width = 3
         return entrance
 
     def _construct(self):
@@ -36,30 +37,31 @@ class AngryAnvil(Level):
         setbs = self.mc.setBlocks
         x, y, z = self.entWin.middle
         width = self.entWin.width
+        print(width)
         if self.entWin.direction == Dir.N:
             setbs(x - 1, y - 1, z, x + 1, y - 1, z - LENGTH, AngryAnvil.SHC, 4)
             setbs(x - 2, y - 1, z, x - 2, y + 7, z - LENGTH, AngryAnvil.SND, 1)
             setbs(x + 2, y - 1, z, x + 2, y + 7, z - LENGTH, AngryAnvil.SND, 1)
-            setbs(x - width // 2, y - 1, z, x - 2, y + 7, z, AngryAnvil.SND, 1)
-            setbs(x + width // 2, y - 1, z, x + 2, y + 7, z, AngryAnvil.SND, 1)
+            setbs(x - width // 2 - 1, y, z, x - 2, y + 7, z, AngryAnvil.SND, 1)
+            setbs(x + width // 2 + 1, y, z, x + 2, y + 7, z, AngryAnvil.SND, 1)
         elif self.entWin.direction == Dir.S:
             setbs(x - 1, y - 1, z, x + 1, y - 1, z + LENGTH, AngryAnvil.SHC, 4)
             setbs(x - 2, y - 1, z, x - 2, y + 7, z + LENGTH, AngryAnvil.SND, 1)
             setbs(x + 2, y - 1, z, x + 2, y + 7, z + LENGTH, AngryAnvil.SND, 1)
-            setbs(x - width // 2, y - 1, z, x - 2, y + 7, z, AngryAnvil.SND, 1)
-            setbs(x + width // 2, y - 1, z, x + 2, y + 7, z, AngryAnvil.SND, 1)
+            setbs(x - width // 2 - 1, y, z, x - 2, y + 7, z, AngryAnvil.SND, 1)
+            setbs(x + width // 2 + 1, y, z, x + 2, y + 7, z, AngryAnvil.SND, 1)
         elif self.entWin.direction == Dir.E:
             setbs(x, y - 1, z - 1, x + LENGTH, y - 1, z + 1, AngryAnvil.SHC, 4)
             setbs(x, y - 1, z - 2, x + LENGTH, y + 7, z - 2, AngryAnvil.SND, 1)
             setbs(x, y - 1, z + 2, x + LENGTH, y + 7, z + 2, AngryAnvil.SND, 1)
-            setbs(x, y - 1, z - width // 2, x, y + 7, z - 2, AngryAnvil.SND, 1)
-            setbs(x, y - 1, z + width // 2, x, y + 7, z + 2, AngryAnvil.SND, 1)
+            setbs(x, y, z - width // 2 - 1, x, y + 7, z - 2, AngryAnvil.SND, 1)
+            setbs(x, y, z + width // 2 + 1, x, y + 7, z + 2, AngryAnvil.SND, 1)
         elif self.entWin.direction == Dir.W:
             setbs(x, y - 1, z - 1, x - LENGTH, y - 1, z + 1, AngryAnvil.SHC, 4)
             setbs(x, y - 1, z - 2, x - LENGTH, y + 7, z - 2, AngryAnvil.SND, 1)
             setbs(x, y - 1, z + 2, x - LENGTH, y + 7, z + 2, AngryAnvil.SND, 1)
-            setbs(x, y - 1, z - width // 2, x, y + 7, z - 2, AngryAnvil.SND, 1)
-            setbs(x, y - 1, z + width // 2, x, y + 7, z + 2, AngryAnvil.SND, 1)
+            setbs(x, y, z - width // 2 - 1, x, y + 7, z - 2, AngryAnvil.SND, 1)
+            setbs(x, y, z + width // 2 + 1, x, y + 7, z + 2, AngryAnvil.SND, 1)
 
     def area(self) -> List[Tuple[int, int, int]]:
         """选定并返回闪烁地点"""
