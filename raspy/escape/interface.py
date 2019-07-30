@@ -5,12 +5,12 @@ The controlling program is called "Chase"
 Level generators, defined below, are called "Level"
 """
 import sys
+from multiprocessing import SimpleQueue
 from typing import List, Tuple, Iterable
 import mcpi.minecraft as mmc
 from abc import ABC, abstractmethod
 from mcpi.vec3 import Vec3 as V3
 from enum import Enum, IntEnum
-from multiprocessing.connection import Connection
 
 
 class Dir(Enum):
@@ -72,7 +72,7 @@ class Level(ABC):
         """Tell Chase your exit Window. Both Chase and Level can make use of it"""
         pass
 
-    def __init__(self, conn: Connection, address: str, port: int, entWin: Window):
+    def __init__(self, queue: SimpleQueue, address: str, port: int, entWin: Window):
         """Initialize a level generator
 
         conn: Used to communicate with the Chase
@@ -80,14 +80,14 @@ class Level(ABC):
         port: Connection port to start a new mcpi connection
         entrance: The entrance window to begin level with
         """
-        self.conn = conn
+        self.queue = queue
         self.mc = mmc.Minecraft.create(address, port)
         self.entWin = entWin
         self._construct()
         self.players = []
         while True:
-            while conn.poll():
-                rec: Tuple[Cmd, List] = conn.recv()  # New msg
+            while not queue.empty():
+                rec: Tuple[Cmd, List] = queue.get()  # New msg
                 if rec[0] == Cmd.TERM:
                     self._cleanup()
                     return
