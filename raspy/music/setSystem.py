@@ -72,7 +72,10 @@ def preProcess(hitList, middlePitch):
     if voiceMax > 15:
         raise ValueError("Too many voices")      # the initial redstone signal cannot reach columns which are too far
 
-    minDelay = gcd.reduce([hit[0] for hit in hitList])
+    if hitNum == 1:
+        minDelay = 1      # otherwise minDelay will calculate as 0, thus causing NaN in constructSystem
+    else:
+        minDelay = gcd.reduce([hit[0] for hit in hitList])
 
     repeaterNum = ceil(minDelay / 4)
     

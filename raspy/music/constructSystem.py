@@ -27,9 +27,12 @@ def xBoundary(cRPL):
 
 def zBoundary(minDelay, rN, processedList):
     """Define the vertical boundary of glass cover"""
-    totalNoteBlockNum = int(processedList[-1][0] / minDelay) + 1
-    totalLength = 4 + (totalNoteBlockNum - 1) * (2 + rN) + 4
-    return [-1, -1 + totalLength - 1]
+    if processedList[-1][0] == 0:      # hitNum == 1
+        num = 1
+    else:
+        num = int(processedList[-1][0] / minDelay) + 1
+    length = 4 + (num - 1) * (2 + rN) + 4
+    return [-1, -1 + length - 1]
 
 # --------------------
 # placeStone
@@ -188,15 +191,19 @@ def placeRedstoneWire(loc, hitNum, voiceMax, minDelay, rN, cRPL, processedList, 
 # placeTorch
 # --------------------
 
-def placeTorch(loc, zBoundary, rN, cRPL, gameName):
-    # place torch every three rows of repeaters
-    for i in range(cRPL[0] - 1, cRPL[-1] + 2, 2):
-        m = -3
-        while True:
-            m += 3
-            if 6 + m * (2 + rN) > zBoundary[1]:
-                break
-            gameName.setBlock(loc.x + i, loc.y, loc.z + 6 + m * (2 + rN), block.TORCH.id)
+def placeTorch(loc, zBoundary, hitNum, rN, cRPL, gameName):
+    if hitNum == 1:
+        for i in range(cRPL[0] - 1, cRPL[-1] + 2, 2):
+            gameName.setBlock(loc.x + i, loc.y, loc.z + 3, block.TORCH.id)
+    else:
+        # place torch every three rows of repeaters
+        for i in range(cRPL[0] - 1, cRPL[-1] + 2, 2):
+            m = -3
+            while True:
+                m += 3
+                if 6 + m * (2 + rN) >= zBoundary[1]:
+                    break
+                gameName.setBlock(loc.x + i, loc.y, loc.z + 6 + m * (2 + rN), block.TORCH.id)
 
 # --------------------
 # placeBaseLine
@@ -256,7 +263,7 @@ def constructRedstoneSystem(cL, gameName):      # cL means configurationList
     placeRedstoneWire(loc, cL[1][0], cL[1][1], cL[1][2], cL[1][3], cL[2], cL[3], gameName)
     placeBaseLine(loc, cL[2], gameName)
 
-    placeTorch(loc, theZBoundary, cL[1][3], cL[2], gameName)
+    placeTorch(loc, theZBoundary, cL[1][0], cL[1][3], cL[2], gameName)
 
     gameName.postToChat("Midi file successfully processed and attached in-game!")
     gameName.postToChat("If you wish to process another, reload the program.")
