@@ -16,20 +16,20 @@ class CalmLadder(Level):
             entrance.direction = Dir.E
             entrance.middle.x += entrance.width // 2
             entrance.middle.y += CalmLadder.HEIGHT
-            entrance.middle.z -= entrance.width // 2
+            entrance.middle.z -= entrance.width // 2 + 1
         elif entrance.direction == Dir.E:
             entrance.direction = Dir.N
-            entrance.middle.x += entrance.width // 2
+            entrance.middle.x += entrance.width // 2 + 1
             entrance.middle.y += CalmLadder.HEIGHT
             entrance.middle.z -= entrance.width // 2
         elif entrance.direction == Dir.S:
             entrance.direction = Dir.W
             entrance.middle.x -= entrance.width // 2
             entrance.middle.y += CalmLadder.HEIGHT
-            entrance.middle.z += entrance.width // 2
+            entrance.middle.z += entrance.width // 2 + 1
         elif entrance.direction == Dir.W:
             entrance.direction = Dir.S
-            entrance.middle.x -= entrance.width // 2
+            entrance.middle.x -= entrance.width // 2 + 1
             entrance.middle.y += CalmLadder.HEIGHT
             entrance.middle.z += entrance.width // 2
         return entrance
@@ -45,7 +45,6 @@ class CalmLadder(Level):
         direc = self.entWin.direction
         width = self.entWin.width
         halfwidth = width // 2
-        start = self.entWin.middle
         x, y, z = self.entWin.middle
         if direc == Dir.N:
             self.mc.setBlocks(start.x - halfwidth, start.y - 1, start.z, start.x + halfwidth, 0,

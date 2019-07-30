@@ -47,10 +47,9 @@ class Funny(Level):
             ##主墙
             setbs(x,y-1,z-HALFWIDTH-1,x+LENGTH,y-1,z+HALFWIDTH+1,wall)
             setbs(x,y-1,z-HALFWIDTH-1,x+LENGTH,y+7,z-HALFWIDTH-1,wall)
-            setbs(x,y-1,z+HALFWIDTH+1,x+LENGTH,y+7,z+HALFWIDTH+1,wall
+            setbs(x,y-1,z+HALFWIDTH+1,x+LENGTH,y+7,z+HALFWIDTH+1,wall)
             setbs(x,y+7,z-HALFWIDTH-1,x+LENGTH,y+7,z+HALFWIDTH+1,glass)
-            setbs(x+3,y-1,z-HALFWIDTH,x+LENGTH-1,y-1,z+HALFWIDTH,SAND)
-            ##起跑线
+            setbs(x+3,y-1,z-HALFWIDTH,x+LENGTH-1,y-1,z+HALFWIDTH,SAND) 
             setbs(x,y-1,z-HALFWIDTH,x,y-1,z+HALFWIDTH,gold)
             ##装饰线
             setbs(x+1,y+3,z-HALFWIDTH-1,x+LENGTH-1,y+3,z-HALFWIDTH-1,deco1)
@@ -77,7 +76,7 @@ class Funny(Level):
             ##
             setbs(x,y-1,z-HALFWIDTH-1,x-LENGTH,y-1,z+HALFWIDTH+1,wall)
             setbs(x,y-1,z-HALFWIDTH-1,x-LENGTH,y+7,z-HALFWIDTH-1,wall)
-            setbs(x,y-1,z+HALFWIDTH+1,x-LENGTH,y+7,z+HALFWIDTH+1,wall
+            setbs(x,y-1,z+HALFWIDTH+1,x-LENGTH,y+7,z+HALFWIDTH+1,wall)
             setbs(x,y+7,z-HALFWIDTH-1,x-LENGTH,y+7,z+HALFWIDTH+1,glass)
             setbs(x+3,y-1,z-HALFWIDTH,x-LENGTH+1,y-1,z+HALFWIDTH,SAND)
             ##起跑线
@@ -107,7 +106,7 @@ class Funny(Level):
             ##主墙
             setbs(x-HALFWIDTH-1,y-1,z,x+HALFWIDTH+1,y-1,z-LENGTH,wall)
             setbs(x-HALFWIDTH-1,y-1,z,x-HALFWIDTH-1,y+7,z-LENGTH,wall)
-            setbs(x+HALFWIDTH+1,y-1,z,x+HALFWIDTH+1,y+7,z-LENGTH,wall
+            setbs(x+HALFWIDTH+1,y-1,z,x+HALFWIDTH+1,y+7,z-LENGTH,wall)
             setbs(x-HALFWIDTH-1,y+7,z,x+HALFWIDTH+1,y+7,z-LENGTH,glass)
             
             setbs(x-HALFWIDTH,y-1,z-3,x+HALFWIDTH,y-1,z-LENGTH+1,SAND)
@@ -138,7 +137,7 @@ class Funny(Level):
            ##主墙
             setbs(x-HALFWIDTH-1,y-1,z,x+HALFWIDTH+1,y-1,z+LENGTH,wall)
             setbs(x-HALFWIDTH-1,y-1,z,x-HALFWIDTH-1,y+7,z+LENGTH,wall)
-            setbs(x+HALFWIDTH+1,y-1,z,x+HALFWIDTH+1,y+7,z+LENGTH,wall
+            setbs(x+HALFWIDTH+1,y-1,z,x+HALFWIDTH+1,y+7,z+LENGTH,wall)
             setbs(x-HALFWIDTH-1,y+7,z,x+HALFWIDTH+1,y+7,z+LENGTH,glass)
             
             setbs(x-HALFWIDTH,y-1,z+3,x+HALFWIDTH,y-1,z+LENGTH-1,SAND)

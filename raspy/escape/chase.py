@@ -7,14 +7,14 @@ game initilization. Maintains level and player status.
 import sys
 
 sys.path.append("..")
-from typing import Dict, Type, Any, List
+from typing import Dict, Type
 from random import choice, randint
 from multiprocessing import Process, Pipe
 from escape.angryanvil import AngryAnvil
-from escape.calmladder import CalmLadder
-from escape.terrifylava import TerrifyLava
 from escape.funnyglass import FunnyGlass
 from escape.funny import Funny
+from escape.terrifylava import TerrifyLava
+from escape.calmladder import CalmLadder
 from escape.interface import *
 from mcpi import minecraft as mmc
 from mcpi import block as block
@@ -53,7 +53,7 @@ class Chase:
         for p in players:
             self.mc.clearInventory(p)
             self.mc.entity.setTilePos(p, self.spawn_point.up().randFlatCenter(min(self.SPAWN_LEN - 2, 3)))
-            self.mc.setGamemode(p, "creative")
+            # self.mc.setGamemode(p, "adventure")
         self.forward()
         while True:
             self.update_pos()

@@ -1,5 +1,7 @@
-"""Author: HarryTerpee
-   Theme: Angry Anvil!!!"""
+"""
+Author: HarryTerpee
+Theme: Angry Anvil
+"""
 from escape.interface import *
 from mcpi import block
 import random
