@@ -51,8 +51,47 @@ class PlayerDeathEvent:
     def __init__(self, name, id, *pos):
         """Params: Player name, player id, x, y, z"""
         self.name = name
-        self.id = id
+        self.id = int(id)
         self.x, self.y, self.z = pos
 
     def __repr__(self):
         return f"<PlayerDeathEvent {self.name}({self.id}) at ({self.x},{self.y},{self.z})"
+
+
+class PlayerLoginEvent:
+    """Player login event with name, id and position"""
+
+    def __init__(self, name, id, *pos):
+        """Params: Player name, player id, x, y, z"""
+        self.name = name
+        self.id = int(id)
+        self.x, self.y, self.z = pos
+
+    def __repr__(self):
+        return f"<PlayerLoginEvent {self.name}({self.id}) at ({self.x},{self.y},{self.z})"
+
+
+class PlayerRespawnEvent:
+    """Player respawn event with name, id and position"""
+
+    def __init__(self, name, id, *pos):
+        """Params: Player name, player id, x, y, z"""
+        self.name = name
+        self.id = int(id)
+        self.x, self.y, self.z = pos
+
+    def __repr__(self):
+        return f"<PlayerRespawnEvent {self.name}({self.id}) at ({self.x},{self.y},{self.z})"
+
+
+class PlayerQuitEvent:
+    """Player quit event with name, id and position"""
+
+    def __init__(self, name, id, *pos):
+        """Params: Player name, player id, x, y, z"""
+        self.name = name
+        self.id = int(id)
+        self.x, self.y, self.z = pos
+
+    def __repr__(self):
+        return f"<PlayerQuitEvent {self.name}({self.id}) at ({self.x},{self.y},{self.z})"

@@ -190,6 +190,24 @@ class CmdEvents:
         events = [e for e in s.split("|") if e]
         return [PlayerDeathEvent(*e.split(',')) for e in events]
 
+    def pollLogins(self) -> List[PlayerLoginEvent]:
+        """Triggered by player login"""
+        s = self.conn.sendReceive(b"events.player.login")
+        events = [e for e in s.split("|") if e]
+        return [PlayerLoginEvent(*e.split(',')) for e in events]
+
+    def pollRespawns(self) -> List[PlayerRespawnEvent]:
+        """Triggered by player respawn"""
+        s = self.conn.sendReceive(b"events.player.respawn")
+        events = [e for e in s.split("|") if e]
+        return [PlayerRespawnEvent(*e.split(',')) for e in events]
+
+    def pollQuits(self) -> List[PlayerQuitEvent]:
+        """Triggered by player quitting"""
+        s = self.conn.sendReceive(b"events.player.quit")
+        events = [e for e in s.split("|") if e]
+        return [PlayerQuitEvent(*e.split(',')) for e in events]
+
 
 class Minecraft:
     """The main class to interact with a running instance of Minecraft Pi."""

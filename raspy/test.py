@@ -5,6 +5,7 @@ Note that this file could be modified by anyone
 '''
 from multiprocessing import Process, Pipe
 from time import sleep
+from tools import start
 
 
 def f(conn):
@@ -28,8 +29,18 @@ class Runner():
 
 
 if __name__ == '__main__':
-    parent_conn, child_conn = Pipe()
-    p = Process(target=Runner, args=(child_conn,))
-    p.start()
-    print(parent_conn.recv())  # prints "[42, None, 'hello']"
-    p.join()
+    mc = start(0)
+    while True:
+        l = mc.events.pollDeaths()
+        if l:
+            print(l)
+        l = mc.events.pollLogins()
+        if l:
+            print(l)
+        l = mc.events.pollQuits()
+        if l:
+            print(l)
+        l = mc.events.pollRespawns()
+        if l:
+            print(l)
+        sleep(0.2)

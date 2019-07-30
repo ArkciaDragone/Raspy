@@ -23,6 +23,7 @@ class TerrifyLava(Level):
             entrance.middle.x += TerrifyLava.LENGTH
         elif entrance.direction == Dir.W:
             entrance.middle.x -= TerrifyLava.LENGTH
+        entrance.width = 5
         return entrance
 
     def _construct(self):
