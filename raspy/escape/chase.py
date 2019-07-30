@@ -7,7 +7,7 @@ game initilization. Maintains level and player status.
 import sys
 
 sys.path.append("..")
-from typing import Dict, Type, Any, List
+from typing import Dict, Type
 from random import choice, randint
 from multiprocessing import Process, Pipe
 from escape.angryanvil import AngryAnvil
@@ -52,7 +52,7 @@ class Chase:
         for p in players:
             self.mc.clearInventory(p)
             self.mc.entity.setTilePos(p, self.spawn_point.up().randFlatCenter(min(self.SPAWN_LEN - 2, 3)))
-            #self.mc.setGamemode(p, "adventure")
+            # self.mc.setGamemode(p, "adventure")
         self.forward()
         while True:
             self.update_pos()

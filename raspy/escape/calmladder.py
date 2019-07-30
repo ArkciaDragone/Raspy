@@ -8,6 +8,8 @@ import random
 
 class CalmLadder(Level):
     HEIGHT = 12
+
+    @staticmethod
     def exitWin(entrance: Window):
         entrance.height = CalmLadder.HEIGHT
         if entrance.direction == Dir.N:

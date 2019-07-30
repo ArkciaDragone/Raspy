@@ -5,6 +5,7 @@ Theme: Funny Glass
 from escape.interface import *
 import random
 
+
 class FunnyGlass(Level):
     LENGTH = 25
     HALFWIDTH = 3
