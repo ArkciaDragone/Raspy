@@ -105,7 +105,7 @@ class Funny(Level):
             setbs(x,y-1,z-HALFWIDTH-1,x-LENGTH,y+7,z-HALFWIDTH-1,wall)
             setbs(x,y-1,z+HALFWIDTH+1,x-LENGTH,y+7,z+HALFWIDTH+1,wall)
             setbs(x,y+7,z-HALFWIDTH-1,x-LENGTH,y+7,z+HALFWIDTH+1,glass)
-            setbs(x+3,y-1,z-HALFWIDTH,x-LENGTH+1,y-1,z+HALFWIDTH,SAND)
+            setbs(x+3,y-1,z-HALFWIDTH,x-LENGTH+1,y-1,z+HALFWIDTH,sand)
             setbs(x+3,y-2,z-HALFWIDTH,x-LENGTH+1,y-2,z+HALFWIDTH,wall)
             setbs(x+3,y-1,z-HALFWIDTH,x-LENGTH+1,y-1,z+HALFWIDTH,sand)
             ##起跑线
