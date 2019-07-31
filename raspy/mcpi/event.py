@@ -1,5 +1,6 @@
 from .vec3 import Vec3
 
+
 class BlockEvent:
     """An Event related to blocks (e.g. placed, removed, hit)"""
     HIT = 0
@@ -15,12 +16,13 @@ class BlockEvent:
             BlockEvent.HIT: "BlockEvent.HIT"
         }.get(self.type, "???")
 
-        return "BlockEvent(%s, %d, %d, %d, %d, %d)"%(
-            sType,self.pos.x,self.pos.y,self.pos.z,self.face,self.entityId);
+        return "BlockEvent(%s, %d, %d, %d, %d, %d)" % (
+            sType, self.pos.x, self.pos.y, self.pos.z, self.face, self.entityId)
 
     @staticmethod
     def Hit(x, y, z, face, entityId):
         return BlockEvent(BlockEvent.HIT, x, y, z, face, entityId)
+
 
 class ChatEvent:
     """An Event related to chat (e.g. posts)"""
@@ -36,10 +38,60 @@ class ChatEvent:
             ChatEvent.POST: "ChatEvent.POST"
         }.get(self.type, "???")
 
-        return "ChatEvent(%s, %d, %s)"%(
-            sType,self.entityId,self.message);
+        return "ChatEvent(%s, %d, %s)" % (sType, self.entityId, self.message)
 
     @staticmethod
     def Post(entityId, message):
         return ChatEvent(ChatEvent.POST, entityId, message)
 
+
+class PlayerDeathEvent:
+    """Player death event with name, id and position"""
+
+    def __init__(self, name, id, *pos):
+        """Params: Player name, player id, x, y, z"""
+        self.name = name
+        self.id = int(id)
+        self.x, self.y, self.z = pos
+
+    def __repr__(self):
+        return f"<PlayerDeathEvent {self.name}({self.id}) at ({self.x},{self.y},{self.z})"
+
+
+class PlayerLoginEvent:
+    """Player login event with name, id and position"""
+
+    def __init__(self, name, id, *pos):
+        """Params: Player name, player id, x, y, z"""
+        self.name = name
+        self.id = int(id)
+        self.x, self.y, self.z = pos
+
+    def __repr__(self):
+        return f"<PlayerLoginEvent {self.name}({self.id}) at ({self.x},{self.y},{self.z})"
+
+
+class PlayerRespawnEvent:
+    """Player respawn event with name, id and position"""
+
+    def __init__(self, name, id, *pos):
+        """Params: Player name, player id, x, y, z"""
+        self.name = name
+        self.id = int(id)
+        self.x, self.y, self.z = pos
+
+    def __repr__(self):
+        return f"<PlayerRespawnEvent {self.name}({self.id}) at ({self.x},{self.y},{self.z})"
+
+
+class PlayerQuitEvent:
+    """Player quit event with name, id and position"""
+
+    def __init__(self, name, id, *pos):
+        """Params: Player name, player id, x, y, z"""
+        self.name = name
+        self.id = int(id)
+        self.x, self.y, self.z = pos
+
+    def __repr__(self):
+        return f"<PlayerQuitEvent {self.name}({self.id}) at ({self.x},{self.y},{self.z})"
