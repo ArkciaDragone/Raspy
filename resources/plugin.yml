@@ -1,7 +1,7 @@
 author: Zhuowei&ClayLivince
 database: false
 description: Implementation of the Minecraft PI modding API
-main: cyanclay.raspy.RaspberryJuicePlugin
-name: Raspy
+main: net.zhuoweizhang.raspberryjuice.RaspberryJuicePlugin
+name: RaspberryJuice
 startup: postworld
-version: '1.0.0'
+version: '1.11.4'
