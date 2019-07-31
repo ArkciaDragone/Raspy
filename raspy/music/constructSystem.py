@@ -10,8 +10,8 @@ import mcpi.block as block
 import mcpi.connection
 import setSystem as ss
 
-# cRPL: columnRelativePlacingList
 # rN: repeaterNum
+# cRPL: columnRelativePlacingList
 
 # --------------------
 # xBoundary
