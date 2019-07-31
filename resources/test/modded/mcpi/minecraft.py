@@ -1,8 +1,6 @@
-from typing import List
-
 from .connection import Connection
 from .vec3 import Vec3
-from .event import *
+from .event import BlockEvent, ChatEvent
 from .entity import Entity
 from .block import Block
 import math
@@ -30,14 +28,11 @@ from .util import flatten
 - setSign()
 - spawnEntity()"""
 
-
 def intFloor(*args):
     return [int(math.floor(x)) for x in flatten(args)]
 
-
 class CmdPositioner:
     """Methods for setting and getting positions"""
-
     def __init__(self, connection, packagePrefix):
         self.conn = connection
         self.pkg = packagePrefix
@@ -89,13 +84,11 @@ class CmdPositioner:
         """Set a player setting (setting, status). keys: autojump"""
         self.conn.send(self.pkg + b".setting", setting, 1 if bool(status) else 0)
 
-
 class CmdEntity(CmdPositioner):
     """Methods for entities"""
-
     def __init__(self, connection):
         CmdPositioner.__init__(self, connection, b"entity")
-
+    
     def getName(self, id):
         """Get the list name of the player with entity id => [name:str]
         
@@ -105,41 +98,30 @@ class CmdEntity(CmdPositioner):
 
 class CmdPlayer(CmdPositioner):
     """Methods for the host (Raspberry Pi) player"""
-
     def __init__(self, connection):
         CmdPositioner.__init__(self, connection, b"player")
         self.conn = connection
 
     def getPos(self):
         return CmdPositioner.getPos(self, [])
-
     def setPos(self, *args):
         return CmdPositioner.setPos(self, [], args)
-
     def getTilePos(self):
         return CmdPositioner.getTilePos(self, [])
-
     def setTilePos(self, *args):
         return CmdPositioner.setTilePos(self, [], args)
-
     def setDirection(self, *args):
         return CmdPositioner.setDirection(self, [], args)
-
     def getDirection(self):
         return CmdPositioner.getDirection(self, [])
-
     def setRotation(self, yaw):
         return CmdPositioner.setRotation(self, [], yaw)
-
     def getRotation(self):
         return CmdPositioner.getRotation(self, [])
-
     def setPitch(self, pitch):
         return CmdPositioner.setPitch(self, [], pitch)
-
     def getPitch(self):
         return CmdPositioner.getPitch(self, [])
-
 
 class CmdCamera:
     def __init__(self, connection):
@@ -164,7 +146,6 @@ class CmdCamera:
 
 class CmdEvents:
     """Events"""
-
     def __init__(self, connection):
         self.conn = connection
 
@@ -184,34 +165,8 @@ class CmdEvents:
         events = [e for e in s.split("|") if e]
         return [ChatEvent.Post(int(e[:e.find(",")]), e[e.find(",") + 1:]) for e in events]
 
-    def pollDeaths(self) -> List[PlayerDeathEvent]:
-        """Triggered by player death"""
-        s = self.conn.sendReceive(b"events.player.death")
-        events = [e for e in s.split("|") if e]
-        return [PlayerDeathEvent(*e.split(',')) for e in events]
-
-    def pollLogins(self) -> List[PlayerLoginEvent]:
-        """Triggered by player login"""
-        s = self.conn.sendReceive(b"events.player.login")
-        events = [e for e in s.split("|") if e]
-        return [PlayerLoginEvent(*e.split(',')) for e in events]
-
-    def pollRespawns(self) -> List[PlayerRespawnEvent]:
-        """Triggered by player respawn"""
-        s = self.conn.sendReceive(b"events.player.respawn")
-        events = [e for e in s.split("|") if e]
-        return [PlayerRespawnEvent(*e.split(',')) for e in events]
-
-    def pollQuits(self) -> List[PlayerQuitEvent]:
-        """Triggered by player quitting"""
-        s = self.conn.sendReceive(b"events.player.quit")
-        events = [e for e in s.split("|") if e]
-        return [PlayerQuitEvent(*e.split(',')) for e in events]
-
-
 class Minecraft:
     """The main class to interact with a running instance of Minecraft Pi."""
-
     def __init__(self, connection):
         self.conn = connection
 
@@ -242,14 +197,6 @@ class Minecraft:
         """Set a cuboid of blocks (x0,y0,z0,x1,y1,z1,id,[data])"""
         self.conn.send(b"world.setBlocks", intFloor(args))
 
-    def setNoteBlock(self, *args, data=''):
-        """Set note box (x,y,z,pitch,[data]), 0 <= pitch <= 24"""
-        self.conn.send(b"world.setNoteBlock", intFloor(args), data)
-
-    def setPitch(self, *args):
-        """(x,y,z,pitch) Set note to target pitch if the target location is a noteblock"""
-        self.conn.send(b"world.setNote", intFloor(args))
-
     def setSign(self, *args):
         """Set a sign (x,y,z,id,data,[line1,line2,line3,line4])
         
@@ -261,8 +208,8 @@ class Minecraft:
         for arg in flatten(args):
             flatargs.append(arg)
         for flatarg in flatargs[5:]:
-            lines.append(flatarg.replace(",", ";").replace(")", "]").replace("(", "["))
-        self.conn.send(b"world.setSign", intFloor(flatargs[0:5]) + lines)
+            lines.append(flatarg.replace(",",";").replace(")","]").replace("(","["))
+        self.conn.send(b"world.setSign",intFloor(flatargs[0:5]) + lines)
 
     def spawnEntity(self, *args):
         """Spawn entity (x,y,z,id,[data])"""
@@ -293,46 +240,19 @@ class Minecraft:
         """Post a message to the game chat"""
         self.conn.send(b"chat.post", msg)
 
-    def execute(self, cmd: str):
-        """Execute server console command (cmd)"""
-        self.conn.send(b"server.executeCommand", cmd)
-
     def setting(self, setting, status):
         """Set a world setting (setting, status). keys: world_immutable, nametags_visible"""
         self.conn.send(b"world.setting", setting, 1 if bool(status) else 0)
 
     def getEntityTypes(self):
-        """Return a list of Entity objects representing all the entity types in Minecraft"""
+        """Return a list of Entity objects representing all the entity types in Minecraft"""  
         s = self.conn.sendReceive(b"world.getEntityTypes")
         types = [t for t in s.split("|") if t]
         return [Entity(int(e[:e.find(",")]), e[e.find(",") + 1:]) for e in types]
 
-    # Pseudo-commands
-    def setGamemode(self, id: int, gamemode: str):
-        """gamemode can only be 'survival', 'creative', 'adventure' or 'spectator'"""
-        self.execute(' '.join(["gamemode", gamemode, self.entity.getName(id)]))
-
-    def clearDrop(self):
-        """Clear all dropped items"""
-        self.execute("kill @e[type=item]")
-
-    def tpAllPlayers(self, pos: Vec3):
-        """Spectators excluded"""
-        self.execute("tp @a {} {} {}".format(*pos))
-
-    def clearInventory(self, id: int):
-        self.execute("clear " + self.entity.getName(id))
-
-    def tell(self, id: int, message: str):
-        """Send message to a player"""
-        self.execute(' '.join(["tell", self.entity.getName(id), message]))
-
-    def setWeather(self, weather: str, time=0):
-        """weather can only be "clear", "rain" or "thunder\""""
-        self.execute(' '.join(["weather", weather, str(time) if time > 0 else '']))
 
     @staticmethod
-    def create(address="localhost", port=4711):
+    def create(address = "localhost", port = 4711):
         return Minecraft(Connection(address, port))
 
 
