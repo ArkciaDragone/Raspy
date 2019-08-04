@@ -1,6 +1,6 @@
-# Music Lab - alpha v0.1.9
+# Music Lab - beta v0.2.0
 
-Welcome to Music Lab alpha version!
+Welcome to Music Lab beta version!
 
 It's simple to start: run startMidi.py. However, you need to pre-install four packages: statistics, numpy, mido, pprint.
 

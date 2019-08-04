@@ -91,13 +91,6 @@ def preProcess(hitList, middlePitch):
         return [hitNum, voiceMax, minDelay, repeaterNum, 0, 0]
 
 # --------------------
-# columnRelativePlacing
-# --------------------
-
-def columnRelativePlacing(voiceMax):
-    return [(- voiceMax + 1 + i*2) for i in range(0, voiceMax)]      # odd and even are the same
-
-# --------------------
 # processNoteAndDelay
 # --------------------
 
@@ -166,18 +159,14 @@ def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
     
     preProcessResult = preProcess(hitList, middlePitch)
     """Output to-be-used vital figures and lists"""
-    columnRelativePlacingList = columnRelativePlacing(preProcessResult[1])      # using voiceMax
-    """Set the relative Z coordinate for each column"""
     processedList = processNoteAndDelay(preProcessResult[5], hitList, middlePitch)      # using minus12NumList
     """Let the notes fit in note block's playing range, and sum-up the total previous delay for each hit"""
 
     print(preProcessResult)
-    print("\n")
-    print(columnRelativePlacingList)
     print("\n")
     print(processedList)
 
     gameName.postToChat("")
     gameName.postToChat("Configuration completed!")
     
-    return [configWay, preProcessResult, columnRelativePlacingList, processedList]
+    return [configWay, preProcessResult, processedList]
