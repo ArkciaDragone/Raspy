@@ -22,14 +22,19 @@ def xBoundary(voiceMax):
 # zBoundary
 # --------------------
 
-def zBoundary(minDelay, repeaterNum, processedList):
+def zBoundary(minDelay, repeaterNum, processedList, a: int):
     """Define the vertical boundary of glass cover"""
     if processedList[-1][0] == 0:      # hitNum == 1
         num = 1
     else:
         num = int(processedList[-1][0] / minDelay) + 1
     length = 4 + (num - 1) * (2 + repeaterNum) + 4
-    return [-1, -1 + length - 1]
+
+    # if the user has to place the base line manually, then the room for doing that should be bigger
+    if a == 1:
+        return [-1, -1 + length - 1]
+    if a == 2:
+        return [-7, -1 + length - 1]
 
 # --------------------
 # placeStone
@@ -240,7 +245,7 @@ def placeBaseLine(loc, voiceMax, gameName):
 # constructRedstoneSystem
 # --------------------
 
-def constructRedstoneSystem(cL, gameName):      # cL means configurationList
+def constructRedstoneSystem(cL, gameName, a: int):      # cL means configurationList
 
     gameName.postToChat("")
     gameName.postToChat("Please input (in-game) the name of the player beside whom the note block system is placed:")
@@ -270,7 +275,7 @@ def constructRedstoneSystem(cL, gameName):      # cL means configurationList
     # cL[0] is configWay, [1] is preProcessResult, [2] is processedList
     # cL[1][0] is hitNum, [1][1] is voiceMax, [1][2] is minDelay, [1][3] is repeaterNum
     theXBoundary = xBoundary(cL[1][1])
-    theZBoundary = zBoundary(cL[1][2], cL[1][3], cL[2])
+    theZBoundary = zBoundary(cL[1][2], cL[1][3], cL[2], a)
 
     placeStone(loc, theXBoundary, theZBoundary, gameName)
     placeGlass(loc, theXBoundary, theZBoundary, gameName)
@@ -280,7 +285,12 @@ def constructRedstoneSystem(cL, gameName):      # cL means configurationList
     placeNoteBlock(loc, cL[0], cL[1][0], cL[1][1], cL[1][2], cL[1][3], cL[2], gameName)
     placeRepeater(loc, cL[1][0], cL[1][1], cL[1][2], cL[1][3], cL[2], gameName)
     placeRedstoneWire(loc, cL[1][0], cL[1][1], cL[1][2], cL[1][3], cL[2], gameName)
-    placeBaseLine(loc, cL[1][1], gameName)
+
+    # place base line if voiceMax <= 15
+    if a == 1:
+        placeBaseLine(loc, cL[1][1], gameName)
+    else:
+        None
 
     placeTorch(loc, theZBoundary, cL[1][0], cL[1][1], cL[1][3], gameName)
     

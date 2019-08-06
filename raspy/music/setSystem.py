@@ -59,18 +59,33 @@ def averagePitch(voiceMax, hitList):
     return averagePitchList
 
 # --------------------
-# preProcess
+# preProcess1
 # --------------------
 
-def preProcess(hitList, middlePitch):
+def preProcess1(hitList, a: int):
+    """The part where all errors are raised, if any"""
 
     hitNum = len(hitList)
     if hitNum == 0:
         raise ValueError("Nothing")
 
     voiceMax = max([len(hit[1]) for hit in hitList])
-    if voiceMax > 15:
-        raise ValueError("Too many voices")      # the initial redstone signal cannot reach columns which are too far
+
+    # raise voiceMax > 15 ValueError only if needed (it's not needed if the user chooses to ignore it)
+    if a == 1:
+        if voiceMax > 15:
+            raise ValueError("Too many voices")
+    else:
+        None
+
+    return [hitNum, voiceMax]
+
+# --------------------
+# preProcess2
+# --------------------
+
+def preProcess2(hitNum, voiceMax, hitList, middlePitch, a: int):
+    """The rest of processing"""
 
     if hitNum == 1:
         minDelay = 1      # otherwise minDelay will calculate as 0, thus causing NaN in constructSystem
@@ -145,7 +160,7 @@ def processNoteAndDelay(minus12NumList, hitList, middlePitch):      # actually c
 # setRedstoneSystem
 # --------------------
 
-def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
+def setRedstoneSystem(path, gameName, a: int):      # gameName is "mc" in startMidi
 
     hitList = list(rmf.readAndProcessMidi(path))      # hitList looks like [(delay, [pitch, pitch]), ...]
     """Read the result of readAndProcessMidi"""
@@ -154,19 +169,22 @@ def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
     gameName.postToChat("")
     gameName.postToChat("Configuring redstone system...")
     
+    preProcess1Result = preProcess1(hitList, a)
+
+    # if no errors are raised, ask the user's custom choice(s)
     configWay = acw.askConfigWay(gameName)
     middlePitch = setMiddlePitch(configWay)
     
-    preProcessResult = preProcess(hitList, middlePitch)
+    preProcess2Result = preProcess2(preProcess1Result[0], preProcess1Result[1], hitList, middlePitch, a)
     """Output to-be-used vital figures and lists"""
-    processedList = processNoteAndDelay(preProcessResult[5], hitList, middlePitch)      # using minus12NumList
+    processedList = processNoteAndDelay(preProcess2Result[5], hitList, middlePitch)      # using minus12NumList
     """Let the notes fit in note block's playing range, and sum-up the total previous delay for each hit"""
 
-    print(preProcessResult)
+    print(preProcess2Result)
     print("\n")
     print(processedList)
 
     gameName.postToChat("")
     gameName.postToChat("Configuration completed!")
     
-    return [configWay, preProcessResult, processedList]
+    return [configWay, preProcess2Result, processedList]

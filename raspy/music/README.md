@@ -1,4 +1,4 @@
-# Music Lab - beta v0.2.0
+# Music Lab - beta v0.2.1
 
 Welcome to Music Lab beta version!
 
@@ -10,6 +10,6 @@ After that, the program will let you choose your own way of configuring the reds
 
 If the midi file is successfully processed, you can then enter your in-game name (or another player's name), so that the redstone music system can be constructed beside the corresponding player.
 
-The program is currently only able to process midi files that don't contain moments of 16 or more notes playing. Otherwise, the tempo always stays the same, which is planned to be changed in the near future.
+There are some major defects: the tempo always stays the same, which is planned to be changed in the near future. Also, if you require to process a midi file with moments of more than 15 notes playing, you can do so, but you'll have to manually set the base line after the system is attached, as the default way of doing so cannot bring redstone signal to far-away columns.
 
 You are more than welcome to help us fix bugs and create pull requests. Wish happy redstone-music-ing!
