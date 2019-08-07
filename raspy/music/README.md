@@ -1,15 +1,15 @@
-# Music Lab - alpha v0.1.9
+# Music Lab - beta v0.2.1
 
-欢迎测试Alpha版Music Lab！
+Welcome to Music Lab beta version!
 
-开始的方式很简单：点击运行startMidi.py即可，不过您需要事先安装statistics、numpy、mido、pprint四个package。
+It's simple to start: run startMidi.py. However, you need to pre-install four packages: statistics, numpy, mido, pprint.
 
-程序会首先要求您输入midi文件的路径，详细输入方法请参考程序指示。建议您把需要添加的midi文件直接放在桌面，这样您只需输入“-/Users/*your-name*/Desktop/*your-file*.mid”即可。请注意，需要在路径前面添加“-”，不然Minecraft会因为路径最前面是“/”而认定其为游戏内部指令，从而影响程序进程。
+The program first requires you to input, following the instructions, the path of your midi file. Putting your file directly on desktop is recommended, so that all you have to do is entering "-/Users/*your-user-name*/Desktop/*your-file-name*.mid". The hyphen at the beginning is vital, otherwise your input will be seen as an internal command in Minecraft, thus blocking the program.
 
-midi文件处理成功之后，需要您输入您（或者别人）的游戏昵称，以便红石系统添加到对应玩家的身旁。
+After that, the program will let you choose your own way of configuring the redstone system. That is to say, the configuration will be done based on your choice.
 
-程序目前暂不支持：
- - 声部数过多的midi文件（建议midi的每个时刻不要超过15个音符）
- - 玩家速度控制
+If the midi file is successfully processed, you can then enter your in-game name (or another player's name), so that the redstone music system can be constructed beside the corresponding player.
 
-欢迎您在本界面进行漏洞反馈，我们会尽力修复它们！
+There are some major defects: the tempo always stays the same, which is planned to be changed in the near future. Also, if you require to process a midi file with moments of more than 15 notes playing, you can do so, but you'll have to manually set the base line after the system is attached, as the default way of doing so cannot bring redstone signal to far-away columns.
+
+You are more than welcome to help us fix bugs and create pull requests. Wish happy redstone-music-ing!
