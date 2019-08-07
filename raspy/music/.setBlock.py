@@ -9,7 +9,7 @@ from random import choice
 mc = tools.start(0)
 
 def testPlaceNoteBlock():
-    mc.postToChat("Please input (in-game) the name of the player beside whom the note block system is placed:")
+    mc.postToChat("Test mode, please input a player's name:")
     # name = str(mc.events.pollChatPosts())
     # name = input()
     

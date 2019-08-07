@@ -17,9 +17,11 @@ while True:
         pathWithHyphen = posts[0].message
         path = pathWithHyphen.lstrip("-")
         a = list(rmf.readAndProcessMidi(path))
-        file = open(".test.txt", "w")
+        b = rmf.getBpmSet(path)
+        print("This is the gcd:\n")
         print(gcd.reduce([hit[0] for hit in a]))
+        print("\nThis is the hitlist:\n")
         print([hit for hit in a])
-        file.write(str(list(hit for hit in a)))
-        file.close()
+        print("\nThis is BPM:\n")
+        print(b)
         break
