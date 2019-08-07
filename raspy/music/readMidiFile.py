@@ -6,7 +6,6 @@
 # Packages "mido" and "pprint" should be pre-installed to run this application.
 # Use "pip install <package-name>" in cmd to install.
 # --------------------
-
 from typing import Set
 from mido import MidiFile, Message, MetaMessage, tempo2bpm
 from mido.midifiles.midifiles import DEFAULT_TEMPO
@@ -43,6 +42,7 @@ File f:
  - f.length: total playback time in seconds
  - for i, track in enumerate(f.tracks)
 """
+
 
 # --------------------
 # second2duration
@@ -92,10 +92,6 @@ def readAndProcessMidi(path: str, resolution=1 / 16):
         yield int(dt / resolution), output
 
 
-# --------------------
-# getBpmSet
-# --------------------
-
 def getBpmSet(path: str) -> Set[float]:
     bpm = set()
     f = MidiFile(path)
@@ -104,6 +100,13 @@ def getBpmSet(path: str) -> Set[float]:
             if msg.type == 'set_tempo':
                 bpm.add(tempo2bpm(msg.tempo))
     return bpm
+
+
+def getFirstBpm(path: str) -> float:
+    for track in MidiFile(path).tracks:
+        for msg in track:
+            if msg.type == 'set_tempo':
+                return tempo2bpm(msg.tempo)
 
 
 # --------------------
@@ -214,19 +217,19 @@ def save_processed_file(path: str, out: str = None, resolution=1 / 16):
     f.save(out)
     print(i)
 
-
 # --------------------
 # main
 # --------------------
 
-if __name__ == '__main__':
-    files = [r'C:\Users\lenovo\Desktop\BWV 934 - cut.mid',
-             r'E:\Downloads\最终鬼畜妹フランドール.S（慢拍） -Ab调.mid',
-             r'E:\Downloads\最终鬼畜妹变态版.mid']
-    for f in files:
-        print(getTempoSet(f))
-        print(f"\n*** {f} ***\n")
-        pprint.pprint([i for i in readAndProcessMidi(f)])
-    for i in range(len(files)):
-        save_processed_file(files[i], f'D:/out{i}.mid', 1 / 4)
-        pprint.pprint([i for i in readAndProcessMidi(files[i])])
+# if __name__ == '__main__':
+#     files = [r'C:\Users\lenovo\Desktop\BWV 934 - cut.mid',
+#              r'E:\Downloads\最终鬼畜妹フランドール.S（慢拍） -Ab调.mid',
+#              r'E:\Downloads\最终鬼畜妹变态版.mid']
+#     for f in files:
+#         print(getFirstBpm(f))
+#     print(getTempoSet(f))
+#     print(f"\n*** {f} ***\n")
+#     pprint.pprint([i for i in readAndProcessMidi(f)])
+# for i in range(len(files)):
+# save_processed_file(files[i], f'D:/out{i}.mid', 1 / 4)
+# pprint.pprint([i for i in readAndProcessMidi(files[i])])
