@@ -1,5 +1,3 @@
-
-
 # Raspy
 
 A python & Minecraft project that implements many modules, based on [*RaspberryJuice*](https://github.com/zhuowei/RaspberryJuice). Please at least read the **Config** part before beginning.
@@ -19,6 +17,7 @@ A simple maze of adjustable size with completely random paths. The original inte
 ### Escape
 
 A Parkour game with customizable levels. The master program is called `Chase`. As long as you implement the ABC `Level` in the interface file, you can invent new levels for your own fun.
+
 #### Available Levels
  - Angry Anvil
  - Funny Glass
@@ -35,7 +34,6 @@ Automatically read from a midi file and construct it as a redstone music project
 ### Arch
 
 Some block-setting examples. Proceed with caution with the ones which go in for large-scale construction.
-
 
 ## Commands
 

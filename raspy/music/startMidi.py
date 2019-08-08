@@ -1,6 +1,6 @@
 # --------------------
 # (main) startMidi.py
-# v0.2.1 - 2019/8/7
+# v0.2.2 - 2019/8/8
 # Double-click this to launch the program!
 # --------------------
 
@@ -73,7 +73,7 @@ def retry(a):
 if __name__ == "__main__":
     
     mc.postToChat("")
-    mc.postToChat("Music Lab v0.2.1 initiated!")
+    mc.postToChat("Music Lab v0.2.2 initiated!")
     mc.postToChat("")
     mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
     mc.postToChat("")

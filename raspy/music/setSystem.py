@@ -13,8 +13,7 @@ sys.path.append("..")
 from math import floor, ceil
 from statistics import mean
 from numpy import gcd
-import readMidiFile as rmf
-import askConfigWay as acw
+from askConfig import askTempoAndProcess, askConfigWay
 
 # --------------------
 # setMiddlePitch
@@ -100,7 +99,7 @@ def preProcess2(hitNum, voiceMax, hitList, middlePitch, a: int):
         for i in range(0, len(minus12NumList)):
             if minus12NumList[i] < 0:
                 minus12NumList[i] += 1
-                return [hitNum, voiceMax, minDelay, repeaterNum, averagePitchList, minus12NumList]
+        return [hitNum, voiceMax, minDelay, repeaterNum, averagePitchList, minus12NumList]
 
     elif middlePitch[0] == 2:
         return [hitNum, voiceMax, minDelay, repeaterNum, 0, 0]
@@ -162,17 +161,12 @@ def processNoteAndDelay(minus12NumList, hitList, middlePitch):      # actually c
 
 def setRedstoneSystem(path, gameName, a: int):      # gameName is "mc" in startMidi
 
-    hitList = list(rmf.readAndProcessMidi(path))      # hitList looks like [(delay, [pitch, pitch]), ...]
-    """Read the result of readAndProcessMidi"""
-
-    # if the path is correct, then post the following
-    gameName.postToChat("")
-    gameName.postToChat("Configuring redstone system...")
+    hitList = list(askTempoAndProcess(path, gameName))      # hitList looks like [(delay, [pitch, pitch]), ...]
     
     preProcess1Result = preProcess1(hitList, a)
 
     # if no errors are raised, ask the user's custom choice(s)
-    configWay = acw.askConfigWay(gameName)
+    configWay = askConfigWay(gameName)
     middlePitch = setMiddlePitch(configWay)
     
     preProcess2Result = preProcess2(preProcess1Result[0], preProcess1Result[1], hitList, middlePitch, a)
