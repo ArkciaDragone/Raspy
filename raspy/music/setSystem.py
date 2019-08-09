@@ -62,7 +62,7 @@ def averagePitch(voiceMax, hitList):
 # preProcess1
 # --------------------
 
-def preProcess1(hitList, a: int):
+def preProcess1(hitList):
     """The part where all errors are raised, if any"""
 
     hitNum = len(hitList)
@@ -71,20 +71,23 @@ def preProcess1(hitList, a: int):
 
     voiceMax = max([len(hit[1]) for hit in hitList])
 
-    # raise voiceMax > 15 ValueError only if needed (it's not needed if the user chooses to ignore it)
-    if a == 1:
-        if voiceMax > 15:
-            raise ValueError("Too many voices")
-    else:
-        None
+    a, b = 1, 15
+    baseLineRow = 1
+    while True:
+        if a <= voiceMax <= b:
+            break
+        else:
+            a = b + 1
+            b *= 2
+            baseLineRow += 1
 
-    return [hitNum, voiceMax]
+    return [hitNum, voiceMax, baseLineRow]
 
 # --------------------
 # preProcess2
 # --------------------
 
-def preProcess2(hitNum, voiceMax, hitList, middlePitch, a: int):
+def preProcess2(hitNum, voiceMax, hitList, middlePitch, baseLineRow):
     """The rest of processing"""
 
     if hitNum == 1:
@@ -100,10 +103,10 @@ def preProcess2(hitNum, voiceMax, hitList, middlePitch, a: int):
         for i in range(0, len(minus12NumList)):
             if minus12NumList[i] < 0:
                 minus12NumList[i] += 1
-        return [hitNum, voiceMax, minDelay, repeaterNum, averagePitchList, minus12NumList]
+        return [hitNum, voiceMax, minDelay, repeaterNum, averagePitchList, minus12NumList, baseLineRow]
 
     elif middlePitch[0] == 2:
-        return [hitNum, voiceMax, minDelay, repeaterNum, 0, 0]
+        return [hitNum, voiceMax, minDelay, repeaterNum, 0, 0, baseLineRow]
 
 # --------------------
 # processNoteAndDelay
@@ -160,20 +163,16 @@ def processNoteAndDelay(minus12NumList, hitList, middlePitch):      # actually c
 # setRedstoneSystem
 # --------------------
 
-def setRedstoneSystem(path, gameName, a: int):      # gameName is "mc" in startMidi
-
-    # this is to prevent asking for tempo if ValueError is to be raised
-    hitList = list(readAndProcessMidi(path))
-    preProcess1Result = preProcess1(hitList, a)
+def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
     
     hitList = list(askTempoAndProcess(path, gameName))      # hitList looks like [(delay, [pitch, pitch]), ...]
-    preProcess1Result = preProcess1(hitList, a)
+    preProcess1Result = preProcess1(hitList)
 
     # if no errors are raised, ask the user's custom choice(s)
     configWay = askConfigWay(gameName)
     middlePitch = setMiddlePitch(configWay)
     
-    preProcess2Result = preProcess2(preProcess1Result[0], preProcess1Result[1], hitList, middlePitch, a)
+    preProcess2Result = preProcess2(preProcess1Result[0], preProcess1Result[1], hitList, middlePitch, preProcess1Result[2])
     """Output to-be-used vital figures and lists"""
     processedList = processNoteAndDelay(preProcess2Result[5], hitList, middlePitch)      # using minus12NumList
     """Let the notes fit in note block's playing range, and sum-up the total previous delay for each hit"""

@@ -1,6 +1,6 @@
 # --------------------
 # (main) startMidi.py
-# v0.2.3 - 2019/8/9
+# v0.3.0 - 2019/8/9
 # Double-click this to launch the program!
 # --------------------
 
@@ -15,50 +15,13 @@ import constructSystem as cs
 mc = tools.start(0)
 
 # --------------------
-# retry
-# --------------------
-
-def retry():
-    
-    mc.events.clearAll()
-
-    while True:
-        
-        userChoicePost = mc.events.pollChatPosts()
-        
-        if len(userChoicePost) > 0:
-            userChoice = userChoicePost[0].message
-            
-            try:
-                a = int(userChoice)
-
-            except ValueError:      # userChoice is not an integer
-                mc.postToChat("")
-                mc.postToChat("Process aborted.")
-                sys.exit(0)
-                
-            else:
-
-                if a == 1:
-                    mc.events.clearAll()
-                    mc.postToChat("")
-                    mc.postToChat("Continuing...")
-                    break
-
-                else:
-                    mc.events.clearAll()
-                    mc.postToChat("")
-                    mc.postToChat("Process aborted.")
-                    sys.exit(0)
-
-# --------------------
 # main
 # --------------------
 
 if __name__ == "__main__":
     
     mc.postToChat("")
-    mc.postToChat("Music Lab v0.2.3 initiated!")
+    mc.postToChat("Music Lab v0.3.0 initiated!")
     mc.postToChat("")
     mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
     mc.postToChat("")
@@ -89,7 +52,7 @@ if __name__ == "__main__":
             path = pathWithHyphen.lstrip("-")
 
             try:
-                configurationList = ss.setRedstoneSystem(path, mc, 1)
+                configurationList = ss.setRedstoneSystem(path, mc)
             
             except FileNotFoundError:
                 mc.postToChat("")
@@ -119,17 +82,8 @@ if __name__ == "__main__":
                     mc.postToChat("Please input another path, or input 0 to abort the process.")
                     mc.postToChat("")
                     continue
-                if ve.args[0] == "Too many voices":
-                    mc.postToChat("The midi file can be processed, however, you have to manually set the base line to properly activate the redstone system, as the program temporarily doesn't have a feasible algorithm for that.")
-                    mc.postToChat("Input 1 to continue, or input anything besides 1 to abort the process.")
-                    mc.postToChat("")
-                    retry()
-                    configurationList = ss.setRedstoneSystem(path, mc, 2)
-                    mc.events.clearAll()
-                    cs.constructRedstoneSystem(configurationList, mc, 2)
-                    break
 
             else:
                 mc.events.clearAll()
-                cs.constructRedstoneSystem(configurationList, mc, 1)
+                cs.constructRedstoneSystem(configurationList, mc)
                 break
