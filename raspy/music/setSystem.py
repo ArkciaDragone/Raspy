@@ -14,6 +14,7 @@ from math import floor, ceil
 from statistics import mean
 from numpy import gcd
 from askConfig import askTempoAndProcess, askConfigWay
+from readMidiFile import readAndProcessMidi
 
 # --------------------
 # setMiddlePitch
@@ -161,8 +162,11 @@ def processNoteAndDelay(minus12NumList, hitList, middlePitch):      # actually c
 
 def setRedstoneSystem(path, gameName, a: int):      # gameName is "mc" in startMidi
 
-    hitList = list(askTempoAndProcess(path, gameName))      # hitList looks like [(delay, [pitch, pitch]), ...]
+    # this is to prevent asking for tempo if ValueError is to be raised
+    hitList = list(readAndProcessMidi(path))
+    preProcess1Result = preProcess1(hitList, a)
     
+    hitList = list(askTempoAndProcess(path, gameName))      # hitList looks like [(delay, [pitch, pitch]), ...]
     preProcess1Result = preProcess1(hitList, a)
 
     # if no errors are raised, ask the user's custom choice(s)
