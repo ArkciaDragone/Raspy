@@ -37,7 +37,7 @@ def zBoundary(hitNum, minDelay, repeaterNum, processedList, baseLineLength):
     
     length = baseLineLength + 1 + (num - 1) * (2 + repeaterNum) + 4
 
-    if hitNum == 1:
+    if hitNum == 1 and num == 1:
         return [-1, -1 + length - 1 + 3]
     else:
         return [-1, -1 + length - 1]

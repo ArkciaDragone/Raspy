@@ -50,7 +50,7 @@ def second2duration(second: float, tempo: int):
     return second * 1000 / tempo
 
 
-def readAndProcessMidi(path: str, resolution=1 / 8):
+def readAndProcessMidi(path: str, resolution = 1 / 8):
     """Path is supposed to lead to a valid midi file"""
     f = MidiFile(path)
     assert f.type != 2, "asynchronous midi files are not supported yet"
