@@ -92,7 +92,8 @@ def askTimbre(a, gameName):
 
 def askTempoAndProcess(path, gameName):
 
-    tempo = int(getFirstBpm(path))
+    tempo = getFirstBpm(path)
+    tempoInt = int(tempo)
 
     # if the path is correct, then post the following
     gameName.postToChat("")
@@ -100,15 +101,15 @@ def askTempoAndProcess(path, gameName):
     gameName.postToChat("")
 
     if tempo < 37.5:
-        gameName.postToChat("The minimum tempo of a redstone music system is 37.5 bpm, but your file has a tempo lower than that.")
+        gameName.postToChat("The minimum tempo of a redstone music system is 37.5 bpm, but your file has a tempo lower than that, which is %s."%tempoInt)
     elif 37.5 < tempo < 75:
-        gameName.postToChat("The tempo of a redstone music system can either be 37.5 bpm or 75 bpm, but your file has a tempo in between, which is %s."%tempo)
+        gameName.postToChat("The tempo of a redstone music system can either be 37.5 bpm or 75 bpm, but your file has a tempo in between, which is %s."%tempoInt)
     elif 75 < tempo < 150:
-        gameName.postToChat("The tempo of a redstone music system can either be 75 bpm or 150 bpm, but your file has a tempo in between, which is %s."%tempo)
+        gameName.postToChat("The tempo of a redstone music system can either be 75 bpm or 150 bpm, but your file has a tempo in between, which is %s."%tempoInt)
     elif tempo > 150:
-        gameName.postToChat("The maximum tempo of a redstone music system is 150 bpm, but your file has a tempo higher than that.")
+        gameName.postToChat("The maximum tempo of a redstone music system is 150 bpm, but your file has a tempo higher than that, which is %s."%tempoInt)
     elif tempo == 37.5 or tempo == 75 or tempo == 150:
-        gameName.postToChat("Congratulations! You can construct the redstone music system in exactly %s bpm."%tempo)
+        gameName.postToChat("Congratulations! You can construct the redstone music system in exactly %s bpm."%tempoInt)
     
     gameName.postToChat("")
     gameName.postToChat("Due to the in-game mechanics, the tempo of a redstone music system can only be one of 37.5 bpm, 75 bpm, or 150 bpm. Choose one and enter it, so that the system can be configured in that way.")
@@ -123,7 +124,7 @@ def askTempoAndProcess(path, gameName):
                 except ValueError:      # decideTempo is not a float
                     gameName.events.clearAll()
                     gameName.postToChat("")
-                    gameName.postToChat("You didn't input an integer, please input again.")
+                    gameName.postToChat("You didn't input a valid number, please input again.")
                     gameName.postToChat("")
                     continue
                 else:

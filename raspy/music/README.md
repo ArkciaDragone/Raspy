@@ -1,4 +1,4 @@
-# Music Lab - beta v0.3.0
+# Music Lab - beta v0.3.2
 
 Welcome to Music Lab beta version!
 

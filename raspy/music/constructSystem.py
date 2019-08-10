@@ -8,7 +8,6 @@ sys.path.append("..")
 
 import mcpi.block as block
 import mcpi.connection
-import setSystem as ss
 
 # --------------------
 # xBoundary

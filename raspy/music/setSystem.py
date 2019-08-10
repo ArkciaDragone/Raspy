@@ -14,7 +14,6 @@ from math import floor, ceil
 from statistics import mean
 from numpy import gcd
 from askConfig import askTempoAndProcess, askConfigWay
-from readMidiFile import readAndProcessMidi
 
 # --------------------
 # setMiddlePitch
