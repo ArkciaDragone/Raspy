@@ -63,8 +63,7 @@ def readAndProcessMidi(path: str, resolution = 1 / 8):
     output = set()
     TOLERANCE = resolution / 4
     i = skipped = 0
-    beat = messages[i].time / f.ticks_per_beat
-    last = beat - resolution
+    last = beat = messages[i].time / f.ticks_per_beat
     while i < len(messages):
         if messages[i].time / f.ticks_per_beat < beat - TOLERANCE:
             # Falls behind, then discard
@@ -253,8 +252,9 @@ def save_musical_file(path: str, out: str = None):
 # if __name__ == '__main__':
 #     files = [r'E:\Downloads\最终鬼畜妹フランドール.S（慢拍） -Ab调.mid',
 #              r'E:\Downloads\最终鬼畜妹变态版.mid',
-#              r'C:\Users\lenovo\Desktop\BWV 934 - cut.mid']
+#              r'C:\Users\lenovo\Desktop\Test 4.mid']
 #     for i in range(len(files)):
-#         # pprint.pprint([i for i in musical_extract_midi(files[i])])
+#         pprint.pprint([i for i in musical_extract_midi(files[i])])
 #         save_musical_file(files[i], f'D:\out{i}.mid')
-#         # pprint.pprint([i for i in readAndProcessMidi(files[i])])
+#         pprint.pprint([i for i in readAndProcessMidi(files[i])])
+#         save_processed_file(files[i], f'D:\out{i}.mid', 1/16)
