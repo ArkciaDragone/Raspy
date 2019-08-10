@@ -8,10 +8,10 @@
 # --------------------
 
 from typing import Set
-from mido import MidiFile, Message, MetaMessage, tempo2bpm
+from mido import MidiFile, Message, MetaMessage, tempo2bpm, bpm2tempo
 from mido.midifiles.midifiles import DEFAULT_TEMPO
 from mido.midifiles.tracks import merge_tracks, _to_abstime
-# import pprint
+import pprint
 import fractions
 from operator import attrgetter
 
@@ -44,20 +44,49 @@ File f:
  - for i, track in enumerate(f.tracks)
 """
 
-# --------------------
-# second2duration
-# --------------------
 
 def second2duration(second: float, tempo: int):
     """Convert from real time (in seconds) to note duration (e.g. 1 / 8)"""
     return second * 1000 / tempo
 
-# --------------------
-# readAndProcessMidi
-# --------------------
 
-def readAndProcessMidi(path: str, resolution=1 / 16):
+def readAndProcessMidi(path: str, resolution=1 / 8):
     """Path is supposed to lead to a valid midi file"""
+    f = MidiFile(path)
+    assert f.type != 2, "asynchronous midi files are not supported yet"
+    messages = []
+    for track in f.tracks:
+        messages.extend(_to_abstime(track))
+    assert messages, "failed to find messages. Erroneous file?"
+    messages = [m for m in messages if m.type == 'note_on']
+    messages.sort(key=attrgetter('time'))
+    output = set()
+    TOLERANCE = resolution / 4
+    i = skipped = 0
+    beat = messages[i].time / f.ticks_per_beat
+    last = beat - resolution
+    while i < len(messages):
+        if messages[i].time / f.ticks_per_beat < beat - TOLERANCE:
+            # Falls behind, then discard
+            skipped += 1
+            i += 1
+        elif messages[i].time / f.ticks_per_beat <= beat + TOLERANCE:
+            # Collected
+            output.add(messages[i].note)
+            i += 1
+        else:  # Exceeded, then advance
+            if output:
+                yield int((beat - last) / resolution), list(output)
+                output.clear()
+                last = beat
+            beat += resolution
+    if output:  # Last notes
+        yield int((beat - last) / resolution), list(output)
+    print(f"  {path} - Total={i}; Skipped={skipped}; Loss={skipped / i * 100:.2f}%")
+
+
+def musical_extract_midi(path: str):
+    """Generates (BPM: float, duration since last: float, [pitch: int])"""
     f = MidiFile(path)
     assert f.type != 2, "asynchronous midi files are not supported yet"
     messages = []
@@ -66,33 +95,24 @@ def readAndProcessMidi(path: str, resolution=1 / 16):
     assert messages, "failed to find messages. Erroneous file?"
     messages.sort(key=attrgetter('time'))
     tempo = DEFAULT_TEMPO
-    tick, last = messages[0].time, 0
-    output = []
+    last = tick = 0
+    output = set()
     for msg in messages:
         if msg.type == 'note_on':
-            if output:  # Current tick
-                if msg.time == tick:
-                    output.append(msg.note)
-                else:
-                    dt = (tick - last) / f.ticks_per_beat
-                    if dt % resolution == 0:
-                        last = tick
-                        yield int(dt / resolution), output
-                    output = [msg.note]
-                    tick = msg.time
-            else:  # New tick
-                output.append(msg.note)
-                tick = msg.time
+            if msg.time == tick:  # Current hit
+                output.add(msg.note)
+            elif output:  # New hit
+                yield tempo2bpm(tempo), (tick - last) / f.ticks_per_beat, list(output)
+                output = {msg.note}
+                last, tick = tick, msg.time
+            else:  # Non-0 Beginning
+                last = tick = msg.time
+                output.add(msg.note)
         elif msg.type == 'set_tempo':
             tempo = msg.tempo
-    # Last note
-    dt = (tick - last) / f.ticks_per_beat
-    if dt % resolution == 0:
-        yield int(dt / resolution), output
+    # Last hit
+    if output: yield tempo2bpm(tempo), (tick - last) / f.ticks_per_beat, list(output)
 
-# --------------------
-# getBpmSet
-# --------------------
 
 def getBpmSet(path: str) -> Set[float]:
     bpm = set()
@@ -103,9 +123,6 @@ def getBpmSet(path: str) -> Set[float]:
                 bpm.add(tempo2bpm(msg.tempo))
     return bpm
 
-# --------------------
-# getFirstBpm
-# --------------------
 
 def getFirstBpm(path: str) -> float:
     for track in MidiFile(path).tracks:
@@ -113,9 +130,6 @@ def getFirstBpm(path: str) -> float:
             if msg.type == 'set_tempo':
                 return tempo2bpm(msg.tempo)
 
-# --------------------
-# _test
-# --------------------
 
 def _test(path):
     f = MidiFile(path)
@@ -134,12 +148,9 @@ def _test(path):
                     freq[dt] = 1
                 min_dt = min(min_dt, dt)
             dt = 0.0
-    # pprint.pprint(freqs)
+    pprint.pprint(freqs)
     print("Min dt:", min_dt)
 
-# --------------------
-# tempo_consistency_test
-# --------------------
 
 def tempo_consistency_test(path):
     dt = 0
@@ -152,11 +163,8 @@ def tempo_consistency_test(path):
             if msg.type == 'set_tempo':
                 tempos.append(dt)
                 dt = 0
-    # pprint.pprint(tempo_dict)
+    pprint.pprint(tempo_dict)
 
-# --------------------
-# print_time
-# --------------------
 
 def print_time(path):
     f = MidiFile(path)
@@ -170,9 +178,6 @@ def print_time(path):
                 print(f"{duration} beat = {float(duration)}")
             dt = 0
 
-# --------------------
-# print_tick
-# --------------------
 
 def print_tick(path):
     f = MidiFile(path)
@@ -186,9 +191,6 @@ def print_tick(path):
                 print(f"{duration} beat = {float(duration)}")
             dtick = 0
 
-# --------------------
-# save_processed_file
-# --------------------
 
 def save_processed_file(path: str, out: str = None, resolution=1 / 16):
     if out is None: out = path
@@ -215,21 +217,44 @@ def save_processed_file(path: str, out: str = None, resolution=1 / 16):
         note(fwd, *notes)
         i += 1
     f.save(out)
-    print(i)
+    print(f"{i} hits wrote to {out}")
 
-# --------------------
-# main
-# --------------------
 
-if __name__ == '__main__':
-    files = [r'C:\Users\lenovo\Desktop\BWV 934 - cut.mid',
-             r'E:\Downloads\最终鬼畜妹フランドール.S（慢拍） -Ab调.mid',
-             r'E:\Downloads\最终鬼畜妹变态版.mid']
-    for f in files:
-        print(getFirstBpm(f))
-    print(getTempoSet(f))
-    print(f"\n*** {f} ***\n")
-    # pprint.pprint([i for i in readAndProcessMidi(f)])
-    for i in range(len(files)):
-        save_processed_file(files[i], f'D:/out{i}.mid', 1 / 4)
-        # pprint.pprint([i for i in readAndProcessMidi(files[i])])
+def save_musical_file(path: str, out: str = None):
+    if out is None: out = path
+    f = MidiFile()
+    ap = f.add_track('Main').append
+    last_bpm = tempo2bpm(DEFAULT_TEMPO)
+    ap(MetaMessage("set_tempo", tempo=DEFAULT_TEMPO))
+    notes_on = []
+    i = 0
+    for bpm, duration, notes in musical_extract_midi(path):
+        i += 1
+        if notes_on:
+            ap(Message(type='note_off', note=notes_on[0],
+                       time=int(duration * f.ticks_per_beat * 0.95)))
+            for n in notes_on[1:]:
+                ap(Message(type='note_off', note=n, time=0))
+        notes_on = notes
+        ap(Message(type='note_on', note=notes_on[0],
+                   time=int(duration * f.ticks_per_beat * 0.05)))
+        for n in notes_on:
+            ap(Message(type='note_on', note=n, time=0))
+        if bpm != last_bpm:
+            last_bpm = bpm
+            ap(MetaMessage("set_tempo", tempo=bpm2tempo(bpm)))
+    if notes_on:  # Last note; just make it 1 beat long
+        ap(Message(type='note_off', note=notes_on[0], time=f.ticks_per_beat))
+        for n in notes_on[1:]:
+            ap(Message(type='note_off', note=n, time=0))
+    f.save(out)
+    print(f"{i} hits wrote to {out}")
+
+# if __name__ == '__main__':
+#     files = [r'E:\Downloads\最终鬼畜妹フランドール.S（慢拍） -Ab调.mid',
+#              r'E:\Downloads\最终鬼畜妹变态版.mid',
+#              r'C:\Users\lenovo\Desktop\BWV 934 - cut.mid']
+#     for i in range(len(files)):
+#         # pprint.pprint([i for i in musical_extract_midi(files[i])])
+#         save_musical_file(files[i], f'D:\out{i}.mid')
+#         # pprint.pprint([i for i in readAndProcessMidi(files[i])])
