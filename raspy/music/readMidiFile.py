@@ -34,7 +34,7 @@ Message:
              (time elapsed since the last yielded message)
 
 File f:
- - The default tempo: 500000 ms/beat = BPM 120.
+ - The default tempo: 500000 μs/beat = BPM 120.
    The meta message ‘set_tempo’ can be used to change tempo
    bpm2tempo() & tempo2bpm()
  - f.ticks_per_beat: CONST, also called PPQ
@@ -58,7 +58,7 @@ def readAndProcessMidi(path: str, resolution = 1 / 8):
     for track in f.tracks:
         messages.extend(_to_abstime(track))
     assert messages, "failed to find messages. Erroneous file?"
-    messages = [m for m in messages if m.type == 'note_on']
+    messages = [m for m in messages if m.type == 'note_on' and m.velocity > 0]
     messages.sort(key=attrgetter('time'))
     output = set()
     TOLERANCE = resolution / 4
@@ -97,7 +97,7 @@ def musical_extract_midi(path: str):
     last = tick = 0
     output = set()
     for msg in messages:
-        if msg.type == 'note_on':
+        if msg.type == 'note_on' and msg.velocity > 0:
             if msg.time == tick:  # Current hit
                 output.add(msg.note)
             elif output:  # New hit
@@ -249,6 +249,7 @@ def save_musical_file(path: str, out: str = None):
     f.save(out)
     print(f"{i} hits wrote to {out}")
 
+
 # if __name__ == '__main__':
 #     files = [r'E:\Downloads\最终鬼畜妹フランドール.S（慢拍） -Ab调.mid',
 #              r'E:\Downloads\最终鬼畜妹变态版.mid',
@@ -257,4 +258,4 @@ def save_musical_file(path: str, out: str = None):
 #         pprint.pprint([i for i in musical_extract_midi(files[i])])
 #         save_musical_file(files[i], f'D:\out{i}.mid')
 #         pprint.pprint([i for i in readAndProcessMidi(files[i])])
-#         save_processed_file(files[i], f'D:\out{i}.mid', 1/16)
+#         save_processed_file(files[i], f'D:\out{i}.mid', 1/8)
