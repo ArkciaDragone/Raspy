@@ -33,12 +33,11 @@ def askConfigWay(gameName):
                 gameName.postToChat("")
                 continue
             else:
+                gameName.events.clearAll()
                 if a == 1 or a == 2:
-                    gameName.events.clearAll()
                     b = askTimbre(a, gameName)
                     return [a, b]
                 else:
-                    gameName.events.clearAll()
                     gameName.postToChat("")
                     gameName.postToChat("Your input doesn't fall between 1 and 2, please input again.")
                     gameName.postToChat("")
@@ -73,11 +72,10 @@ def askTimbre(a, gameName):
                     gameName.postToChat("")
                     continue
                 else:
+                    gameName.events.clearAll()
                     if 1 <= b <= 7:
-                        gameName.events.clearAll()
                         return b
                     else:
-                        gameName.events.clearAll()
                         gameName.postToChat("")
                         gameName.postToChat("Your input doesn't fall between 1 and 7, please input again.")
                         gameName.postToChat("")
@@ -116,30 +114,30 @@ def askTempoAndProcess(path, gameName):
     gameName.postToChat("")
 
     while True:
-            decideTempoPost = gameName.events.pollChatPosts()
-            if len(decideTempoPost) > 0:
-                decideTempo = decideTempoPost[0].message
-                try:
-                    a = float(decideTempo)
-                except ValueError:      # decideTempo is not a float
-                    gameName.events.clearAll()
+        decideTempoPost = gameName.events.pollChatPosts()
+        if len(decideTempoPost) > 0:
+            decideTempo = decideTempoPost[0].message
+            try:
+                a = float(decideTempo)
+            except ValueError:      # decideTempo is not a float
+                gameName.events.clearAll()
+                gameName.postToChat("")
+                gameName.postToChat("You didn't input a valid number, please input again.")
+                gameName.postToChat("")
+                continue
+            else:
+                gameName.events.clearAll()
+                if a == 37.5:
+                    hitList = list(readAndProcessMidi(path, 1 / 16))
+                    return hitList
+                if a == 75:
+                    hitList = list(readAndProcessMidi(path, 1 / 8))
+                    return hitList
+                if a == 150:
+                    hitList = list(readAndProcessMidi(path, 1 / 4))
+                    return hitList
+                else:
                     gameName.postToChat("")
-                    gameName.postToChat("You didn't input a valid number, please input again.")
+                    gameName.postToChat("Your input doesn't fall among 37.5, 75 or 150, please input again.")
                     gameName.postToChat("")
                     continue
-                else:
-                    if a == 37.5:
-                        hitList = list(readAndProcessMidi(path, 1 / 16))
-                        return hitList
-                    if a == 75:
-                        hitList = list(readAndProcessMidi(path, 1 / 8))
-                        return hitList
-                    if a == 150:
-                        hitList = list(readAndProcessMidi(path, 1 / 4))
-                        return hitList
-                    else:
-                        gameName.events.clearAll()
-                        gameName.postToChat("")
-                        gameName.postToChat("Your input doesn't fall among 37.5, 75 or 150, please input again.")
-                        gameName.postToChat("")
-                        continue

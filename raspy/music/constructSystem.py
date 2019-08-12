@@ -6,6 +6,8 @@
 import sys
 sys.path.append("..")
 
+from math import pow
+
 import mcpi.block as block
 import mcpi.connection
 
@@ -236,20 +238,22 @@ def placeTorch(loc, zBoundary, hitNum, voiceMax, repeaterNum, theBaseLineLength,
 # placeBaseLine
 # --------------------
 
-def placeBaseLine(loc, voiceMax, theBaseLineLength, gameName):
+def placeBaseLine(loc, voiceMax, theBaseLineRow, theBaseLineLength, gameName):
 
     xList = [i for i in range(- voiceMax + 1, voiceMax, 2)]
     xList2 = []
     a = theBaseLineLength      # loc.z + theBaseLineLength is exactly the z coordinate for the frontmost row of repeaters
-
+    rowNum = 0
+    
     while True:
         b, c = 0, -1
+        rowNum += 1
         while True:
             while True:
                 c += 1
                 if c == len(xList) - 1:
                     break
-                if xList[c + 1] - xList[b] > 29:      # reachs maximum length
+                if xList[c + 1] - xList[b] > (29 - (pow(2, theBaseLineRow - rowNum) - 1) - 1):      # reachs maximum length
                     break
                 else:
                     continue
@@ -290,11 +294,13 @@ def constructRedstoneSystem(cL, gameName):      # cL means configurationList
                 name = posts[0].message
                 id = gameName.getPlayerEntityId(name)
             except mcpi.connection.RequestError:
+                gameName.events.clearAll()
                 gameName.postToChat("")
                 gameName.postToChat("Wrong name, please input again:")
                 gameName.postToChat("")
                 continue
             else:
+                gameName.events.clearAll()
                 break
     
     loc = gameName.entity.getPos(id);
@@ -320,7 +326,7 @@ def constructRedstoneSystem(cL, gameName):      # cL means configurationList
     placeRepeater(loc, cL[1][0], cL[1][1], cL[1][2], cL[1][3], cL[2], theBaseLineLength, gameName)
     placeRedstoneWire(loc, cL[1][0], cL[1][1], cL[1][2], cL[1][3], cL[2], theBaseLineLength, gameName)
 
-    placeBaseLine(loc, cL[1][1], theBaseLineLength, gameName)
+    placeBaseLine(loc, cL[1][1], cL[1][6], theBaseLineLength, gameName)
     placeTorch(loc, theZBoundary, cL[1][0], cL[1][1], cL[1][3], theBaseLineLength, gameName)
     
     gameName.postToChat("Midi file successfully processed and attached in-game!")

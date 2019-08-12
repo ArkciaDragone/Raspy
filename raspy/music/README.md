@@ -1,4 +1,4 @@
-# Music Lab - beta v0.3.3
+# Music Lab - beta v0.3.5
 
 Welcome to Music Lab beta version!
 
@@ -9,5 +9,7 @@ The program first requires you to input, following the instructions, the path of
 After that, the program will let you choose your own way of configuring the redstone system. That is to say, the configuration will be done based on your choice.
 
 If the midi file is successfully processed, you can then enter your in-game name (or another player's name), so that the redstone music system can be constructed beside the corresponding player.
+
+Note that midi files with moments of more than 28 notes playing will not be processed, because for now, the redstone music system, if placed, cannot be initiated with all columns running, due to an algorithm defect of the program.
 
 You are more than welcome to help us fix bugs and create pull requests. Wish happy redstone-music-ing!

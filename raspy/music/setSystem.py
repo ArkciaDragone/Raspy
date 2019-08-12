@@ -14,6 +14,7 @@ from math import floor, ceil
 from statistics import mean
 from numpy import gcd
 from askConfig import askTempoAndProcess, askConfigWay
+from readMidiFile import readAndProcessMidi
 
 # --------------------
 # setMiddlePitch
@@ -69,8 +70,10 @@ def preProcess1(hitList):
         raise ValueError("Nothing")
 
     voiceMax = max([len(hit[1]) for hit in hitList])
+    if voiceMax > 28:
+        raise ValueError("Too many voices")
 
-    a, b = 1, 15
+    a, b = 1, 14
     baseLineRow = 1
     while True:
         if a <= voiceMax <= b:
@@ -164,6 +167,10 @@ def processNoteAndDelay(minus12NumList, hitList, middlePitch):      # actually c
 
 def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
     
+    # raise ValueError (if any) before asking tempo
+    hitList = list(readAndProcessMidi(path))
+    preProcess1Result = preProcess1(hitList)
+
     hitList = list(askTempoAndProcess(path, gameName))      # hitList looks like [(delay, [pitch, pitch]), ...]
     preProcess1Result = preProcess1(hitList)
 
