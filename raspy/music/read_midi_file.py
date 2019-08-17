@@ -1,5 +1,5 @@
 # --------------------
-# readMidiFile.py
+# read_midi_file.py
 # Process the requested midi file (and other relative functions)
 # 
 # Important Note:
@@ -50,7 +50,7 @@ def second2duration(second: float, tempo: int):
     return second * 1000 / tempo
 
 
-def readAndProcessMidi(path: str, resolution = 1 / 8):
+def read_and_process_midi(path: str, resolution = 1 / 8):
     """Path is supposed to lead to a valid midi file"""
     f = MidiFile(path)
     assert f.type != 2, "asynchronous midi files are not supported yet"
@@ -113,7 +113,7 @@ def musical_extract_midi(path: str):
     if output: yield tempo2bpm(tempo), (tick - last) / f.ticks_per_beat, list(output)
 
 
-def getBpmSet(path: str) -> Set[float]:
+def get_bpm_set(path: str) -> Set[float]:
     bpm = set()
     f = MidiFile(path)
     for track in f.tracks:
@@ -123,7 +123,7 @@ def getBpmSet(path: str) -> Set[float]:
     return bpm
 
 
-def getFirstBpm(path: str) -> float:
+def get_first_bpm(path: str) -> float:
     for track in MidiFile(path).tracks:
         for msg in track:
             if msg.type == 'set_tempo':
