@@ -1,6 +1,6 @@
 # --------------------
-# (main) start_midi.py
-# v0.4.0 - 2019/8/17
+# (main) startMidi.py
+# v0.3.5 - 2019/8/12
 # Double-click this to launch the program!
 # --------------------
 
@@ -9,8 +9,8 @@ sys.path.append("..")
 
 import mcpi.minecraft as mmc
 import tools
-from set_system import set_redstone_system
-from construct_system import construct_redstone_system
+from setSystem import setRedstoneSystem
+from constructSystem import constructRedstoneSystem
 
 mc = tools.start(0)
 
@@ -21,7 +21,7 @@ mc = tools.start(0)
 if __name__ == "__main__":
     
     mc.postToChat("")
-    mc.postToChat("Music Lab v0.4.0 initiated!")
+    mc.postToChat("Music Lab v0.3.5 initiated!")
     mc.postToChat("")
     mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
     mc.postToChat("")
@@ -33,14 +33,14 @@ if __name__ == "__main__":
         if len(posts) > 0:
 
             try:
-                zero_or_not = int(posts[0].message)
+                zeroOrNot = int(posts[0].message)
 
             except ValueError:
                 mc.events.clearAll()
 
             else:
                 mc.events.clearAll()
-                if zero_or_not == 0:
+                if zeroOrNot == 0:
                     mc.postToChat("")
                     mc.postToChat("Process aborted.")
                     sys.exit(0)
@@ -52,11 +52,11 @@ if __name__ == "__main__":
                     mc.postToChat("")
                     continue
             
-            path_with_hyphen = posts[0].message
-            path = path_with_hyphen.lstrip("-")
+            pathWithHyphen = posts[0].message
+            path = pathWithHyphen.lstrip("-")
 
             try:
-                configuration_list = set_redstone_system(path, mc)
+                configurationList = setRedstoneSystem(path, mc)
             
             except FileNotFoundError:
                 mc.events.clearAll()
@@ -100,5 +100,5 @@ if __name__ == "__main__":
 
             else:
                 mc.events.clearAll()
-                construct_redstone_system(configuration_list, mc)
+                constructRedstoneSystem(configurationList, mc)
                 break
