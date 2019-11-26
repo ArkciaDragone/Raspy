@@ -22,8 +22,10 @@ mc = tools.start(0)
 
 def runTest(path):
     """Sync this up when adding or changing mtests"""
-    if path == "Promenade.mid":
-        path = os.getcwd() + "\\music\\tests\\mtests\\Promenade.mid"
+
+    if path == "Promenade.mid" \
+      or "Bydlo.mid":
+        path = os.getcwd() + "\\music\\tests\\mtests\\" + path
     return path
 
 # --------------------
@@ -33,7 +35,7 @@ def runTest(path):
 if __name__ == "__main__":
     
     mc.postToChat("")
-    mc.postToChat("Music Lab v0.3.5 initiated!")
+    mc.postToChat("Music Lab v0.5.0 initiated!")
     mc.postToChat("")
     mc.postToChat("Please input (in-game) the path of the midi file you want to realize, beginning with an additional hyphen: (i.e. -C:\\Raspy\\test.mid or -/Users/<your-name>/Documents/test.mid)")
     mc.postToChat("")
