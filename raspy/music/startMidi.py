@@ -14,8 +14,6 @@ import tools
 from setSystem import setRedstoneSystem
 from constructSystem import constructRedstoneSystem
 
-mc = tools.start(0)
-
 # --------------------
 # runTest
 # --------------------
@@ -33,6 +31,14 @@ def runTest(path):
 # --------------------
 
 if __name__ == "__main__":
+    
+    mc = None
+
+    try:
+        mc = tools.start(0)
+    except ConnectionRefusedError:
+        print("Connection with Minecraft unsuccessful.")
+        sys.exit()
     
     mc.postToChat("")
     mc.postToChat("Music Lab v0.5.0 initiated!")
