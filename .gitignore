@@ -81,5 +81,4 @@ fabric.properties
 # Custom files
 /.vs/slnx.sqlite-journal
 /.vs/Files/v16/.suo
-.env
 .vs/launch.vs.json
