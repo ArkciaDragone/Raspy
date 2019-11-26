@@ -5,7 +5,7 @@ from numpy import gcd
 
 import mcpi.minecraft as mmc
 import tools
-import readMidiFile as rmf
+import music.readMidiFile as rmf
 
 mc = tools.start(0)
 
