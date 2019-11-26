@@ -7,12 +7,24 @@
 import sys
 sys.path.append("..")
 
+import os
+
 import mcpi.minecraft as mmc
 import tools
 from setSystem import setRedstoneSystem
 from constructSystem import constructRedstoneSystem
 
 mc = tools.start(0)
+
+# --------------------
+# runTest
+# --------------------
+
+def runTest(path):
+    """Sync this up when adding or changing mtests"""
+    if path == "Promenade.mid":
+        path = os.getcwd() + "\\music\\tests\\mtests\\Promenade.mid"
+    return path
 
 # --------------------
 # main
@@ -27,24 +39,19 @@ if __name__ == "__main__":
     mc.postToChat("")
 
     while True:
-        
         posts = mc.events.pollChatPosts()
 
         if len(posts) > 0:
-
             try:
                 zeroOrNot = int(posts[0].message)
-
             except ValueError:
                 mc.events.clearAll()
-
             else:
                 mc.events.clearAll()
                 if zeroOrNot == 0:
                     mc.postToChat("")
                     mc.postToChat("Process aborted.")
                     sys.exit(0)
-
                 else:
                     mc.postToChat("")
                     mc.postToChat("The number isn't 0. Do you wish to abort?")
@@ -55,9 +62,10 @@ if __name__ == "__main__":
             pathWithHyphen = posts[0].message
             path = pathWithHyphen.lstrip("-")
 
+            path = runTest(path)
+
             try:
                 configurationList = setRedstoneSystem(path, mc)
-            
             except FileNotFoundError:
                 mc.events.clearAll()
                 mc.postToChat("")
@@ -65,7 +73,6 @@ if __name__ == "__main__":
                 mc.postToChat("Please input another path, or input 0 to abort the process.")
                 mc.postToChat("")
                 continue
-
             except PermissionError:
                 mc.events.clearAll()
                 mc.postToChat("")
@@ -73,7 +80,6 @@ if __name__ == "__main__":
                 mc.postToChat("Please input another path, or input 0 to abort the process.")
                 mc.postToChat("")
                 continue
-
             except IndexError:
                 mc.events.clearAll()
                 mc.postToChat("")
@@ -81,7 +87,6 @@ if __name__ == "__main__":
                 mc.postToChat("Please input another path, or input 0 to abort the process.")
                 mc.postToChat("")
                 continue
-
             except ValueError as ve:
                 mc.postToChat("")
                 mc.events.clearAll()
@@ -97,7 +102,6 @@ if __name__ == "__main__":
                     mc.postToChat("Note: If this warning comes after the program asks you the tempo, you can retry this file and input a different tempo to see if it works.")
                     mc.postToChat("")
                     continue
-
             else:
                 mc.events.clearAll()
                 constructRedstoneSystem(configurationList, mc)

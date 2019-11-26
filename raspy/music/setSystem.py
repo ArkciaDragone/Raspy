@@ -62,7 +62,7 @@ def averagePitch(voiceMax, hitList):
 # preProcess1
 # --------------------
 
-def preProcess1(hitList):
+def preProcess1(hitList, checkForError: bool):
     """The part where all errors are raised, if any"""
 
     hitNum = len(hitList)
@@ -72,6 +72,13 @@ def preProcess1(hitList):
     voiceMax = max([len(hit[1]) for hit in hitList])
     if voiceMax > 28:
         raise ValueError("Too many voices")
+
+    # preProcess 1 will run twice
+    # on the first time it is to check whether the file is able to be processed
+    # if not, then the error is raised as above
+    # but if so, there's no need to complete processing
+    if checkForError:
+        return
 
     a, b = 1, 14
     baseLineRow = 1
@@ -167,12 +174,14 @@ def processNoteAndDelay(minus12NumList, hitList, middlePitch):      # actually c
 
 def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
     
+    gameName.postToChat("")
+    gameName.postToChat("Checking if the file can be handled by the program...")
     # raise ValueError (if any) before asking tempo
     hitList = list(readAndProcessMidi(path))
-    preProcess1Result = preProcess1(hitList)
+    preProcess1(hitList, True)
 
     hitList = list(askTempoAndProcess(path, gameName))      # hitList looks like [(delay, [pitch, pitch]), ...]
-    preProcess1Result = preProcess1(hitList)
+    preProcess1Result = preProcess1(hitList, False)
 
     # if no errors are raised, ask the user's custom choice(s)
     configWay = askConfigWay(gameName)
