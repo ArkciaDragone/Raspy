@@ -131,118 +131,118 @@ def placeDoorAndTerracotta(loc, zBoundary, gameName):
 # placeNoteBlock
 # --------------------
 
-def placeNoteBlock(loc, configWay, hitNum, voiceMax, minDelay, repeaterNum, processedList, theBaseLineLength, gameName):
+def placeNoteBlock(loc, configWay, hitNum, voiceMax, minDelay, repeaterNum, processedList, baseLineLength, gameName):
 
     if configWay[0] == 1:
         for j in range(0, hitNum):
             for k in range(0, len(processedList[j][1])):      # the number of notes in noteProcessedList[j]
-                gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k])
+                gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k])
 
         if configWay[1] == 1:      # harp/piano timbre
             for j in range(0, hitNum):
                 for k in range(0, len(processedList[j][1])):
-                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.GRASS.id)
+                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.GRASS.id)
         elif configWay[1] == 2:      # double bass timbre
             for j in range(0, hitNum):
                 for k in range(0, len(processedList[j][1])):
-                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.WOOD.id)
+                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.WOOD.id)
         elif configWay[1] == 3:      # glockenspiel timbre
             for j in range(0, hitNum):
                 for k in range(0, len(processedList[j][1])):
-                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.GOLD_BLOCK.id)
+                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.GOLD_BLOCK.id)
         elif configWay[1] == 4:      # flute timbre
             for j in range(0, hitNum):
                 for k in range(0, len(processedList[j][1])):
-                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.CLAY.id)
+                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.CLAY.id)
         elif configWay[1] == 5:      # chime timbre
             for j in range(0, hitNum):
                 for k in range(0, len(processedList[j][1])):
-                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.PACKED_ICE.id)
+                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.PACKED_ICE.id)
         elif configWay[1] == 6:      # guitar timbre
             for j in range(0, hitNum):
                 for k in range(0, len(processedList[j][1])):
-                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.WOOL.id)
+                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.WOOL.id)
         elif configWay[1] == 7:      # xylophone timbre
             for j in range(0, hitNum):
                 for k in range(0, len(processedList[j][1])):
-                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.BONE_BLOCK.id)
+                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.BONE_BLOCK.id)
 
     if configWay[0] == 2:
 
         for j in range(0, hitNum):
             for k in range(0, len(processedList[j][1])):
                 if 0 <= processedList[j][1][k] < 24:      # low range, use double bass timbre
-                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k])
-                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.WOOD.id)
+                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k])
+                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.WOOD.id)
                 if 24 <= processedList[j][1][k] < 48:      # medium range, use harp/piano timbre
-                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k] - 24)
-                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.GRASS.id)
+                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k] - 24)
+                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.GRASS.id)
                 if 48 <= processedList[j][1][k] <= 72:      # high range, use glockenspiel timbre
-                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k] - 48)
-                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + theBaseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.GOLD_BLOCK.id)
+                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k] - 48)
+                    gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.GOLD_BLOCK.id)
 
 # --------------------
 # placeRepeater
 # --------------------
 
-def placeRepeater(loc, hitNum, voiceMax, minDelay, repeaterNum, processedList, theBaseLineLength, gameName):
+def placeRepeater(loc, hitNum, voiceMax, minDelay, repeaterNum, processedList, baseLineLength, gameName):
     for i in range(- voiceMax + 1, voiceMax, 2):
         for j in range(0, int(processedList[-1][0] / minDelay)):
             if int(minDelay % 4) == 0:
-                gameName.setBlock(loc.x + i, loc.y, loc.z + theBaseLineLength + 3 + repeaterNum - 1 + j * (2 + repeaterNum), block.UNPOWERED_REPEATER.id, 2 + 12)      # delay = 4
+                gameName.setBlock(loc.x + i, loc.y, loc.z + baseLineLength + 3 + repeaterNum - 1 + j * (2 + repeaterNum), block.UNPOWERED_REPEATER.id, 2 + 12)      # delay = 4
             else:
-                gameName.setBlock(loc.x + i, loc.y, loc.z + theBaseLineLength + 3 + repeaterNum - 1 + j * (2 + repeaterNum), block.UNPOWERED_REPEATER.id, 2 + 4 * (int(minDelay % 4) - 1))      # delay != 4
+                gameName.setBlock(loc.x + i, loc.y, loc.z + baseLineLength + 3 + repeaterNum - 1 + j * (2 + repeaterNum), block.UNPOWERED_REPEATER.id, 2 + 4 * (int(minDelay % 4) - 1))      # delay != 4
             for k in range(0, repeaterNum - 1):      # range(0, 0) = []
-                gameName.setBlock(loc.x + i, loc.y, loc.z + theBaseLineLength + 3 + k + j * (2 + repeaterNum), block.UNPOWERED_REPEATER.id, 2 + 12)      # delay = 4
+                gameName.setBlock(loc.x + i, loc.y, loc.z + baseLineLength + 3 + k + j * (2 + repeaterNum), block.UNPOWERED_REPEATER.id, 2 + 12)      # delay = 4
                 # 2 means facing south (z-axis positive)
 
 # --------------------
 # placeRedstoneWire
 # --------------------
 
-def placeRedstoneWire(loc, hitNum, voiceMax, minDelay, repeaterNum, processedList, theBaseLineLength, gameName):
+def placeRedstoneWire(loc, hitNum, voiceMax, minDelay, repeaterNum, processedList, baseLineLength, gameName):
     
     for i in range(- voiceMax + 1, voiceMax, 2):
         for j in range(0, int(processedList[-1][0] / minDelay)):
-            gameName.setBlock(loc.x + i, loc.y, loc.z + theBaseLineLength + 2 + j * (2 + repeaterNum), block.REDSTONE_WIRE.id)
+            gameName.setBlock(loc.x + i, loc.y, loc.z + baseLineLength + 2 + j * (2 + repeaterNum), block.REDSTONE_WIRE.id)
     
     # also place a redstone wire if "3 + processedList[j][0] / minDelay * (2 + repeaterNum)" has no note block because of note lacking on this specific voice
     for k in range(0, hitNum):
         for l in range(len(processedList[k][1]), voiceMax):
-            gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * l), loc.y, loc.z + theBaseLineLength + 1 + processedList[k][0] / minDelay * (2 + repeaterNum), block.REDSTONE_WIRE.id)
+            gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * l), loc.y, loc.z + baseLineLength + 1 + processedList[k][0] / minDelay * (2 + repeaterNum), block.REDSTONE_WIRE.id)
 
     for m in range(0, int(processedList[-1][0] / minDelay)):
         if m * minDelay not in [processedListMember[0] for processedListMember in processedList]:
             for n in range(- voiceMax + 1, voiceMax, 2):
-                gameName.setBlock(loc.x + n, loc.y, loc.z + theBaseLineLength + 1 + m * (2 + repeaterNum), block.REDSTONE_WIRE.id)
+                gameName.setBlock(loc.x + n, loc.y, loc.z + baseLineLength + 1 + m * (2 + repeaterNum), block.REDSTONE_WIRE.id)
 
 # --------------------
 # placeTorch
 # --------------------
 
-def placeTorch(loc, zBoundary, hitNum, voiceMax, repeaterNum, theBaseLineLength, gameName):
+def placeTorch(loc, zBoundary, hitNum, voiceMax, repeaterNum, baseLineLength, gameName):
     if hitNum == 1:
         for i in range(- voiceMax, voiceMax + 1, 2):
-            gameName.setBlock(loc.x + i, loc.y, loc.z + theBaseLineLength, block.TORCH.id)
+            gameName.setBlock(loc.x + i, loc.y, loc.z + baseLineLength, block.TORCH.id)
     else:
         # place torch every three rows of repeaters
         for i in range(- voiceMax, voiceMax + 1, 2):
             m = -3
             while True:
                 m += 3
-                if theBaseLineLength + 3 + m * (2 + repeaterNum) >= zBoundary[1]:
+                if baseLineLength + 3 + m * (2 + repeaterNum) >= zBoundary[1]:
                     break
-                gameName.setBlock(loc.x + i, loc.y, loc.z + theBaseLineLength + 3 + m * (2 + repeaterNum), block.TORCH.id)
+                gameName.setBlock(loc.x + i, loc.y, loc.z + baseLineLength + 3 + m * (2 + repeaterNum), block.TORCH.id)
 
 # --------------------
 # placeBaseLine
 # --------------------
 
-def placeBaseLine(loc, voiceMax, theBaseLineRow, theBaseLineLength, gameName):
+def placeBaseLine(loc, voiceMax, baseLineRow, baseLineLength, gameName):
 
     xList = [i for i in range(- voiceMax + 1, voiceMax, 2)]
     xList2 = []
-    a = theBaseLineLength      # loc.z + theBaseLineLength is exactly the z coordinate for the frontmost row of repeaters
+    a = baseLineLength      # loc.z + baseLineLength is exactly the z coordinate for the frontmost row of repeaters
     rowNum = 0
     
     while True:
@@ -253,7 +253,7 @@ def placeBaseLine(loc, voiceMax, theBaseLineRow, theBaseLineLength, gameName):
                 c += 1
                 if c == len(xList) - 1:
                     break
-                if xList[c + 1] - xList[b] > (29 - (pow(2, theBaseLineRow - rowNum) - 1) - 1):      # reachs maximum length
+                if xList[c + 1] - xList[b] > (29 - (pow(2, baseLineRow - rowNum) - 1) - 1):      # reachs maximum length
                     break
                 else:
                     continue
@@ -267,7 +267,6 @@ def placeBaseLine(loc, voiceMax, theBaseLineRow, theBaseLineLength, gameName):
                 break
             else:
                 b = c + 1
-                c = b - 1
         a -= 2
         xList = xList2
         xList2 = []
@@ -281,7 +280,7 @@ def placeBaseLine(loc, voiceMax, theBaseLineRow, theBaseLineLength, gameName):
 # constructRedstoneSystem
 # --------------------
 
-def constructRedstoneSystem(cL, gameName):      # cL means configurationList
+def constructRedstoneSystem(configResult, gameName):      # cL means configurationList
 
     gameName.postToChat("")
     gameName.postToChat("Please input (in-game) the name of the player beside whom the note block system is placed:")
@@ -310,24 +309,32 @@ def constructRedstoneSystem(cL, gameName):      # cL means configurationList
     gameName.postToChat("This takes less than a minute for a medium-sized midi file.")
     gameName.postToChat("")
 
+    configWay = configResult.get("configWay")
+    processedList = configResult.get("processedList")
+    hitNum = configResult.get("hitNum")
+    voiceMax = configResult.get("voiceMax")
+    minDelay = configResult.get("minDelay")
+    repeaterNum = configResult.get("repeaterNum")
+    baseLineRow = configResult.get("baseLineRow")
+
     # cL[0] is configWay, [1] is preProcess2Result, [2] is processedList
     # cL[1][0] is hitNum, [1][1] is voiceMax, [1][2] is minDelay, [1][3] is repeaterNum, [1][6] is baseLineRow
     
-    theXBoundary = xBoundary(cL[1][1])
-    theBaseLineLength = baseLineLength(cL[1][6])
-    theZBoundary = zBoundary(cL[1][0], cL[1][2], cL[1][3], cL[2], theBaseLineLength)
+    _xBoundary = xBoundary(voiceMax)
+    _baseLineLength = baseLineLength(baseLineRow)
+    _zBoundary = zBoundary(hitNum, minDelay, repeaterNum, processedList, _baseLineLength)
 
-    placeStone(loc, theXBoundary, theZBoundary, gameName)
-    placeGlass(loc, theXBoundary, theZBoundary, gameName)
-    placeAir(loc, theXBoundary, theZBoundary, gameName)
-    placeDoorAndTerracotta(loc, theZBoundary, gameName)
+    placeStone(loc, _xBoundary, _zBoundary, gameName)
+    placeGlass(loc, _xBoundary, _zBoundary, gameName)
+    placeAir(loc, _xBoundary, _zBoundary, gameName)
+    placeDoorAndTerracotta(loc, _zBoundary, gameName)
 
-    placeNoteBlock(loc, cL[0], cL[1][0], cL[1][1], cL[1][2], cL[1][3], cL[2], theBaseLineLength, gameName)
-    placeRepeater(loc, cL[1][0], cL[1][1], cL[1][2], cL[1][3], cL[2], theBaseLineLength, gameName)
-    placeRedstoneWire(loc, cL[1][0], cL[1][1], cL[1][2], cL[1][3], cL[2], theBaseLineLength, gameName)
+    placeNoteBlock(loc, configWay, hitNum, voiceMax, minDelay, repeaterNum, processedList, _baseLineLength, gameName)
+    placeRepeater(loc, hitNum, voiceMax, minDelay, repeaterNum, processedList, _baseLineLength, gameName)
+    placeRedstoneWire(loc, hitNum, voiceMax, minDelay, repeaterNum, processedList, _baseLineLength, gameName)
 
-    placeBaseLine(loc, cL[1][1], cL[1][6], theBaseLineLength, gameName)
-    placeTorch(loc, theZBoundary, cL[1][0], cL[1][1], cL[1][3], theBaseLineLength, gameName)
+    placeBaseLine(loc, voiceMax, baseLineRow, _baseLineLength, gameName)
+    placeTorch(loc, _zBoundary, hitNum, voiceMax, repeaterNum, _baseLineLength, gameName)
     
     gameName.postToChat("Midi file successfully processed and attached in-game!")
     gameName.postToChat("If you wish to process another, reload the program.")

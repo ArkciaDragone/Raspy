@@ -40,7 +40,6 @@ def setMiddlePitch(configWay):
 # --------------------
 
 def averagePitch(voiceMax, hitList):
-    
     averagePitchList = []
     noteNumList = []      # counts number of notes in each voice
     for i in range(0, voiceMax):
@@ -89,15 +88,25 @@ def preProcess1(hitList, checkForError: bool):
             a = b + 1
             b *= 2
             baseLineRow += 1
+    
+    result = {
+        "hitNum": hitNum,
+        "voiceMax": voiceMax,
+        "baseLineRow": baseLineRow
+    }
 
-    return [hitNum, voiceMax, baseLineRow]
+    return result
 
 # --------------------
 # preProcess2
 # --------------------
 
-def preProcess2(hitNum, voiceMax, hitList, middlePitch, baseLineRow):
+def preProcess2(hitList, middlePitch, pp1Result: dict):
     """The rest of processing"""
+
+    hitNum = pp1Result.get("hitNum")
+    voiceMax = pp1Result.get("voiceMax")
+    baseLineRow = pp1Result.get("baseLineRow")
 
     if hitNum == 1:
         minDelay = 1      # otherwise minDelay will calculate as 0, thus causing NaN in constructSystem
@@ -112,10 +121,22 @@ def preProcess2(hitNum, voiceMax, hitList, middlePitch, baseLineRow):
         for i in range(0, len(minus12NumList)):
             if minus12NumList[i] < 0:
                 minus12NumList[i] += 1
-        return [hitNum, voiceMax, minDelay, repeaterNum, averagePitchList, minus12NumList, baseLineRow]
 
     elif middlePitch[0] == 2:
-        return [hitNum, voiceMax, minDelay, repeaterNum, 0, 0, baseLineRow]
+        averagePitchList = 0
+        minus12NumList = 0
+    
+    result = {
+        "hitNum": hitNum,
+        "voiceMax": voiceMax,
+        "minDelay": minDelay,
+        "repeaterNum": repeaterNum,
+        "averagePitchList": averagePitchList,
+        "minus12NumList": minus12NumList,
+        "baseLineRow": baseLineRow
+    }
+
+    return result
 
 # --------------------
 # processNoteAndDelay
@@ -181,22 +202,34 @@ def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
     preProcess1(hitList, True)
 
     hitList = list(askTempoAndProcess(path, gameName))      # hitList looks like [(delay, [pitch, pitch]), ...]
-    preProcess1Result = preProcess1(hitList, False)
+    pp1Result = preProcess1(hitList, False)
 
     # if no errors are raised, ask the user's custom choice(s)
     configWay = askConfigWay(gameName)
     middlePitch = setMiddlePitch(configWay)
     
-    preProcess2Result = preProcess2(preProcess1Result[0], preProcess1Result[1], hitList, middlePitch, preProcess1Result[2])
+    pp2Result = preProcess2(hitList, middlePitch, pp1Result)
     """Output to-be-used vital figures and lists"""
-    processedList = processNoteAndDelay(preProcess2Result[5], hitList, middlePitch)      # using minus12NumList
+    processedList = processNoteAndDelay(pp2Result.get("minus12NumList"), hitList, middlePitch)      # using minus12NumList
     """Let the notes fit in note block's playing range, and sum-up the total previous delay for each hit"""
 
-    print(preProcess2Result)
+    print(pp2Result)
     print("\n")
     print(processedList)
 
     gameName.postToChat("")
     gameName.postToChat("Configuration completed!")
     
-    return [configWay, preProcess2Result, processedList]
+    configResult = {
+        "configWay": configWay,
+        "processedList": processedList,
+        "hitNum": pp2Result.get("hitNum"),
+        "voiceMax": pp2Result.get("voiceMax"),
+        "minDelay": pp2Result.get("minDelay"),
+        "repeaterNum": pp2Result.get("repeaterNum"),
+        "averagePitchList": pp2Result.get("averagePitchList"),
+        "minus12NumList": pp2Result.get("minus12NumList"),
+        "baseLineRow": pp2Result.get("baseLineRow")
+    }
+
+    return configResult

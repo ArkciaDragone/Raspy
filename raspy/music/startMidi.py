@@ -1,6 +1,6 @@
 # --------------------
 # (main) startMidi.py
-# v0.3.5 - 2019/8/12
+# v0.5.0 - 2019/11/26
 # Double-click this to launch the program!
 # --------------------
 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
             path = runTest(path)
 
             try:
-                configurationList = setRedstoneSystem(path, mc)
+                configResult = setRedstoneSystem(path, mc)
             except FileNotFoundError:
                 mc.events.clearAll()
                 mc.postToChat("")
@@ -104,5 +104,5 @@ if __name__ == "__main__":
                     continue
             else:
                 mc.events.clearAll()
-                constructRedstoneSystem(configurationList, mc)
+                constructRedstoneSystem(configResult, mc)
                 break
