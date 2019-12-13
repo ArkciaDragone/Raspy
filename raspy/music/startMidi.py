@@ -12,7 +12,7 @@ import os
 import mcpi.minecraft as mmc
 import tools
 from setSystem import setRedstoneSystem
-from constructSystem import constructRedstoneSystem
+from buildSystem import constructRedstoneSystem
 
 # --------------------
 # runTest
