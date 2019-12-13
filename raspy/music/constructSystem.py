@@ -280,7 +280,7 @@ def placeBaseLine(loc, voiceMax, baseLineRow, baseLineLength, gameName):
 # constructRedstoneSystem
 # --------------------
 
-def constructRedstoneSystem(configResult, gameName):      # cL means configurationList
+def constructRedstoneSystem(configResult, gameName):
 
     gameName.postToChat("")
     gameName.postToChat("Please input (in-game) the name of the player beside whom the note block system is placed:")
@@ -316,9 +316,6 @@ def constructRedstoneSystem(configResult, gameName):      # cL means configurati
     minDelay = configResult.get("minDelay")
     repeaterNum = configResult.get("repeaterNum")
     baseLineRow = configResult.get("baseLineRow")
-
-    # cL[0] is configWay, [1] is preProcess2Result, [2] is processedList
-    # cL[1][0] is hitNum, [1][1] is voiceMax, [1][2] is minDelay, [1][3] is repeaterNum, [1][6] is baseLineRow
     
     _xBoundary = xBoundary(voiceMax)
     _baseLineLength = baseLineLength(baseLineRow)
