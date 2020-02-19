@@ -171,14 +171,14 @@ def placeNoteBlock(loc, configWay, hitNum, voiceMax, minDelay, repeaterNum, proc
 
         for j in range(0, hitNum):
             for k in range(0, len(processedList[j][1])):
-                if 0 <= processedList[j][1][k][0] < 24:      # low range, use double bass timbre
-                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k][0])
+                if 0 <= processedList[j][1][k] < 24:      # low range, use double bass timbre
+                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k])
                     gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.WOOD.id)
-                if 24 <= processedList[j][1][k][0] < 48:      # medium range, use harp/piano timbre
-                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k][0] - 24)
+                if 24 <= processedList[j][1][k] < 48:      # medium range, use harp/piano timbre
+                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k] - 24)
                     gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.GRASS.id)
-                if 48 <= processedList[j][1][k][0] <= 72:      # high range, use glockenspiel timbre
-                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k][0] - 48)
+                if 48 <= processedList[j][1][k] <= 72:      # high range, use glockenspiel timbre
+                    gameName.setNoteBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), processedList[j][1][k] - 48)
                     gameName.setBlock(loc.x + (- voiceMax + 1 + 2 * k), loc.y - 1, loc.z + baseLineLength + 1 + processedList[j][0] / minDelay * (2 + repeaterNum), block.GOLD_BLOCK.id)
 
 # --------------------

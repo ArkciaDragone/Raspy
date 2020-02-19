@@ -60,10 +60,7 @@ def second2duration(second: float, tempo: int):
     return second * 1000 / tempo
 
 
-"""
-0.6.0.1: Add Instrument Support
-"""
-def readAndProcessMidi(path: str, resolution = 1 / 8):
+def readAndProcessMidi(path: str, resolution=1 / 8):
     """Path is supposed to lead to a valid midi file"""
     f = MidiFile(path)
     assert f.type != 2, "asynchronous midi files are not supported yet"
@@ -71,36 +68,30 @@ def readAndProcessMidi(path: str, resolution = 1 / 8):
     for track in f.tracks:
         messages.extend(_to_abstime(track))
     assert messages, "failed to find messages. Erroneous file?"
-    messages = [m for m in messages if m.type == 'note_on' and m.velocity > 0 or m.type == 'program_change']
-    messages.sort(key = attrgetter('time'))
+    messages = [m for m in messages if m.type == 'note_on' and m.velocity > 0]
+    messages.sort(key=attrgetter('time'))
     output = set()
-    insts = dict()
     TOLERANCE = resolution / 4
     i = skipped = 0
     last = beat = messages[i].time / f.ticks_per_beat
-    
-    for msg in messages:
-        if msg.type == 'note_on' and msg.velocity > 0:
-            if msg.time / f.ticks_per_beat < beat - TOLERANCE:
-                # Falls behind, then discard
-                skipped += 1
-                i += 1
-            elif msg.time / f.ticks_per_beat <= beat + TOLERANCE:
-                # Collected
-                output.add((msg.note, insts.get(msg.channel)))
-                i += 1
-            else:  # Exceeded, then advance
-                if output:
-                    yield int((beat - last) / resolution), list(output)
-                    output.clear()
-                    last = beat
-                beat += resolution
-        elif msg.type == 'program_change':
-            insts[msg.channel] = msg.program
+    while i < len(messages):
+        if messages[i].time / f.ticks_per_beat < beat - TOLERANCE:
+            # Falls behind, then discard
+            skipped += 1
+            i += 1
+        elif messages[i].time / f.ticks_per_beat <= beat + TOLERANCE:
+            # Collected
+            output.add(messages[i].note)
+            i += 1
+        else:  # Exceeded, then advance
+            if output:
+                yield int((beat - last) / resolution), list(output)
+                output.clear()
+                last = beat
+            beat += resolution
     if output:  # Last notes
         yield int((beat - last) / resolution), list(output)
-        
-    print(f"  {path} - Total = {i}; Skipped = {skipped}; Loss = {skipped / i * 100:.2f}%")
+    print(f"  {path} - Total={i}; Skipped={skipped}; Loss={skipped / i * 100:.2f}%")
 
 
 def musical_extract_midi(path: str):
@@ -111,7 +102,7 @@ def musical_extract_midi(path: str):
     for track in f.tracks:
         messages.extend(_to_abstime(track))
     assert messages, "failed to find messages. Erroneous file?"
-    messages.sort(key = attrgetter('time'))
+    messages.sort(key=attrgetter('time'))
     tempo = DEFAULT_TEMPO
     last = tick = 0
     output = set()
@@ -246,33 +237,33 @@ def save_musical_file(path: str, out: str = None):
     f = MidiFile()
     ap = f.add_track('Main').append
     last_bpm = tempo2bpm(DEFAULT_TEMPO)
-    ap(MetaMessage("set_tempo", tempo = DEFAULT_TEMPO))
+    ap(MetaMessage("set_tempo", tempo=DEFAULT_TEMPO))
     notes_on = []
     i = 0
     for bpm, duration, notes in musical_extract_midi(path):
         i += 1
         if notes_on:
-            ap(Message(type = 'note_off', note = notes_on[0],
-                       time = int(duration * f.ticks_per_beat * 0.95)))
+            ap(Message(type='note_off', note=notes_on[0],
+                       time=int(duration * f.ticks_per_beat * 0.95)))
             for n in notes_on[1:]:
-                ap(Message(type = 'note_off', note = n, time = 0))
+                ap(Message(type='note_off', note=n, time=0))
         notes_on = notes
-        ap(Message(type = 'note_on', note = notes_on[0],
-                   time = int(duration * f.ticks_per_beat * 0.05)))
+        ap(Message(type='note_on', note=notes_on[0],
+                   time=int(duration * f.ticks_per_beat * 0.05)))
         for n in notes_on:
-            ap(Message(type='note_on', note = n, time = 0))
+            ap(Message(type='note_on', note=n, time=0))
         if bpm != last_bpm:
             last_bpm = bpm
-            ap(MetaMessage("set_tempo", tempo = bpm2tempo(bpm)))
+            ap(MetaMessage("set_tempo", tempo=bpm2tempo(bpm)))
     if notes_on:  # Last note; just make it 1 beat long
-        ap(Message(type = 'note_off', note = notes_on[0], time = f.ticks_per_beat))
+        ap(Message(type='note_off', note=notes_on[0], time=f.ticks_per_beat))
         for n in notes_on[1:]:
-            ap(Message(type='note_off', note = n, time = 0))
+            ap(Message(type='note_off', note=n, time=0))
     f.save(out)
     print(f"{i} hits wrote to {out}")
 
 
-def musical_extract_midi_with_inst(path: str, offset = True):
+def musical_extract_midi_with_inst(path: str, offset=True):
     """Generates (BPM: float, duration since last: float,
     [(pitch: int, instrument_index: int)])"""
     if offset:
@@ -285,7 +276,7 @@ def musical_extract_midi_with_inst(path: str, offset = True):
     for track in f.tracks:
         messages.extend(_to_abstime(track))
     assert messages, "failed to find messages. Erroneous file?"
-    messages.sort(key = attrgetter('time'))
+    messages.sort(key=attrgetter('time'))
     tempo = DEFAULT_TEMPO
     last = tick = 0
     output = set()

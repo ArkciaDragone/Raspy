@@ -49,7 +49,7 @@ def averagePitch(voiceMax, hitList):
     hitNum = len(hitList)
     for j in range(0, hitNum):
         for k in range(0, len(hitList[j][1])):
-            averagePitchList[k] += hitList[j][1][k][0]
+            averagePitchList[k] += hitList[j][1][k]
             noteNumList[k] += 1
 
     for l in range(0, voiceMax):
@@ -146,42 +146,38 @@ def processNoteAndDelay(minus12NumList, hitList, middlePitch):      # actually c
 
     newHitList = []
     
-    # turn tuples to lists so that we can modify them
     for a in range(0, len(hitList)):
-        newSingleOutputList = []
-        for b in range(0, len(hitList[a][1])):
-            newSingleOutputList.append(list(hitList[a][1][b]))
-        newHit = [hitList[a][0], newSingleOutputList]
-        newHitList.append(newHit)
+        newHitList.append(list(hitList[a]))      # turn tuples to lists so that we can modify them
 
     for i in range(0, len(newHitList)):
+
         # process notes
         if middlePitch[0] == 1:
             voiceNum = len(newHitList[i][1])
             for j in range(0, voiceNum):
-                newHitList[i][1][j][0] -= 12 * minus12NumList[j]      # using standard note pitch
-                newHitList[i][1][j][0] -= (middlePitch[1] - 12)      # convert to note block pitch
+                newHitList[i][1][j] -= 12 * minus12NumList[j]      # using standard note pitch
+                newHitList[i][1][j] -= (middlePitch[1] - 12)      # convert to note block pitch
                 while True:
-                    if (0 <= newHitList[i][1][j][0] <= 24):
+                    if (0 <= newHitList[i][1][j] <= 24):
                         break
-                    elif (newHitList[i][1][j][0] < 0):
-                        newHitList[i][1][j][0] += 12
+                    elif (newHitList[i][1][j] < 0):
+                        newHitList[i][1][j] += 12
                         continue
-                    elif (newHitList[i][1][j][0] > 24):
-                        newHitList[i][1][j][0] -= 12
+                    elif (newHitList[i][1][j] > 24):
+                        newHitList[i][1][j] -= 12
                         continue
         if middlePitch[0] == 2:
             voiceNum = len(newHitList[i][1])
             for j in range(0, voiceNum):
-                newHitList[i][1][j][0] -= 30      # let F#1 be 0
+                newHitList[i][1][j] -= 30      # let F#1 be 0
                 while True:
-                    if (0 <= newHitList[i][1][j][0] <= 72):      # 0-72 = F#1-F#7
+                    if (0 <= newHitList[i][1][j] <= 72):      # 0-72 = F#1-F#7
                         break
-                    elif (newHitList[i][1][j][0] < 0):
-                        newHitList[i][1][j][0] += 12
+                    elif (newHitList[i][1][j] < 0):
+                        newHitList[i][1][j] += 12
                         continue
-                    elif (newHitList[i][1][j][0] > 24):
-                        newHitList[i][1][j][0] -= 12
+                    elif (newHitList[i][1][j] > 24):
+                        newHitList[i][1][j] -= 12
                         continue
 
         # process delay
@@ -201,14 +197,11 @@ def setRedstoneSystem(path, gameName):      # gameName is "mc" in startMidi
     
     gameName.postToChat("")
     gameName.postToChat("Checking if the file can be handled by the program...")
-
     # raise ValueError (if any) before asking tempo
     hitList = list(readAndProcessMidi(path))
     preProcess1(hitList, True)
 
-    # askTempoAndProcess will call readAndProcessMidi based on desired tempo
-    # hitList looks like [(delay, [[pitch, instrumentIndex], [pitch, instrumentIndex], ...]), ...]
-    hitList = list(askTempoAndProcess(path, gameName))
+    hitList = list(askTempoAndProcess(path, gameName))      # hitList looks like [(delay, [pitch, pitch]), ...]
     pp1Result = preProcess1(hitList, False)
 
     # if no errors are raised, ask the user's custom choice(s)
